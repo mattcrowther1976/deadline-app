@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0B">
+<title>DEADLINE · supercar spotting prototype</title>
+<meta name="description" content="A clickable prototype of DEADLINE, a supercar spotting app made by Duke Crowther.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E0E10'/%3E%3Cpath d='M26 54H14V10h16a22 22 0 0 1 21.15 28.06' stroke='%23F4F4F5' stroke-width='5' fill='none'/%3E%3Cpath d='M50.4 40.24A22 22 0 0 1 30 54' stroke='%23FF4D3D' stroke-width='5' fill='none'/%3E%3Cpath d='M24 32 37.93 41.75' stroke='%23FF4D3D' stroke-width='3.5' stroke-linecap='round'/%3E%3Ccircle cx='24' cy='32' r='4' fill='%23FF4D3D'/%3E%3C/svg%3E">
+<style>
+html,body{margin:0;height:100%;background:#050506;color:#F4F4F5;font-family:Archivo,system-ui,sans-serif}
+body{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%;
+  background-color:#0B0B0C;background-image:linear-gradient(27deg,#101012 3px,transparent 3px),linear-gradient(207deg,#101012 3px,transparent 3px),linear-gradient(27deg,#141416 3px,transparent 3px),linear-gradient(207deg,#141416 3px,transparent 3px),linear-gradient(90deg,#0F0F11 6px,transparent 6px),linear-gradient(#121214 25%,#0E0E10 25%,#0E0E10 50%,transparent 50%,transparent 75%,#161618 75%,#161618);background-position:0 3px,6px 0,0 6px,6px 3px,0 0,0 0;background-size:12px 12px}
+#stage{position:relative;border-radius:46px;overflow:hidden;box-shadow:0 0 0 10px #1A1A1D,0 0 0 11px #2E2E33,0 30px 80px rgba(0,0,0,.7)}
+#frame{position:absolute;left:0;top:0;width:390px;height:844px;transform-origin:0 0;overflow:hidden}
+#caption{margin-top:22px;font-size:12px;letter-spacing:.14em;color:#8B8B94;text-transform:uppercase}
+#caption b{color:#FF4D3D}
+body.mobile{background:#0A0A0B}
+body.mobile #stage{border-radius:0;box-shadow:none}
+body.mobile #caption{display:none}
+#loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;letter-spacing:.2em;color:#8B8B94}
+</style>
+</head>
+<body>
+<div id="loading">LOADING DEADLINE…</div>
+<div id="stage"><div id="frame"></div></div>
+<div id="caption"><b>DEADLINE</b> · clickable prototype · photos: Wikimedia Commons, see Photo credits</div>
+<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="runtime.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>New spot</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap">
+<style>
+body{margin:0;background:#0A0A0B}
+a{color:#FF4D3D;text-decoration:none}a:hover{color:#FF6F61}
+button{font-family:inherit}
+.cf{background-color:#0E0E10;background-image:linear-gradient(27deg,#141416 3px,transparent 3px),linear-gradient(207deg,#141416 3px,transparent 3px),linear-gradient(27deg,#1C1C1F 3px,transparent 3px),linear-gradient(207deg,#1C1C1F 3px,transparent 3px),linear-gradient(90deg,#161618 6px,transparent 6px),linear-gradient(#18181B 25%,#131315 25%,#131315 50%,transparent 50%,transparent 75%,#1E1E21 75%,#1E1E21);background-position:0 3px,6px 0,0 6px,6px 3px,0 0,0 0;background-size:12px 12px}
+</style>
+</helmet>
+<div class="cf" style="width: 390px; height: 844px; position: relative; overflow: hidden; box-sizing: border-box; color: #F4F4F5; font-family: 'Archivo', sans-serif; display: flex; flex-direction: column;">
+
+<div style="position: relative; height: 360px; flex-shrink: 0;">
+<img src="/_blob/d0ed9a1124b4be55c66020506d0952f5" alt="White Lamborghini Revuelto" style="width: 100%; height: 100%; object-fit: cover; object-position: 55% 50%; display: block;">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 45%, rgba(14,14,16,0.85) 80%, #0E0E10 100%);"></div>
+<header style="position: absolute; top: 14px; left: 16px; right: 16px; display: flex; align-items: center; justify-content: space-between;">
+<a href="Main.dc.html" aria-label="Close" style="width: 44px; height: 44px; box-sizing: border-box; border-radius: 999px; background: rgba(10,10,11,0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; color: #F4F4F5;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+</a>
+<span style="padding: 9px 16px; border-radius: 999px; background: #E0241B; color: #FFFFFF; font-size: 15px; font-weight: 900; font-stretch: 118%; box-shadow: 0 8px 24px rgba(224,36,27,0.45);">+450 XP</span>
+<button aria-label="Share" style="width: 44px; height: 44px; box-sizing: border-box; border-radius: 999px; background: rgba(10,10,11,0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; color: #F4F4F5; padding: 0;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8h16v-8M12 3v13M7 8l5-5 5 5"></path></svg>
+</button>
+</header>
+<div style="position: absolute; left: 20px; right: 20px; bottom: 6px;">
+<div style="display: flex; align-items: center; gap: 8px;">
+<span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; border-radius: 999px; background: rgba(255,197,61,0.16); border: 1px solid rgba(255,197,61,0.6); color: #FFC53D; font-size: 10px; font-weight: 800; letter-spacing: 0.12em;"><span style="width: 6px; height: 6px; border-radius: 999px; background: #FFC53D;"></span>LEGENDARY</span>
+<span style="font-size: 12px; font-weight: 700; color: #D4D4D8;">New to your garage</span>
+</div>
+<div style="font-size: 12px; font-weight: 800; letter-spacing: 0.2em; color: #A1A1AA; margin-top: 10px;">LAMBORGHINI</div>
+<div style="font-size: 38px; font-weight: 900; font-stretch: 125%; line-height: 1; letter-spacing: -0.01em;">Revuelto</div>
+<div style="font-size: 12px; color: #A1A1AA; margin-top: 6px;">Spotted 27 Sep 2026 · Manchester</div>
+</div>
+</div>
+
+<section aria-label="Key stats" style="margin: 14px 20px 0; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: rgba(255,255,255,0.08);">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+<div style="padding: 12px 14px; background: rgba(16,16,19,0.94); display: flex; flex-direction: column; gap: 4px;">
+<span style="font-size: 10px; font-weight: 800; letter-spacing: 0.14em; color: #A1A1AA;">{{s.label}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; line-height: 1.1;">{{s.value}}<span style="font-size: 12px; color: #A1A1AA;"> {{s.unit}}</span></span>
+<div style="height: 3px; margin-top: 4px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden;"><div style="height: 100%; border-radius: 999px; background: linear-gradient(90deg, #E0241B, #FF6A4D); width: {{s.pct}};"></div></div>
+</div>
+</sc-for>
+</section>
+
+<section style="margin: 10px 20px 0; border-radius: 20px; background: rgba(16,16,19,0.94); border: 1px solid rgba(255,255,255,0.08);">
+<div style="padding: 12px 14px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+<div style="flex-grow: 1;">
+<div style="font-size: 10px; font-weight: 800; letter-spacing: 0.14em; color: #A1A1AA;">RARITY</div>
+<div style="font-size: 13px; font-weight: 600; margin-top: 3px;">Seen by 2% of spotters</div>
+</div>
+<div aria-label="Rarity 4 of 5" style="display: flex; gap: 4px;">
+<span style="width: 18px; height: 6px; border-radius: 3px; background: #FFC53D;"></span>
+<span style="width: 18px; height: 6px; border-radius: 3px; background: #FFC53D;"></span>
+<span style="width: 18px; height: 6px; border-radius: 3px; background: #FFC53D;"></span>
+<span style="width: 18px; height: 6px; border-radius: 3px; background: #FFC53D;"></span>
+<span style="width: 18px; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.12);"></span>
+</div>
+</div>
+<a href="Leaderboard.dc.html" style="padding: 12px 14px; display: flex; align-items: center; gap: 12px; color: #F4F4F5;">
+<div style="flex-grow: 1;">
+<div style="font-size: 10px; font-weight: 800; letter-spacing: 0.14em; color: #A1A1AA;">OVERALL RANKING</div>
+<div style="font-size: 13px; font-weight: 600; margin-top: 3px;">Out of 1,240 cars in DEADLINE</div>
+</div>
+<span style="font-size: 26px; font-weight: 900; font-stretch: 125%;">#14</span>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B8B94" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+</a>
+</section>
+
+<div style="display: flex; align-items: center; gap: 8px; padding: 12px 20px 0; font-size: 12px; color: #8B8B94;">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 5.1A10 10 0 0 1 12 5c6 0 10 7 10 7a17 17 0 0 1-3.2 4M6.6 6.6C3.9 8.4 2 12 2 12s4 7 10 7a9.7 9.7 0 0 0 5.4-1.6"></path></svg>
+Plate blurred when shared · location shown as city only
+</div>
+
+<span style="flex-grow: 1;"></span>
+<div style="display: flex; gap: 10px; padding: 0 20px 26px;">
+<a href="Collection.dc.html" style="flex-grow: 1; height: 54px; box-sizing: border-box; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.16); color: #F4F4F5; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700;">View garage</a>
+<a href="Create.dc.html" style="flex-grow: 1; height: 54px; border-radius: 999px; background: #E0241B; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; box-shadow: 0 10px 24px rgba(224,36,27,0.35), inset 0 1px 0 rgba(255,255,255,0.2);">Share to feed</a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"units":{"editor":"enum","options":["mph","km/h"],"default":"mph"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const kmh = (this.props.units ?? 'mph') === 'km/h';
+    return {
+      stats: [
+        { label: 'POWER', value: '1,001', unit: 'hp', pct: '88%' },
+        { label: kmh ? '0-100 KM/H' : '0-60 MPH', value: '2.5', unit: 's', pct: '94%' },
+        { label: 'TOP SPEED', value: kmh ? '350' : '217', unit: kmh ? 'km/h' : 'mph', pct: '86%' },
+        { label: 'VALUE', value: '£500k', unit: '', pct: '82%' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

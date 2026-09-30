@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fun facts</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap">
+<style>
+body{margin:0;background:#0A0A0B}
+a{color:#FF4D3D;text-decoration:none}a:hover{color:#FF6F61}
+button{font-family:inherit}
+.cf{background-color:#0E0E10;background-image:linear-gradient(27deg,#141416 3px,transparent 3px),linear-gradient(207deg,#141416 3px,transparent 3px),linear-gradient(27deg,#1C1C1F 3px,transparent 3px),linear-gradient(207deg,#1C1C1F 3px,transparent 3px),linear-gradient(90deg,#161618 6px,transparent 6px),linear-gradient(#18181B 25%,#131315 25%,#131315 50%,transparent 50%,transparent 75%,#1E1E21 75%,#1E1E21);background-position:0 3px,6px 0,0 6px,6px 3px,0 0,0 0;background-size:12px 12px}
+.brand:hover{border-color:rgba(255,77,61,0.6) !important;background:rgba(40,16,14,0.9) !important}
+.strip{scroll-snap-type:x mandatory}
+.strip>*{scroll-snap-align:start}
+.strip::-webkit-scrollbar{height:0}
+.fadein{animation:fadein .3s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+<div class="cf" style="width: 390px; height: 844px; position: relative; overflow: hidden; box-sizing: border-box; color: #F4F4F5; font-family: 'Archivo', sans-serif;">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(165deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 30%, rgba(0,0,0,0.35) 100%);"></div>
+
+<nav aria-label="Feed" style="position: relative; display: flex; gap: 20px; padding: 18px 20px 8px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+<a href="Main.dc.html" style="padding: 6px 0; color: #8B8B94; font-size: 15px; font-weight: 600; border-bottom: 2px solid transparent;">Following</a>
+<a href="Main.dc.html" style="padding: 6px 0; color: #8B8B94; font-size: 15px; font-weight: 600; border-bottom: 2px solid transparent;">Nearby</a>
+<a href="Main.dc.html" style="padding: 6px 0; color: #8B8B94; font-size: 15px; font-weight: 600; border-bottom: 2px solid transparent;">Trending</a>
+<a href="FunFacts.dc.html" aria-current="page" style="padding: 6px 0; color: #F4F4F5; font-size: 15px; font-weight: 800; border-bottom: 2px solid #FF4D3D;">Fun facts</a>
+</nav>
+
+<sc-if value="{{isGrid}}" hint-placeholder-val="{{true}}">
+<div class="fadein" style="position: relative;">
+<header style="padding: 16px 20px 4px;">
+<h1 style="margin: 0; font-size: 28px; font-weight: 900; font-stretch: 125%; font-style: italic;">FUN FACTS</h1>
+<p style="margin: 4px 0 0; font-size: 13px; color: #A1A1AA;">Pick a brand to meet its founder and see its best, worst and weirdest cars.</p>
+</header>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 14px 20px 0;">
+<sc-for list="{{brands}}" as="b" hint-placeholder-count="8">
+<button class="brand" onClick="{{b.pick}}" aria-label="{{b.aria}}" style="position: relative; height: 104px; box-sizing: border-box; padding: 12px; border-radius: 18px; background: rgba(16,16,19,0.94); border: 1px solid rgba(255,255,255,0.1); color: #F4F4F5; display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer; transition: border-color .15s, background .15s;">
+<span style="width: 52px; height: 52px; flex-shrink: 0; box-sizing: border-box; border-radius: 16px; background: {{b.badgeBg}}; border: 1.5px solid {{b.badgeEdge}}; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; font-stretch: 125%; font-style: italic; color: {{b.badgeFg}}; box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);">{{b.mono}}</span>
+<span style="display: flex; flex-direction: column; gap: 4px; min-width: 0;">
+<span style="font-size: 14px; font-weight: 900; font-stretch: 112%; letter-spacing: 0.02em; line-height: 1.1;">{{b.caps}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #A1A1AA;">Since {{b.founded}}</span>
+</span>
+<span style="position: absolute; top: 10px; right: 10px; width: 24px; height: 16px; border-radius: 3px; overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,0.25);">
+<sc-if value="{{b.flagIT}}" hint-placeholder-val="{{false}}"><svg width="24" height="16" viewBox="0 0 3 2" preserveAspectRatio="none" style="display: block;"><rect width="1" height="2" fill="#009246"></rect><rect x="1" width="1" height="2" fill="#FFFFFF"></rect><rect x="2" width="1" height="2" fill="#CE2B37"></rect></svg></sc-if>
+<sc-if value="{{b.flagUK}}" hint-placeholder-val="{{false}}"><svg width="24" height="16" viewBox="0 0 60 40" preserveAspectRatio="none" style="display: block;"><rect width="60" height="40" fill="#012169"></rect><path d="M0 0 60 40M60 0 0 40" stroke="#FFFFFF" stroke-width="8"></path><path d="M0 0 60 40M60 0 0 40" stroke="#C8102E" stroke-width="3"></path><path d="M30 0v40M0 20h60" stroke="#FFFFFF" stroke-width="12"></path><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="7"></path></svg></sc-if>
+<sc-if value="{{b.flagNZ}}" hint-placeholder-val="{{false}}"><svg width="24" height="16" viewBox="0 0 60 40" preserveAspectRatio="none" style="display: block;"><rect width="60" height="40" fill="#012169"></rect><g><path d="M0 0 30 20M30 0 0 20" stroke="#FFFFFF" stroke-width="4"></path><path d="M0 0 30 20M30 0 0 20" stroke="#C8102E" stroke-width="1.6"></path><path d="M15 0v20M0 10h30" stroke="#FFFFFF" stroke-width="6"></path><path d="M15 0v20M0 10h30" stroke="#C8102E" stroke-width="3.5"></path></g><sc-for list="{{nzStars}}" as="st" hint-placeholder-count="4"><path d="{{st.outer}}" fill="#FFFFFF"></path><path d="{{st.inner}}" fill="#C8102E"></path></sc-for></svg></sc-if>
+<sc-if value="{{b.flagCZ}}" hint-placeholder-val="{{false}}"><svg width="24" height="16" viewBox="0 0 30 20" preserveAspectRatio="none" style="display: block;"><rect width="30" height="10" fill="#FFFFFF"></rect><rect y="10" width="30" height="10" fill="#D7141A"></rect><path d="M0 0 15 10 0 20Z" fill="#11457E"></path></svg></sc-if>
+<sc-if value="{{b.flagAR}}" hint-placeholder-val="{{false}}"><svg width="24" height="16" viewBox="0 0 30 20" preserveAspectRatio="none" style="display: block;"><rect width="30" height="20" fill="#74ACDF"></rect><rect y="6.67" width="30" height="6.67" fill="#FFFFFF"></rect><circle cx="15" cy="10" r="2.2" fill="#F6B40E"></circle></svg></sc-if>
+<sc-if value="{{b.flagSE}}" hint-placeholder-val="{{false}}"><svg width="24" height="16" viewBox="0 0 16 10" preserveAspectRatio="none" style="display: block;"><rect width="16" height="10" fill="#006AA7"></rect><rect x="5" width="2" height="10" fill="#FECC02"></rect><rect y="4" width="16" height="2" fill="#FECC02"></rect></svg></sc-if>
+</span>
+</button>
+</sc-for>
+</div>
+<p style="margin: 14px 20px 0; font-size: 12px; color: #8B8B94;">More brands coming soon.</p>
+</div>
+</sc-if>
+
+<sc-if value="{{isDetail}}" hint-placeholder-val="{{false}}">
+<div class="fadein" style="position: relative;">
+<header style="display: flex; align-items: center; gap: 12px; padding: 12px 16px 0;">
+<button onClick="{{backToGrid}}" aria-label="Back to all brands" style="width: 44px; height: 44px; flex-shrink: 0; box-sizing: border-box; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #F4F4F5; display: flex; align-items: center; justify-content: center; padding: 0;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+</button>
+<div style="min-width: 0;">
+<h1 style="margin: 0; font-size: 22px; font-weight: 900; font-stretch: 125%; font-style: italic; line-height: 1.05;">{{cur.caps}}</h1>
+<div style="font-size: 12px; color: #A1A1AA; margin-top: 2px;">Founded {{cur.founded}} · {{cur.hq}}</div>
+</div>
+</header>
+
+<section aria-label="{{slideAria}}" style="position: relative; margin: 12px 16px 0; height: 392px;">
+
+<sc-if value="{{onFounder}}" hint-placeholder-val="{{true}}">
+<div class="fadein" style="position: absolute; inset: 0; border-radius: 24px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); background: #111113;">
+<img src="{{cur.founderImg}}" alt="{{cur.founderAlt}}" style="width: 100%; height: 100%; object-fit: cover; object-position: {{cur.founderPos}}; display: block; filter: grayscale(0.15) contrast(1.05);">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 50%, rgba(8,8,9,0.95) 100%);"></div>
+<span style="position: absolute; top: 14px; left: 14px; padding: 5px 10px; border-radius: 999px; background: rgba(10,10,11,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.18); font-size: 10px; font-weight: 800; letter-spacing: 0.16em;">THE FOUNDER</span>
+<span role="img" aria-label="Flag of {{cur.flagName}}" style="position: absolute; top: 14px; right: 14px; width: 48px; height: 32px; border-radius: 5px; overflow: hidden; box-shadow: 0 0 0 2px rgba(255,255,255,0.85), 0 6px 16px rgba(0,0,0,0.5);">
+<sc-if value="{{cur.flagIT}}" hint-placeholder-val="{{false}}"><svg width="48" height="32" viewBox="0 0 3 2" preserveAspectRatio="none" style="display: block;"><rect width="1" height="2" fill="#009246"></rect><rect x="1" width="1" height="2" fill="#FFFFFF"></rect><rect x="2" width="1" height="2" fill="#CE2B37"></rect></svg></sc-if>
+<sc-if value="{{cur.flagUK}}" hint-placeholder-val="{{false}}"><svg width="48" height="32" viewBox="0 0 60 40" preserveAspectRatio="none" style="display: block;"><rect width="60" height="40" fill="#012169"></rect><path d="M0 0 60 40M60 0 0 40" stroke="#FFFFFF" stroke-width="8"></path><path d="M0 0 60 40M60 0 0 40" stroke="#C8102E" stroke-width="3"></path><path d="M30 0v40M0 20h60" stroke="#FFFFFF" stroke-width="12"></path><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="7"></path></svg></sc-if>
+<sc-if value="{{cur.flagNZ}}" hint-placeholder-val="{{false}}"><svg width="48" height="32" viewBox="0 0 60 40" preserveAspectRatio="none" style="display: block;"><rect width="60" height="40" fill="#012169"></rect><g><path d="M0 0 30 20M30 0 0 20" stroke="#FFFFFF" stroke-width="4"></path><path d="M0 0 30 20M30 0 0 20" stroke="#C8102E" stroke-width="1.6"></path><path d="M15 0v20M0 10h30" stroke="#FFFFFF" stroke-width="6"></path><path d="M15 0v20M0 10h30" stroke="#C8102E" stroke-width="3.5"></path></g><sc-for list="{{nzStars}}" as="st" hint-placeholder-count="4"><path d="{{st.outer}}" fill="#FFFFFF"></path><path d="{{st.inner}}" fill="#C8102E"></path></sc-for></svg></sc-if>
+<sc-if value="{{cur.flagCZ}}" hint-placeholder-val="{{false}}"><svg width="48" height="32" viewBox="0 0 30 20" preserveAspectRatio="none" style="display: block;"><rect width="30" height="10" fill="#FFFFFF"></rect><rect y="10" width="30" height="10" fill="#D7141A"></rect><path d="M0 0 15 10 0 20Z" fill="#11457E"></path></svg></sc-if>
+<sc-if value="{{cur.flagAR}}" hint-placeholder-val="{{false}}"><svg width="48" height="32" viewBox="0 0 30 20" preserveAspectRatio="none" style="display: block;"><rect width="30" height="20" fill="#74ACDF"></rect><rect y="6.67" width="30" height="6.67" fill="#FFFFFF"></rect><circle cx="15" cy="10" r="2.2" fill="#F6B40E"></circle></svg></sc-if>
+<sc-if value="{{cur.flagSE}}" hint-placeholder-val="{{false}}"><svg width="48" height="32" viewBox="0 0 16 10" preserveAspectRatio="none" style="display: block;"><rect width="16" height="10" fill="#006AA7"></rect><rect x="5" width="2" height="10" fill="#FECC02"></rect><rect y="4" width="16" height="2" fill="#FECC02"></rect></svg></sc-if>
+</span>
+<div style="position: absolute; left: 18px; right: 18px; bottom: 18px;">
+<div style="font-size: 30px; font-weight: 900; font-stretch: 125%; font-style: italic; line-height: 1;">{{cur.founder}}</div>
+<div style="font-size: 13px; color: #D4D4D8; margin-top: 8px;">{{cur.founderLine}}</div>
+<div style="display: inline-flex; margin-top: 10px; padding: 5px 10px; border-radius: 999px; background: rgba(224,36,27,0.2); border: 1px solid rgba(255,77,61,0.5); color: #FF8A7D; font-size: 11px; font-weight: 800;">Founded {{cur.caps}} in {{cur.founded}}</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{onGallery}}" hint-placeholder-val="{{false}}">
+<div class="fadein" style="position: absolute; inset: 0; border-radius: 24px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); background: rgba(16,16,19,0.94); display: flex; flex-direction: column;">
+<div style="display: flex; align-items: baseline; justify-content: space-between; padding: 14px 16px 10px;">
+<span style="font-size: 14px; font-weight: 900; font-stretch: 118%; letter-spacing: 0.08em;">THE GALLERY</span>
+<span style="font-size: 11px; font-weight: 700; color: #A1A1AA;">Scroll sideways →</span>
+</div>
+<div class="strip" role="list" style="display: flex; gap: 10px; overflow-x: auto; padding: 0 16px 16px; flex-grow: 1;">
+<sc-for list="{{gallery}}" as="g" hint-placeholder-count="7">
+<div role="listitem" style="position: relative; width: 236px; flex-shrink: 0; border-radius: 18px; overflow: hidden; background: #0B0B0C; border: 1px solid rgba(255,255,255,0.1);">
+<sc-if value="{{g.hasImg}}" hint-placeholder-val="{{true}}">
+<img src="{{g.img}}" alt="{{g.alt}}" style="width: 100%; height: 100%; object-fit: cover; object-position: {{g.pos}}; display: block;">
+</sc-if>
+<sc-if value="{{g.noImg}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #3A3A42;">
+<svg width="120" height="42" viewBox="0 0 200 70" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" aria-hidden="true"><path d="M6 50 C6 45 10 42 20 41 L58 36 C74 26 94 19 118 18 C136 18 150 23 166 31 L186 37 C192 39 195 43 195 48 L195 52 L182 52 A14 14 0 0 0 154 52 L62 52 A14 14 0 0 0 34 52 L6 52 Z"></path><circle cx="48" cy="52" r="10.5"></circle><circle cx="168" cy="52" r="10.5"></circle></svg>
+</div>
+</sc-if>
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 50%, rgba(8,8,9,0.95) 100%);"></div>
+<span style="position: absolute; top: 12px; left: 12px; padding: 5px 10px; border-radius: 999px; background: {{g.chipBg}}; color: {{g.chipFg}}; font-size: 10px; font-weight: 900; letter-spacing: 0.14em;">{{g.cat}}</span>
+<span style="position: absolute; top: 12px; right: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.8);">{{g.num}}</span>
+<div style="position: absolute; left: 14px; right: 14px; bottom: 14px;">
+<div style="font-size: 19px; font-weight: 900; font-stretch: 118%; line-height: 1.1;">{{g.name}}</div>
+<div style="font-size: 12px; color: #D4D4D8; margin-top: 5px; line-height: 1.35;">{{g.note}}</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<button onClick="{{prevSlide}}" aria-label="Previous slide" style="position: absolute; left: -6px; top: 50%; margin-top: -22px; width: 44px; height: 44px; border-radius: 999px; background: rgba(10,10,11,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.22); color: #FFFFFF; display: flex; align-items: center; justify-content: center; padding: 0; opacity: {{prevOpacity}}; box-shadow: 0 6px 16px rgba(0,0,0,0.5);">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+</button>
+<button onClick="{{nextSlide}}" aria-label="Next slide" style="position: absolute; right: -6px; top: 50%; margin-top: -22px; width: 44px; height: 44px; border-radius: 999px; background: #E0241B; border: 1px solid rgba(255,255,255,0.22); color: #FFFFFF; display: flex; align-items: center; justify-content: center; padding: 0; opacity: {{nextOpacity}}; box-shadow: 0 6px 16px rgba(224,36,27,0.45);">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+</section>
+
+<div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 0 0;">
+<sc-for list="{{dots}}" as="d" hint-placeholder-count="2">
+<button onClick="{{d.pick}}" aria-label="{{d.aria}}" style="width: {{d.w}}; height: 8px; border-radius: 999px; background: {{d.bg}}; border: none; padding: 0; cursor: pointer; transition: width .2s;"></button>
+</sc-for>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #8B8B94; margin-left: 6px;">{{slideLabel}}</span>
+</div>
+
+<section aria-label="AI fun fact" style="margin: 12px 16px 0; padding: 14px 16px; border-radius: 20px; background: linear-gradient(135deg, rgba(195,155,255,0.14), rgba(255,77,61,0.1)); border: 1px solid rgba(195,155,255,0.35);">
+<div style="display: flex; align-items: center; justify-content: space-between;">
+<span style="display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 900; letter-spacing: 0.16em; color: #D7BFFF;">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"></path></svg>
+AI FUN FACT
+</span>
+<button onClick="{{nextFact}}" style="height: 32px; padding: 0 12px; border-radius: 999px; background: rgba(10,10,11,0.4); border: 1px solid rgba(255,255,255,0.18); color: #F4F4F5; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"></path></svg>
+Another fact
+</button>
+</div>
+<p class="fadein" aria-live="polite" style="margin: 10px 0 0; font-size: 15px; line-height: 1.45; font-weight: 600;">{{fact}}</p>
+</section>
+</div>
+</sc-if>
+
+<div style="position: absolute; left: 0; bottom: 0; width: 390px; height: 88px;">
+<dc-import name="TabBar" active="home" hint-size="390px,88px"></dc-import>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"brand":{"editor":"enum","options":["none","ferrari","lamborghini","mclaren","porsche","bugatti","aston","pagani","koenigsegg"],"default":"none"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const b = props.brand ?? 'none';
+    this.state = { brand: b === 'none' ? null : b, slide: 0, fact: 0 };
+  }
+  componentDidUpdate(prev) {
+    if (prev.brand !== this.props.brand && this.props.brand) this.setState({ brand: this.props.brand === 'none' ? null : this.props.brand, slide: 0, fact: 0 });
+  }
+  star(cx, cy, r) {
+    const pts = [];
+    for (let i = 0; i < 10; i++) {
+      const a = -Math.PI / 2 + i * Math.PI / 5;
+      const rr = i % 2 ? r * 0.42 : r;
+      pts.push((cx + rr * Math.cos(a)).toFixed(2) + ' ' + (cy + rr * Math.sin(a)).toFixed(2));
+    }
+    return 'M' + pts.join(' L') + 'Z';
+  }
+  renderVals() {
+    const s = this.state;
+    const B = '/_blob/';
+    const brands = [
+      { id: 'ferrari', name: 'Ferrari', mono: 'F', founded: '1947', hq: 'Maranello, Italy', flag: 'IT', flagName: 'Italy',
+        founder: 'Enzo Ferrari', founderLine: '1898–1988 · Born in Modena, Italy', founderImg: B + '2b515c1c0ccd806f36f7a565eebcd2f1', founderPos: '50% 25%',
+        badge: ['#E0241B', '#FFFFFF', 'rgba(255,255,255,0.3)'],
+        facts: [
+          'The prancing horse was first painted on the plane of Italian First World War pilot Francesco Baracca. His mother suggested Enzo use it for good luck.',
+          'Before he built his own cars, Enzo Ferrari raced for Alfa Romeo.'
+        ] },
+      { id: 'lamborghini', name: 'Lamborghini', mono: 'L', founded: '1963', hq: "Sant'Agata Bolognese, Italy", flag: 'IT', flagName: 'Italy',
+        founder: 'Ferruccio Lamborghini', founderLine: '1916–1993 · Born in Renazzo, Italy', founderImg: B + 'f0cdd6aa81e90891d57b9f34356998b9', founderPos: '50% 22%',
+        badge: ['#111113', '#FFC53D', 'rgba(255,197,61,0.6)'],
+        facts: [
+          'Ferruccio Lamborghini built tractors before he built supercars, and Lamborghini tractors are still made today.',
+          'Ferruccio’s star sign was Taurus, which is why the badge is a charging bull. Lots of models are named after famous fighting bulls, like the Miura and the Murciélago.',
+          'The story goes that Ferruccio started making cars after Enzo Ferrari brushed off his complaints about the clutch on his Ferrari.'
+        ],
+        gallery: [
+          { cat: 'FACTORY', name: "Sant'Agata Bolognese", note: 'Lamborghini’s home near Bologna since 1963.', img: B + 'c06ba32373c6de36ce83b03a0b5cc11d', pos: '60% 50%', alt: "Lamborghini headquarters in Sant'Agata Bolognese" },
+          { cat: 'FASTEST', name: 'Revuelto', note: 'Claimed top speed of over 217 mph (350 km/h).', img: B + 'd0ed9a1124b4be55c66020506d0952f5', pos: '55% 50%', alt: 'White Lamborghini Revuelto' },
+          { cat: 'NEWEST', name: 'Temerario', note: 'Revealed in 2024 to replace the Huracán.', img: B + '947a2eb1bb66469c204907dc0bb98cb4', pos: '50% 55%', alt: 'Lamborghini Temerario' },
+          { cat: 'OLDEST', name: '350 GT', note: 'The very first production Lamborghini, from 1964.', img: B + 'f9107fc93b9c02d328fb8f209d7a4ce5', pos: '50% 55%', alt: 'Classic Lamborghini 350 GT' },
+          { cat: 'UGLIEST', name: 'Urus', note: 'Voted ugliest by DEADLINE spotters.', img: B + 'dd8cb464fcf0c515982517d0659302ad', pos: '50% 55%', alt: 'Lamborghini Urus SUV' },
+          { cat: 'CHEAPEST', name: 'Urraco', note: 'The 1970s entry-level V8 Lamborghini.', img: B + '0d3e7734322ba4baf3dcac565aa12567', pos: '50% 55%', alt: 'Lamborghini Urraco' },
+          { cat: 'SLOWEST', name: 'LM002', note: 'The 1986 off-roader nicknamed the “Rambo Lambo”.', img: B + '9dbbeba5d81149470d9676e83aa30a71', pos: '50% 55%', alt: 'Lamborghini LM002 off-roader' }
+        ] },
+      { id: 'mclaren', name: 'McLaren', mono: 'M', founded: '1963', hq: 'Woking, England', flag: 'NZ', flagName: 'New Zealand',
+        founder: 'Bruce McLaren', founderLine: '1937–1970 · Born in Auckland, New Zealand', founderImg: B + 'b0851d7e4a5f981ab7197b46f3fbbf07', founderPos: '50% 28%',
+        badge: ['#FF8000', '#0B0B0C', 'rgba(255,255,255,0.3)'],
+        facts: [
+          'Bruce McLaren won his first Formula 1 race at the 1959 United States Grand Prix, aged just 22.',
+          'The McLaren F1 hit 240.1 mph in 1998, making it the fastest production car in the world at the time.'
+        ] },
+      { id: 'porsche', name: 'Porsche', mono: 'P', founded: '1931', hq: 'Stuttgart, Germany', flag: 'CZ', flagName: 'the Czech Republic',
+        founder: 'Ferdinand Porsche', founderLine: '1875–1951 · Born in Maffersdorf, Bohemia (now the Czech Republic)', founderImg: B + '3ed3859dfe21811492b52af8932e94ae', founderPos: '50% 25%',
+        badge: ['#1C1C20', '#E4C27A', 'rgba(228,194,122,0.55)'],
+        facts: [
+          'Ferdinand Porsche designed the original Volkswagen Beetle.',
+          'The first car to carry the Porsche name was the 356, finished in 1948.'
+        ] },
+      { id: 'bugatti', name: 'Bugatti', mono: 'B', founded: '1909', hq: 'Molsheim, France', flag: 'IT', flagName: 'Italy',
+        founder: 'Ettore Bugatti', founderLine: '1881–1947 · Born in Milan, Italy', founderImg: B + '1b49ab55cc399a57e410ea09add677a1', founderPos: '50% 30%',
+        badge: ['#1E3FA8', '#FFFFFF', 'rgba(255,255,255,0.35)'],
+        facts: [
+          'Ettore Bugatti was born in Milan, but he built his cars in Molsheim, in the Alsace region of France.',
+          'In 2005 the Bugatti Veyron became the first production car to go faster than 250 mph.'
+        ] },
+      { id: 'aston', name: 'Aston Martin', mono: 'A', founded: '1913', hq: 'Gaydon, England', flag: 'UK', flagName: 'the United Kingdom',
+        founder: 'Lionel Martin', founderLine: '1878–1945 · Co-founded with Robert Bamford', founderImg: B + '92908434f675466f9e68de61fbb6548a', founderPos: '62% 40%',
+        badge: ['#0E4D3A', '#FFFFFF', 'rgba(255,255,255,0.3)'],
+        facts: [
+          'The name comes from co-founder Lionel Martin and the Aston Hill climb in Buckinghamshire, where he raced.',
+          'James Bond first drove an Aston Martin, the DB5, in the 1964 film Goldfinger.'
+        ] },
+      { id: 'pagani', name: 'Pagani', mono: 'P', founded: '1992', hq: 'San Cesario sul Panaro, Italy', flag: 'AR', flagName: 'Argentina',
+        founder: 'Horacio Pagani', founderLine: 'Born 1955 · Casilda, Argentina', founderImg: B + 'b7da6155bc525d2a1dc6454f200288cf', founderPos: '50% 30%',
+        badge: ['#E6E6E8', '#0B0B0C', 'rgba(255,255,255,0.5)'],
+        facts: [
+          'Horacio Pagani worked with carbon fibre at Lamborghini in the 1980s before starting his own company.',
+          'The Zonda was first going to be named after five-time F1 champion Juan Manuel Fangio.'
+        ] },
+      { id: 'koenigsegg', name: 'Koenigsegg', mono: 'K', founded: '1994', hq: 'Ängelholm, Sweden', flag: 'SE', flagName: 'Sweden',
+        founder: 'Christian von Koenigsegg', founderLine: 'Born 1972 · Stockholm, Sweden', founderImg: B + '856517ec16a0e2eecb8b7410a5ed391a', founderPos: '58% 22%',
+        badge: ['#0B0B0C', '#F4F4F5', 'rgba(255,255,255,0.35)'],
+        facts: [
+          'Christian von Koenigsegg started the company in 1994, when he was just 22.',
+          'The ghost badge on Koenigsegg cars honours the Swedish Air Force squadron that used their factory hangar before them.'
+        ] }
+    ];
+    const flagFlags = (f) => ({ flagIT: f === 'IT', flagUK: f === 'UK', flagNZ: f === 'NZ', flagCZ: f === 'CZ', flagAR: f === 'AR', flagSE: f === 'SE' });
+    const list = brands.map((b) => ({
+      ...b, ...flagFlags(b.flag),
+      caps: b.name.toUpperCase(),
+      badgeBg: b.badge[0], badgeFg: b.badge[1], badgeEdge: b.badge[2],
+      aria: b.name + ', founded ' + b.founded + ' by ' + b.founder,
+      pick: () => this.setState({ brand: b.id, slide: 0, fact: 0 })
+    }));
+    const nzStars = [[45, 9, 2.6], [39.5, 17, 2.4], [50.5, 15.5, 2.2], [45, 30, 2.9]].map(([x, y, r]) => ({ outer: this.star(x, y, r * 1.35), inner: this.star(x, y, r) }));
+
+    const cur = list.find((b) => b.id === s.brand) || null;
+    const cats = ['FACTORY', 'FASTEST', 'NEWEST', 'OLDEST', 'UGLIEST', 'CHEAPEST', 'SLOWEST'];
+    const chip = { FACTORY: ['#F4F4F5', '#0B0B0C'], FASTEST: ['#E0241B', '#FFFFFF'], NEWEST: ['#4ADE80', '#0B0B0C'], OLDEST: ['#E4C27A', '#0B0B0C'], UGLIEST: ['#C39BFF', '#0B0B0C'], CHEAPEST: ['#7DB8FF', '#0B0B0C'], SLOWEST: ['#A1A1AA', '#0B0B0C'] };
+    const rawGallery = cur && cur.gallery ? cur.gallery : cats.map((c) => ({ cat: c, name: 'Coming soon', note: 'Photos for ' + (cur ? cur.name : '') + ' are on the way.' }));
+    const gallery = rawGallery.map((g, i) => ({
+      ...g,
+      hasImg: !!g.img, noImg: !g.img,
+      pos: g.pos || '50% 50%', alt: g.alt || '',
+      chipBg: chip[g.cat][0], chipFg: chip[g.cat][1],
+      num: (i + 1) + '/' + rawGallery.length
+    }));
+    const slides = 2;
+    const facts = cur ? cur.facts : [''];
+    return {
+      brands: list, nzStars, gallery,
+      cur: cur || list[0],
+      isGrid: !cur, isDetail: !!cur,
+      onFounder: s.slide === 0, onGallery: s.slide === 1,
+      slideAria: s.slide === 0 ? 'Slide 1 of 2: the founder' : 'Slide 2 of 2: the gallery',
+      slideLabel: (s.slide + 1) + ' / ' + slides,
+      prevOpacity: s.slide === 0 ? '0.35' : '1',
+      nextOpacity: s.slide === slides - 1 ? '0.35' : '1',
+      prevSlide: () => this.setState({ slide: Math.max(0, s.slide - 1) }),
+      nextSlide: () => this.setState({ slide: Math.min(slides - 1, s.slide + 1) }),
+      dots: [0, 1].map((i) => ({
+        w: s.slide === i ? '24px' : '8px',
+        bg: s.slide === i ? '#FF4D3D' : 'rgba(255,255,255,0.3)',
+        aria: i === 0 ? 'Show the founder' : 'Show the gallery',
+        pick: () => this.setState({ slide: i })
+      })),
+      fact: facts[s.fact % facts.length],
+      nextFact: () => this.setState({ fact: (s.fact + 1) % facts.length }),
+      backToGrid: () => this.setState({ brand: null, slide: 0, fact: 0 })
+    };
+  }
+}
+</script>
+</body>
+</html>

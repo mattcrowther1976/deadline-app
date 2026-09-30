@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Leaderboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap">
+<style>
+body{margin:0;background:#0A0A0B}
+a{color:#FF4D3D;text-decoration:none}a:hover{color:#FF6F61}
+button{font-family:inherit}
+.cf{background-color:#0E0E10;background-image:linear-gradient(27deg,#141416 3px,transparent 3px),linear-gradient(207deg,#141416 3px,transparent 3px),linear-gradient(27deg,#1C1C1F 3px,transparent 3px),linear-gradient(207deg,#1C1C1F 3px,transparent 3px),linear-gradient(90deg,#161618 6px,transparent 6px),linear-gradient(#18181B 25%,#131315 25%,#131315 50%,transparent 50%,transparent 75%,#1E1E21 75%,#1E1E21);background-position:0 3px,6px 0,0 6px,6px 3px,0 0,0 0;background-size:12px 12px}
+</style>
+</helmet>
+<div class="cf" style="width: 390px; height: 844px; position: relative; overflow: hidden; box-sizing: border-box; color: #F4F4F5; font-family: 'Archivo', sans-serif;">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(165deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 30%, rgba(0,0,0,0.35) 100%);"></div>
+
+<header style="position: relative; display: flex; align-items: center; justify-content: space-between; padding: 14px 20px 2px;">
+<h1 style="margin: 0; font-size: 28px; font-weight: 900; font-stretch: 125%; font-style: italic; letter-spacing: 0.01em;">RANKS</h1>
+<span style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; background: rgba(125,184,255,0.1); border: 1px solid rgba(125,184,255,0.4); color: #A9CFFF; font-size: 12px; font-weight: 700;">
+Silver league · <span style="font-family: 'JetBrains Mono', monospace;">2d 6h</span>
+</span>
+</header>
+
+<div role="radiogroup" aria-label="Time period" style="position: relative; margin: 12px 20px 0; padding: 4px; border-radius: 14px; background: rgba(16,16,19,0.9); border: 1px solid rgba(255,255,255,0.08); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px;">
+<sc-for list="{{periods}}" as="p" hint-placeholder-count="2">
+<button role="radio" aria-checked="{{p.on}}" onClick="{{p.pick}}" style="height: 36px; border-radius: 10px; border: none; font-size: 14px; font-weight: 700; background: {{p.bg}}; color: {{p.fg}};">{{p.label}}</button>
+</sc-for>
+</div>
+
+<div style="position: relative; display: flex; gap: 8px; padding: 12px 20px 0;">
+<button style="height: 34px; padding: 0 14px; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #D4D4D8; font-size: 13px; font-weight: 700;">Friends</button>
+<button aria-pressed="true" style="height: 34px; padding: 0 14px; border-radius: 999px; background: #F4F4F5; border: 1px solid #F4F4F5; color: #0A0A0B; font-size: 13px; font-weight: 700;">Manchester</button>
+<button style="height: 34px; padding: 0 14px; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #D4D4D8; font-size: 13px; font-weight: 700;">UK</button>
+<button style="height: 34px; padding: 0 14px; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #D4D4D8; font-size: 13px; font-weight: 700;">Global</button>
+</div>
+
+<div style="position: relative; display: flex; align-items: flex-end; justify-content: center; gap: 10px; padding: 18px 20px 0;">
+<sc-for list="{{podium}}" as="p" hint-placeholder-count="3">
+<div style="width: 108px; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+<div style="width: {{p.size}}; height: {{p.size}}; box-sizing: border-box; border-radius: 999px; border: 3px solid {{p.medal}}; overflow: hidden; box-shadow: 0 0 24px {{p.glow}};">
+<img src="{{p.img}}" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+</div>
+<span style="font-size: 13px; font-weight: 800;">{{p.name}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #A1A1AA;">{{p.xp}} XP</span>
+<div style="width: 100%; height: {{p.height}}; box-sizing: border-box; border-top-left-radius: 14px; border-top-right-radius: 14px; background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02)); border: 1px solid rgba(255,255,255,0.1); border-bottom: none; display: flex; justify-content: center; padding-top: 8px;">
+<span style="font-size: 28px; font-weight: 900; font-stretch: 125%; font-style: italic; color: {{p.medal}};">{{p.rank}}</span>
+</div>
+</div>
+</sc-for>
+</div>
+
+<ol style="position: relative; list-style: none; margin: 0; padding: 0 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="5">
+<li style="height: 58px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+<span style="width: 22px; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: #A1A1AA;">{{r.rank}}</span>
+<img src="{{r.img}}" alt="" style="width: 52px; height: 36px; border-radius: 8px; object-fit: cover; display: block;">
+<div style="flex-grow: 1;">
+<div style="font-size: 14px; font-weight: 700;">{{r.name}}</div>
+<div style="font-size: 11px; color: #8B8B94;">Lvl {{r.level}} · {{r.spots}} spots</div>
+</div>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700;">{{r.xp}}</span>
+<span style="width: 26px; font-size: 12px; font-weight: 700; text-align: right; color: {{r.moveColor}};">{{r.move}}</span>
+</li>
+</sc-for>
+</ol>
+
+<div style="position: absolute; left: 12px; right: 12px; bottom: 98px; height: 64px; box-sizing: border-box; padding: 0 14px 0 16px; border-radius: 18px; background: rgba(40,12,10,0.92); backdrop-filter: blur(12px); border: 1.5px solid #E0241B; display: flex; align-items: center; gap: 12px; box-shadow: 0 12px 30px rgba(0,0,0,0.55);">
+<span style="width: 26px; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; color: #FF6F61;">18</span>
+<div style="width: 36px; height: 36px; border-radius: 999px; background: #E0241B; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800;">MT</div>
+<div style="flex-grow: 1;">
+<div style="font-size: 14px; font-weight: 800;">You</div>
+<div style="font-size: 12px; color: #D4D4D8;">180 XP to reach 17th</div>
+</div>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700;">{{myXp}}</span>
+<span style="font-size: 12px; font-weight: 700; color: #4ADE80;">▲4</span>
+</div>
+
+<div style="position: absolute; left: 0; bottom: 0; width: 390px; height: 88px;">
+<dc-import name="TabBar" active="ranks" hint-size="390px,88px"></dc-import>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { period: 'week' };
+  }
+  renderVals() {
+    const week = this.state.period === 'week';
+    const img = {
+      revuelto: '/_blob/d0ed9a1124b4be55c66020506d0952f5',
+      sf90: '/_blob/4c34a39ed7fc32822ce83f9e01f8d264',
+      mcl: '/_blob/7a1f38e951343777cdb82e6e2ecdffc1',
+      gt3: '/_blob/009516d94a7dcf61f3cbf171fac4271c',
+      van: '/_blob/70522fdf14052f038999461a17d193a4',
+      chiron: '/_blob/5eba6dd7905427a06a5aaf5e5596baa3'
+    };
+    const periods = [['week', 'This week'], ['all', 'All time']].map(([id, label]) => ({
+      label, on: this.state.period === id ? 'true' : 'false',
+      bg: this.state.period === id ? '#F4F4F5' : 'transparent',
+      fg: this.state.period === id ? '#0A0A0B' : '#A1A1AA',
+      pick: () => this.setState({ period: id })
+    }));
+    const podium = [
+      { rank: '2', name: 'jamie_spots', xp: week ? '4,120' : '61,300', medal: '#D6DAE0', glow: 'rgba(214,218,224,0.2)', size: '58px', height: '62px', img: img.sf90 },
+      { rank: '1', name: 'pistonkid', xp: week ? '5,480' : '88,950', medal: '#FFC53D', glow: 'rgba(255,197,61,0.35)', size: '72px', height: '86px', img: img.chiron },
+      { rank: '3', name: 'leo_v12', xp: week ? '3,760' : '54,020', medal: '#E09A5F', glow: 'rgba(224,154,95,0.2)', size: '58px', height: '46px', img: img.van }
+    ];
+    const rows = [
+      { rank: '4', name: 'apexhunter', level: 24, spots: 19, xp: week ? '3,310' : '49,800', move: '▲2', moveColor: '#4ADE80', img: img.mcl },
+      { rank: '5', name: 'redline_ruby', level: 19, spots: 16, xp: week ? '3,050' : '41,150', move: '▼1', moveColor: '#FF7B7B', img: img.gt3 },
+      { rank: '6', name: 'turbo_gav', level: 22, spots: 14, xp: week ? '2,980' : '44,700', move: '–', moveColor: '#8B8B94', img: img.revuelto },
+      { rank: '7', name: 'nina.boost', level: 17, spots: 13, xp: week ? '2,860' : '33,420', move: '▲5', moveColor: '#4ADE80', img: img.sf90 },
+      { rank: '8', name: 'ollie_w12', level: 15, spots: 12, xp: week ? '2,740' : '29,880', move: '▼2', moveColor: '#FF7B7B', img: img.van }
+    ];
+    return { periods, podium, rows, myXp: week ? '2,340' : '18,760' };
+  }
+}
+</script>
+</body>
+</html>

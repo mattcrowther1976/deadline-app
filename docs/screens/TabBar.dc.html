@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tab bar</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<nav aria-label="Main" style="width: 390px; height: 88px; box-sizing: border-box; padding: 10px 14px 0; display: flex; justify-content: space-between; align-items: flex-start; background: rgba(12,12,14,0.82); backdrop-filter: blur(18px); border-top: 1px solid rgba(255,255,255,0.08); font-family: 'Archivo', sans-serif; color: #8B8B94;">
+<sc-for list="{{left}}" as="t" hint-placeholder-count="2">
+<a href="{{t.href}}" aria-current="{{t.current}}" style="width: 62px; height: 54px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; text-decoration: none; color: {{t.color}};">
+<svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.d}}"></path></svg>
+<span style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">{{t.label}}</span>
+</a>
+</sc-for>
+<a href="Spot.dc.html" aria-label="Spot a car" style="width: 58px; height: 58px; margin-top: -4px; border-radius: 999px; background: #E0241B; color: #FFFFFF; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 8px 24px rgba(224,36,27,0.45), inset 0 1px 0 rgba(255,255,255,0.25);">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v12H4z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+</a>
+<sc-for list="{{right}}" as="t" hint-placeholder-count="2">
+<a href="{{t.href}}" aria-current="{{t.current}}" style="width: 62px; height: 54px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; text-decoration: none; color: {{t.color}};">
+<svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.d}}"></path></svg>
+<span style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">{{t.label}}</span>
+</a>
+</sc-for>
+</nav>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"active":{"editor":"enum","options":["home","garage","ranks","profile"],"default":"home"},"$preview":{"width":390,"height":88}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const active = this.props.active ?? 'home';
+    const mk = (id, label, href, d) => ({
+      label, href, d,
+      color: id === active ? '#FF4D3D' : '#8B8B94',
+      current: id === active ? 'page' : undefined
+    });
+    return {
+      left: [
+        mk('home', 'Home', 'Main.dc.html', 'M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z'),
+        mk('garage', 'Garage', 'Collection.dc.html', 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z')
+      ],
+      right: [
+        mk('ranks', 'Ranks', 'Leaderboard.dc.html', 'M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3'),
+        mk('profile', 'Profile', 'Profile.dc.html', 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0')
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

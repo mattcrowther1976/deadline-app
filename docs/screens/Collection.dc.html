@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>My garage</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap">
+<style>
+body{margin:0;background:#0A0A0B}
+a{color:#FF4D3D;text-decoration:none}a:hover{color:#FF6F61}
+button{font-family:inherit}
+.cf{background-color:#0E0E10;background-image:linear-gradient(27deg,#141416 3px,transparent 3px),linear-gradient(207deg,#141416 3px,transparent 3px),linear-gradient(27deg,#1C1C1F 3px,transparent 3px),linear-gradient(207deg,#1C1C1F 3px,transparent 3px),linear-gradient(90deg,#161618 6px,transparent 6px),linear-gradient(#18181B 25%,#131315 25%,#131315 50%,transparent 50%,transparent 75%,#1E1E21 75%,#1E1E21);background-position:0 3px,6px 0,0 6px,6px 3px,0 0,0 0;background-size:12px 12px}
+</style>
+</helmet>
+<div class="cf" style="width: 390px; height: 844px; position: relative; overflow: hidden; box-sizing: border-box; color: #F4F4F5; font-family: 'Archivo', sans-serif;">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(165deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 30%, rgba(0,0,0,0.35) 100%);"></div>
+
+<header style="position: relative; display: flex; align-items: center; justify-content: space-between; padding: 14px 20px 2px;">
+<h1 style="margin: 0; font-size: 28px; font-weight: 900; font-stretch: 125%; font-style: italic; letter-spacing: 0.01em;">MY GARAGE</h1>
+<div style="display: flex; gap: 8px;">
+<a href="Search.dc.html" aria-label="Search" style="width: 44px; height: 44px; box-sizing: border-box; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #F4F4F5;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+</a>
+<a href="Editor.dc.html" aria-label="Cut a video edit" style="width: 44px; height: 44px; box-sizing: border-box; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #F4F4F5;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"></path></svg>
+</a>
+</div>
+</header>
+
+<div role="tablist" aria-label="Garage view" style="position: relative; margin: 12px 20px 0; padding: 4px; border-radius: 14px; background: rgba(16,16,19,0.9); border: 1px solid rgba(255,255,255,0.08); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px;">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="2">
+<button role="tab" aria-selected="{{t.on}}" onClick="{{t.pick}}" style="height: 36px; border-radius: 10px; border: none; font-size: 14px; font-weight: 700; background: {{t.bg}}; color: {{t.fg}};">{{t.label}}</button>
+</sc-for>
+</div>
+
+<sc-if value="{{isCars}}" hint-placeholder-val="{{true}}">
+<section style="position: relative; margin: 12px 20px 0; border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: rgba(255,255,255,0.08);">
+<div style="padding: 10px 14px; background: rgba(16,16,19,0.94);"><div style="font-family: 'JetBrains Mono', monospace; font-size: 19px; font-weight: 700;">31</div><div style="font-size: 10px; font-weight: 800; letter-spacing: 0.14em; color: #A1A1AA; margin-top: 2px;">CARS</div></div>
+<div style="padding: 10px 14px; background: rgba(16,16,19,0.94);"><div style="font-family: 'JetBrains Mono', monospace; font-size: 19px; font-weight: 700;">48</div><div style="font-size: 10px; font-weight: 800; letter-spacing: 0.14em; color: #A1A1AA; margin-top: 2px;">SPOTS</div></div>
+<div style="padding: 10px 14px; background: rgba(16,16,19,0.94);"><div style="font-family: 'JetBrains Mono', monospace; font-size: 19px; font-weight: 700;">£9.8m</div><div style="font-size: 10px; font-weight: 800; letter-spacing: 0.14em; color: #A1A1AA; margin-top: 2px;">VALUE SPOTTED</div></div>
+</section>
+
+<a href="Game.dc.html" style="position: relative; margin: 10px 20px 0; height: 68px; box-sizing: border-box; padding: 0 14px 0 10px; border-radius: 18px; background: linear-gradient(100deg, #3E9BF0 0%, #7EC8F7 55%, #66C75A 100%); border: 2px solid rgba(255,255,255,0.9); display: flex; align-items: center; gap: 12px; color: #FFFFFF; overflow: hidden; box-shadow: 0 4px 0 rgba(0,0,0,0.35);">
+<span aria-hidden="true" style="position: relative; width: 62px; height: 46px; flex-shrink: 0;">
+<span style="position: absolute; left: 4px; right: 4px; bottom: 0; height: 8px; border-radius: 3px; background: #595C64;"></span>
+<span style="position: absolute; left: 8px; bottom: 6px; width: 10px; height: 12px; background: #141414;"></span>
+<span style="position: absolute; right: 8px; bottom: 6px; width: 10px; height: 12px; background: #141414;"></span>
+<span style="position: absolute; left: 6px; right: 6px; bottom: 12px; height: 14px; background: #E0241B; box-shadow: inset 0 3px 0 rgba(255,255,255,0.3);"></span>
+<span style="position: absolute; left: 16px; right: 16px; bottom: 25px; height: 11px; background: #B31A13;"></span>
+<span style="position: absolute; left: 19px; right: 19px; bottom: 27px; height: 7px; background: #1C2733;"></span>
+<span style="position: absolute; left: 8px; bottom: 19px; width: 12px; height: 4px; background: #FFD6D6;"></span>
+<span style="position: absolute; right: 8px; bottom: 19px; width: 12px; height: 4px; background: #FFD6D6;"></span>
+</span>
+<span style="flex-grow: 1; min-width: 0; text-shadow: 0 2px 0 rgba(0,0,0,0.3);">
+<span style="display: block; font-size: 18px; font-weight: 900; font-stretch: 118%; font-style: italic; letter-spacing: 0.03em; line-height: 1;">TEST DRIVE</span>
+<span style="display: block; font-size: 12px; font-weight: 700; margin-top: 4px;">Drive any car in your garage · earn XP</span>
+</span>
+<span aria-hidden="true" style="width: 36px; height: 36px; flex-shrink: 0; border-radius: 12px; background: #FFFFFF; color: #E0241B; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 0 rgba(0,0,0,0.3);"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l11 7-11 7z"></path></svg></span>
+</a>
+
+<div role="radiogroup" aria-label="Filter garage" style="position: relative; display: flex; gap: 8px; padding: 12px 20px 10px; overflow: hidden;">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="5">
+<button role="radio" aria-checked="{{f.on}}" onClick="{{f.pick}}" style="height: 34px; padding: 0 14px; flex-shrink: 0; border-radius: 999px; font-size: 13px; font-weight: 700; background: {{f.bg}}; color: {{f.fg}}; border: {{f.border}};">{{f.label}}</button>
+</sc-for>
+</div>
+
+<div style="position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 0 20px;">
+<sc-for list="{{cars}}" as="c" hint-placeholder-count="6">
+<div style="position: relative; height: 178px;">
+<a href="{{c.href}}" aria-label="{{c.aria}}" style="position: absolute; inset: 0; box-sizing: border-box; border-radius: 18px; overflow: hidden; border: 1px solid {{c.edge}}; display: block; color: #F4F4F5; background: #111113;">
+<img src="{{c.img}}" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: {{c.pos}}; display: block; filter: {{c.filter}};">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 30%, rgba(8,8,9,0.92) 100%);"></div>
+<span style="position: absolute; top: 10px; left: 10px; display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 999px; background: rgba(10,10,11,0.6); backdrop-filter: blur(8px); border: 1px solid {{c.edge}}; color: {{c.color}}; font-size: 9px; font-weight: 800; letter-spacing: 0.12em;"><span style="width: 5px; height: 5px; border-radius: 999px; background: {{c.color}};"></span>{{c.rarityCaps}}</span>
+<div style="position: absolute; left: 12px; right: 12px; bottom: 10px;">
+<div style="font-size: 9px; font-weight: 800; letter-spacing: 0.16em; color: #A1A1AA;">{{c.makeCaps}}</div>
+<div style="font-size: 15px; font-weight: 800; font-stretch: 112%; line-height: 1.15; margin-top: 2px;">{{c.model}}</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #A1A1AA; margin-top: 3px;">{{c.meta}}</div>
+</div>
+</a>
+<sc-if value="{{c.canPost}}" hint-placeholder-val="{{true}}">
+<a href="Create.dc.html" aria-label="Post {{c.model}}" style="position: absolute; top: 6px; right: 6px; width: 34px; height: 34px; border-radius: 999px; background: rgba(10,10,11,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: #F4F4F5;">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8h16v-8M12 3v13M7 8l5-5 5 5"></path></svg>
+</a>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{isLibrary}}" hint-placeholder-val="{{false}}">
+<div style="position: relative; display: flex; align-items: center; justify-content: space-between; padding: 14px 20px 10px;">
+<span style="font-size: 12px; color: #A1A1AA;">62 photos · 14 videos</span>
+<button onClick="{{toggleSelect}}" style="height: 34px; padding: 0 14px; border-radius: 999px; background: {{selBtnBg}}; border: 1px solid rgba(255,255,255,0.16); color: {{selBtnFg}}; font-size: 13px; font-weight: 800;">{{selBtnLabel}}</button>
+</div>
+<div style="position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; padding: 0 20px;">
+<sc-for list="{{media}}" as="m" hint-placeholder-count="12">
+<button onClick="{{m.pick}}" aria-pressed="{{m.pressed}}" aria-label="{{m.aria}}" style="position: relative; height: 112px; padding: 0; border: none; border-radius: {{m.radius}}; overflow: hidden; background: #111113; cursor: pointer;">
+<img src="{{m.img}}" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: {{m.pos}}; display: block; opacity: {{m.dim}};">
+<sc-if value="{{m.isVideo}}" hint-placeholder-val="{{false}}">
+<span style="position: absolute; left: 6px; bottom: 6px; display: flex; align-items: center; gap: 4px; padding: 2px 6px; border-radius: 6px; background: rgba(10,10,11,0.65); color: #FFFFFF; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;">
+<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4l14 8-14 8z"></path></svg>{{m.dur}}
+</span>
+</sc-if>
+<sc-if value="{{selecting}}" hint-placeholder-val="{{false}}">
+<span style="position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; border: 2px solid #FFFFFF; background: {{m.badgeBg}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900;">{{m.order}}</span>
+</sc-if>
+<span style="position: absolute; inset: 0; border-radius: {{m.radius}}; box-shadow: {{m.ring}}; pointer-events: none;"></span>
+</button>
+</sc-for>
+</div>
+
+<sc-if value="{{showBar}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; left: 12px; right: 12px; bottom: 98px; box-sizing: border-box; padding: 12px; border-radius: 20px; background: rgba(14,14,16,0.92); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 16px 36px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 10px;">
+<div style="flex-grow: 1; padding-left: 4px;">
+<div style="font-size: 14px; font-weight: 800;">{{selCount}} selected</div>
+<div style="font-size: 11px; color: #A1A1AA; margin-top: 2px;">{{selSummary}}</div>
+</div>
+<a href="Create.dc.html" style="height: 44px; padding: 0 16px; box-sizing: border-box; border-radius: 999px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: #F4F4F5; display: flex; align-items: center; font-size: 14px; font-weight: 700;">Post</a>
+<a href="Editor.dc.html" style="height: 44px; padding: 0 16px; border-radius: 999px; background: #E0241B; color: #FFFFFF; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 800; box-shadow: 0 8px 20px rgba(224,36,27,0.35);">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"></path></svg>
+Cut an edit
+</a>
+</div>
+</sc-if>
+</sc-if>
+
+<div style="position: absolute; left: 0; bottom: 0; width: 390px; height: 88px;">
+<dc-import name="TabBar" active="garage" hint-size="390px,88px"></dc-import>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"view":{"editor":"enum","options":["cars","library","library-select"],"default":"cars"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const v = props.view ?? 'cars';
+    this.state = {
+      tab: v === 'cars' ? 'cars' : 'library',
+      filter: 'All',
+      selecting: v === 'library-select',
+      sel: v === 'library-select' ? ['v1', 'p2', 'v3'] : []
+    };
+  }
+  renderVals() {
+    const s = this.state;
+    const img = {
+      revuelto: '/_blob/d0ed9a1124b4be55c66020506d0952f5',
+      sf90: '/_blob/4c34a39ed7fc32822ce83f9e01f8d264',
+      mcl: '/_blob/7a1f38e951343777cdb82e6e2ecdffc1',
+      gt3: '/_blob/009516d94a7dcf61f3cbf171fac4271c',
+      van: '/_blob/70522fdf14052f038999461a17d193a4',
+      chiron: '/_blob/5eba6dd7905427a06a5aaf5e5596baa3'
+    };
+    const tabs = [['cars', 'Cars'], ['library', 'Library']].map(([id, label]) => ({
+      label, on: s.tab === id ? 'true' : 'false',
+      bg: s.tab === id ? '#F4F4F5' : 'transparent',
+      fg: s.tab === id ? '#0A0A0B' : '#A1A1AA',
+      pick: () => this.setState({ tab: id })
+    }));
+
+    const tiers = {
+      Mythic: { color: '#FF7A90', edge: 'rgba(255,122,144,0.5)' },
+      Legendary: { color: '#FFC53D', edge: 'rgba(255,197,61,0.5)' },
+      Epic: { color: '#C39BFF', edge: 'rgba(195,155,255,0.45)' },
+      Rare: { color: '#7DB8FF', edge: 'rgba(125,184,255,0.4)' }
+    };
+    const all = [
+      { make: 'Bugatti', model: 'Chiron', rarity: 'Mythic', img: img.chiron, pos: '40% 50%', locked: true, meta: 'Not spotted yet' },
+      { make: 'Lamborghini', model: 'Revuelto', rarity: 'Legendary', img: img.revuelto, pos: '55% 50%', meta: '#14 · spotted x1' },
+      { make: 'Ferrari', model: 'SF90 Stradale', rarity: 'Legendary', img: img.sf90, pos: '45% 60%', meta: '#9 · spotted x2' },
+      { make: 'McLaren', model: '750S', rarity: 'Epic', img: img.mcl, pos: '40% 50%', meta: '#31 · spotted x3' },
+      { make: 'Aston Martin', model: 'Vanquish', rarity: 'Epic', img: img.van, pos: '55% 55%', meta: '#38 · spotted x1' },
+      { make: 'Porsche', model: '911 GT3 RS', rarity: 'Rare', img: img.gt3, pos: '50% 55%', meta: '#62 · spotted x5' }
+    ];
+    const f = s.filter;
+    const cars = all
+      .filter((c) => f === 'All' || c.rarity === f || c.make === f)
+      .map((c) => ({
+        ...c, ...tiers[c.rarity],
+        canPost: !c.locked,
+        filter: c.locked ? 'grayscale(1) brightness(0.35) blur(3px)' : 'none',
+        href: c.locked ? '#' : 'SpotResult.dc.html',
+        rarityCaps: c.rarity.toUpperCase(),
+        makeCaps: c.make.toUpperCase(),
+        aria: c.make + ' ' + c.model + ', ' + c.rarity + (c.locked ? ', not spotted yet' : '')
+      }));
+    const filters = ['All', 'Legendary', 'Epic', 'Ferrari', 'Porsche'].map((label) => ({
+      label, on: f === label ? 'true' : 'false',
+      bg: f === label ? '#F4F4F5' : 'rgba(255,255,255,0.05)',
+      fg: f === label ? '#0A0A0B' : '#D4D4D8',
+      border: f === label ? '1px solid #F4F4F5' : '1px solid rgba(255,255,255,0.12)',
+      pick: () => this.setState({ filter: label })
+    }));
+
+    const lib = [
+      { id: 'v1', img: img.revuelto, pos: '55% 50%', dur: '0:12', car: 'Revuelto' },
+      { id: 'p1', img: img.sf90, pos: '45% 60%', car: 'SF90 Stradale' },
+      { id: 'p2', img: img.mcl, pos: '40% 50%', car: '750S' },
+      { id: 'v2', img: img.gt3, pos: '50% 55%', dur: '0:08', car: '911 GT3 RS' },
+      { id: 'p3', img: img.van, pos: '55% 55%', car: 'Vanquish' },
+      { id: 'v3', img: img.sf90, pos: '80% 50%', dur: '0:21', car: 'SF90 Stradale' },
+      { id: 'p4', img: img.revuelto, pos: '15% 50%', car: 'Revuelto' },
+      { id: 'p5', img: img.mcl, pos: '85% 60%', car: '750S' },
+      { id: 'v4', img: img.van, pos: '20% 50%', dur: '0:15', car: 'Vanquish' },
+      { id: 'p6', img: img.gt3, pos: '90% 50%', car: '911 GT3 RS' },
+      { id: 'p7', img: img.sf90, pos: '10% 70%', car: 'SF90 Stradale' },
+      { id: 'v5', img: img.revuelto, pos: '85% 40%', dur: '0:09', car: 'Revuelto' }
+    ];
+    const media = lib.map((m) => {
+      const idx = s.sel.indexOf(m.id);
+      const on = idx >= 0;
+      const isVideo = !!m.dur;
+      return {
+        ...m, isVideo,
+        order: on ? String(idx + 1) : '',
+        badgeBg: on ? '#E0241B' : 'rgba(0,0,0,0.25)',
+        ring: on ? 'inset 0 0 0 3px #FF4D3D' : 'none',
+        dim: s.selecting && !on ? '0.75' : '1',
+        radius: '6px',
+        pressed: on ? 'true' : 'false',
+        aria: (isVideo ? 'Video ' + m.dur : 'Photo') + ', ' + m.car + (on ? ', selected ' + (idx + 1) : ''),
+        pick: () => {
+          if (!s.selecting) { this.setState({ selecting: true, sel: [m.id] }); return; }
+          this.setState({ sel: on ? s.sel.filter((x) => x !== m.id) : [...s.sel, m.id] });
+        }
+      };
+    });
+    const vids = s.sel.filter((id) => id.startsWith('v')).length;
+    const pics = s.sel.length - vids;
+    const part = (n, one, many) => n ? n + ' ' + (n === 1 ? one : many) : '';
+    return {
+      tabs, cars, filters, media,
+      isCars: s.tab === 'cars',
+      isLibrary: s.tab === 'library',
+      selecting: s.selecting,
+      selBtnLabel: s.selecting ? 'Cancel' : 'Select',
+      selBtnBg: s.selecting ? '#F4F4F5' : 'rgba(255,255,255,0.06)',
+      selBtnFg: s.selecting ? '#0A0A0B' : '#F4F4F5',
+      toggleSelect: () => this.setState({ selecting: !s.selecting, sel: [] }),
+      showBar: s.selecting && s.sel.length > 0,
+      selCount: s.sel.length,
+      selSummary: [part(vids, 'video', 'videos'), part(pics, 'photo', 'photos')].filter(Boolean).join(', ')
+    };
+  }
+}
+</script>
+</body>
+</html>

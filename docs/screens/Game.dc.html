@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Test drive</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap">
+<style>
+body{margin:0;background:#0A0A0B}
+a{color:#FF4D3D;text-decoration:none}a:hover{color:#FF6F61}
+button{font-family:inherit}
+.cf{background-color:#0E0E10;background-image:linear-gradient(27deg,#141416 3px,transparent 3px),linear-gradient(207deg,#141416 3px,transparent 3px),linear-gradient(27deg,#1C1C1F 3px,transparent 3px),linear-gradient(207deg,#1C1C1F 3px,transparent 3px),linear-gradient(90deg,#161618 6px,transparent 6px),linear-gradient(#18181B 25%,#131315 25%,#131315 50%,transparent 50%,transparent 75%,#1E1E21 75%,#1E1E21);background-position:0 3px,6px 0,0 6px,6px 3px,0 0,0 0;background-size:12px 12px}
+.pick:hover{border-color:rgba(255,77,61,0.5) !important}
+.ctl{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+.ctl:active{transform:scale(0.94)}
+.toast{animation:toast 1.3s ease both}
+@keyframes toast{0%{opacity:0;transform:translateY(10px) scale(.9)}15%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0;transform:translateY(-10px)}}
+.pop{animation:pop .4s cubic-bezier(.2,.8,.2,1) both}
+@keyframes pop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+.drive:focus{outline:none}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; box-sizing: border-box; background: #0A0A0B; color: #F4F4F5; font-family: 'Archivo', sans-serif;">
+
+<sc-if value="{{isPick}}" hint-placeholder-val="{{true}}">
+<div class="cf pop" style="position: absolute; inset: 0; display: flex; flex-direction: column;">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(165deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 30%, rgba(0,0,0,0.35) 100%);"></div>
+<header style="position: relative; display: flex; align-items: center; gap: 12px; padding: 14px 16px 0;">
+<a href="Collection.dc.html" aria-label="Back to garage" style="width: 44px; height: 44px; flex-shrink: 0; box-sizing: border-box; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #F4F4F5; display: flex; align-items: center; justify-content: center;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+</a>
+<div>
+<h1 style="margin: 0; font-size: 26px; font-weight: 900; font-stretch: 125%; font-style: italic; line-height: 1;">TEST DRIVE</h1>
+<div style="font-size: 12px; color: #A1A1AA; margin-top: 4px;">Pick any car from your garage and take it for a spin</div>
+</div>
+</header>
+
+<div style="position: relative; margin: 14px 16px 0; padding: 10px 12px; border-radius: 16px; background: rgba(255,77,61,0.1); border: 1px solid rgba(255,77,61,0.35); display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: 11px; font-weight: 700; color: #FFB3AB;">
+<span style="width: 100%; font-size: 10px; font-weight: 900; letter-spacing: 0.16em; color: #FF6F61;">HOW TO EARN XP</span>
+<span>+1 every 50 m</span><span>+10 overtake</span><span>+15 close call</span><span>+25 flat out</span><span>+20 clean 30 s</span>
+</div>
+
+<div role="radiogroup" aria-label="Choose a car" style="position: relative; display: flex; flex-direction: column; gap: 8px; padding: 12px 16px 0;">
+<sc-for list="{{carList}}" as="c" hint-placeholder-count="6">
+<button role="radio" aria-checked="{{c.on}}" class="pick" onClick="{{c.pick}}" disabled="{{c.locked}}" aria-label="{{c.aria}}" style="height: 80px; box-sizing: border-box; padding: 8px 12px 8px 8px; border-radius: 18px; background: {{c.bg}}; border: {{c.ring}}; color: #F4F4F5; display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer; opacity: {{c.opacity}};">
+<span style="position: relative; width: 92px; height: 62px; flex-shrink: 0; border-radius: 12px; overflow: hidden; background: #111113;">
+<img src="{{c.img}}" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: {{c.pos}}; display: block; filter: {{c.imgFilter}};">
+<span style="position: absolute; left: 6px; bottom: 6px; width: 14px; height: 14px; border-radius: 4px; background: {{c.color}}; box-shadow: 0 0 0 2px rgba(10,10,11,0.8);"></span>
+</span>
+<span style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px;">
+<span style="font-size: 14px; font-weight: 900; font-stretch: 110%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{c.name}}</span>
+<sc-if value="{{c.open}}" hint-placeholder-val="{{true}}">
+<span style="display: grid; grid-template-columns: 46px minmax(0, 1fr); column-gap: 8px; row-gap: 3px; align-items: center; font-size: 9px; font-weight: 800; letter-spacing: 0.1em; color: #A1A1AA;">
+<span>SPEED</span><span style="height: 4px; border-radius: 99px; background: rgba(255,255,255,0.1); overflow: hidden;"><span style="display: block; height: 100%; width: {{c.spd}}; background: #FF4D3D;"></span></span>
+<span>ACCEL</span><span style="height: 4px; border-radius: 99px; background: rgba(255,255,255,0.1); overflow: hidden;"><span style="display: block; height: 100%; width: {{c.acc}}; background: #FFC53D;"></span></span>
+<span>GRIP</span><span style="height: 4px; border-radius: 99px; background: rgba(255,255,255,0.1); overflow: hidden;"><span style="display: block; height: 100%; width: {{c.grip}}; background: #7DB8FF;"></span></span>
+</span>
+</sc-if>
+<sc-if value="{{c.locked}}" hint-placeholder-val="{{false}}">
+<span style="font-size: 12px; color: #A1A1AA;">Spot one in real life to unlock</span>
+</sc-if>
+</span>
+<sc-if value="{{c.selected}}" hint-placeholder-val="{{false}}">
+<span style="width: 26px; height: 26px; flex-shrink: 0; border-radius: 999px; background: #E0241B; display: flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></span>
+</sc-if>
+</button>
+</sc-for>
+</div>
+
+<span style="flex-grow: 1;"></span>
+<div style="position: relative; padding: 12px 16px 24px;">
+<button onClick="{{startDrive}}" style="width: 100%; height: 58px; border-radius: 999px; background: #E0241B; border: none; color: #FFFFFF; font-size: 17px; font-weight: 900; font-stretch: 115%; letter-spacing: 0.06em; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 12px 28px rgba(224,36,27,0.4), inset 0 1px 0 rgba(255,255,255,0.22); cursor: pointer;">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="2.5"></circle><path d="M12 14.5V21M9.6 11.2 3.5 9.5M14.4 11.2l6.1-1.7"></path></svg>
+START ENGINE
+</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isDrive}}" hint-placeholder-val="{{false}}">
+<div class="drive" ref="{{setWrap}}" tabIndex="0" onKeyDown="{{onKeyDown}}" onKeyUp="{{onKeyUp}}" aria-label="Driving. Use the arrow keys or the on-screen pedals." style="position: absolute; inset: 0; background: #7EC8F7;">
+<canvas ref="{{setCanvas}}" width="390" height="844" style="position: absolute; inset: 0; width: 390px; height: 844px; display: block;"></canvas>
+
+<div style="position: absolute; top: 14px; left: 14px; right: 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+<button onClick="{{endDrive}}" style="height: 40px; padding: 0 14px; border-radius: 999px; background: rgba(10,10,11,0.7); border: 2px solid rgba(255,255,255,0.85); color: #FFFFFF; font-size: 13px; font-weight: 900; letter-spacing: 0.06em; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,0.35);">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>
+END DRIVE
+</button>
+<div style="height: 40px; padding: 0 14px; border-radius: 999px; background: #FFC53D; border: 2px solid #FFFFFF; color: #1A1206; display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 900; box-shadow: 0 4px 0 rgba(0,0,0,0.35);">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.9L22 9.3l-5.4 4.8L18.2 21 12 17.3 5.8 21l1.6-6.9L2 9.3l7.1-.4z"></path></svg>
+<span aria-live="polite">+{{hud.xp}} XP</span>
+</div>
+</div>
+<div style="position: absolute; top: 64px; left: 14px; padding: 5px 10px; border-radius: 10px; background: rgba(10,10,11,0.55); font-size: 11px; font-weight: 800; letter-spacing: 0.06em; color: #FFFFFF;">{{carName}} · {{hud.dist}} km</div>
+
+<sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; left: 0; right: 0; top: 150px; display: flex; justify-content: center; pointer-events: none;">
+<span class="toast" style="padding: 10px 18px; border-radius: 16px; background: {{hud.toastBg}}; border: 3px solid #FFFFFF; color: {{hud.toastFg}}; font-size: 20px; font-weight: 900; font-stretch: 118%; font-style: italic; letter-spacing: 0.03em; box-shadow: 0 6px 0 rgba(0,0,0,0.3);">{{hud.toast}}</span>
+</div>
+</sc-if>
+
+<div class="ctl" style="position: absolute; left: 14px; bottom: 26px; display: flex; gap: 10px;">
+<button class="ctl" aria-label="Steer left" onPointerDown="{{ctl.leftDown}}" onPointerUp="{{ctl.leftUp}}" onPointerLeave="{{ctl.leftUp}}" onPointerCancel="{{ctl.leftUp}}" onContextMenu="{{ctl.noMenu}}" style="width: 70px; height: 70px; border-radius: 20px; background: rgba(255,255,255,0.92); border: none; color: #111113; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 0 rgba(0,0,0,0.35); cursor: pointer;">
+<svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15 5 7 12l8 7z"></path></svg>
+</button>
+<button class="ctl" aria-label="Steer right" onPointerDown="{{ctl.rightDown}}" onPointerUp="{{ctl.rightUp}}" onPointerLeave="{{ctl.rightUp}}" onPointerCancel="{{ctl.rightUp}}" onContextMenu="{{ctl.noMenu}}" style="width: 70px; height: 70px; border-radius: 20px; background: rgba(255,255,255,0.92); border: none; color: #111113; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 0 rgba(0,0,0,0.35); cursor: pointer;">
+<svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 5l8 7-8 7z"></path></svg>
+</button>
+</div>
+
+<div aria-hidden="true" style="position: absolute; left: 50%; bottom: 30px; width: 96px; margin-left: -48px; display: flex; flex-direction: column; align-items: center;">
+<svg width="96" height="60" viewBox="0 0 96 60">
+<path d="M10 54 A40 40 0 0 1 86 54" fill="none" stroke="rgba(10,10,11,0.55)" stroke-width="10" stroke-linecap="round"></path>
+<path d="M10 54 A40 40 0 0 1 86 54" fill="none" stroke="{{hud.gaugeColor}}" stroke-width="10" stroke-linecap="round" stroke-dasharray="{{hud.dash}}"></path>
+</svg>
+<div style="margin-top: -30px; font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 700; color: #FFFFFF; text-shadow: 0 2px 0 rgba(0,0,0,0.5); line-height: 1;">{{hud.mph}}</div>
+<div style="margin-top: 3px; padding: 2px 8px; border-radius: 6px; background: rgba(10,10,11,0.6); font-size: 10px; font-weight: 900; letter-spacing: 0.1em; color: #FFFFFF;">MPH · {{hud.gear}}</div>
+</div>
+
+<div class="ctl" style="position: absolute; right: 14px; bottom: 26px; display: flex; gap: 10px; align-items: flex-end;">
+<button class="ctl" aria-label="Brake" onPointerDown="{{ctl.brakeDown}}" onPointerUp="{{ctl.brakeUp}}" onPointerLeave="{{ctl.brakeUp}}" onPointerCancel="{{ctl.brakeUp}}" onContextMenu="{{ctl.noMenu}}" style="width: 58px; height: 62px; border-radius: 16px; background: #2A2A31; border: 3px solid rgba(255,255,255,0.9); color: #FFFFFF; font-size: 10px; font-weight: 900; letter-spacing: 0.08em; box-shadow: 0 5px 0 rgba(0,0,0,0.35); cursor: pointer;">BRAKE</button>
+<button class="ctl" aria-label="Accelerate" onPointerDown="{{ctl.gasDown}}" onPointerUp="{{ctl.gasUp}}" onPointerLeave="{{ctl.gasUp}}" onPointerCancel="{{ctl.gasUp}}" onContextMenu="{{ctl.noMenu}}" style="width: 70px; height: 92px; border-radius: 18px; background: #E0241B; border: 3px solid #FFFFFF; color: #FFFFFF; font-size: 11px; font-weight: 900; letter-spacing: 0.08em; box-shadow: 0 5px 0 rgba(0,0,0,0.35); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 4l8 9h-5v7H9v-7H4z"></path></svg>
+GAS
+</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isResults}}" hint-placeholder-val="{{false}}">
+<div class="cf pop" style="position: absolute; inset: 0; display: flex; flex-direction: column; padding: 0 16px;">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: radial-gradient(80% 40% at 50% 18%, rgba(255,197,61,0.18), rgba(0,0,0,0) 70%);"></div>
+<div style="position: relative; text-align: center; padding-top: 42px;">
+<div style="font-size: 11px; font-weight: 900; letter-spacing: 0.3em; color: #FF6F61;">DRIVE COMPLETE</div>
+<div style="font-size: 24px; font-weight: 900; font-stretch: 118%; margin-top: 8px;">{{res.car}}</div>
+<div style="display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 10px 22px; border-radius: 999px; background: #FFC53D; border: 3px solid #FFFFFF; color: #1A1206; font-size: 30px; font-weight: 900; font-stretch: 118%; box-shadow: 0 6px 0 rgba(0,0,0,0.35);">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.9L22 9.3l-5.4 4.8L18.2 21 12 17.3 5.8 21l1.6-6.9L2 9.3l7.1-.4z"></path></svg>
++{{res.total}} XP
+</div>
+</div>
+
+<div style="position: relative; margin-top: 22px; border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: rgba(255,255,255,0.1);">
+<div style="padding: 12px 14px; background: rgba(16,16,19,0.94);"><div style="font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700;">{{res.dist}} km</div><div style="font-size: 10px; font-weight: 800; letter-spacing: 0.14em; color: #A1A1AA; margin-top: 2px;">DISTANCE</div></div>
+<div style="padding: 12px 14px; background: rgba(16,16,19,0.94);"><div style="font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700;">{{res.top}} mph</div><div style="font-size: 10px; font-weight: 800; letter-spacing: 0.14em; color: #A1A1AA; margin-top: 2px;">TOP SPEED</div></div>
+<div style="padding: 12px 14px; background: rgba(16,16,19,0.94);"><div style="font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700;">{{res.overtakes}}</div><div style="font-size: 10px; font-weight: 800; letter-spacing: 0.14em; color: #A1A1AA; margin-top: 2px;">OVERTAKES</div></div>
+<div style="padding: 12px 14px; background: rgba(16,16,19,0.94);"><div style="font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700;">{{res.bumps}}</div><div style="font-size: 10px; font-weight: 800; letter-spacing: 0.14em; color: #A1A1AA; margin-top: 2px;">BUMPS</div></div>
+</div>
+
+<div style="position: relative; margin-top: 12px; padding: 6px 14px; border-radius: 18px; background: rgba(16,16,19,0.94); border: 1px solid rgba(255,255,255,0.08);">
+<sc-for list="{{res.lines}}" as="l" hint-placeholder-count="5">
+<div style="display: flex; justify-content: space-between; align-items: center; height: 36px; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px;">
+<span style="color: #D4D4D8;">{{l.label}}</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: {{l.color}};">+{{l.xp}}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="position: relative; margin-top: 14px; display: flex; flex-direction: column; gap: 6px;">
+<div style="display: flex; justify-content: space-between; font-size: 12px; color: #A1A1AA;"><span>{{res.levelLabel}}</span><span style="font-family: 'JetBrains Mono', monospace;">{{res.xpLabel}}</span></div>
+<div style="height: 8px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden;"><div style="height: 100%; border-radius: 999px; background: linear-gradient(90deg, #E0241B, #FF6A4D); width: {{res.pct}}; transition: width .8s ease;"></div></div>
+</div>
+
+<span style="flex-grow: 1;"></span>
+<div style="position: relative; display: flex; flex-direction: column; gap: 10px; padding-bottom: 26px;">
+<button onClick="{{startDrive}}" style="height: 56px; border-radius: 999px; background: #E0241B; border: none; color: #FFFFFF; font-size: 16px; font-weight: 900; letter-spacing: 0.04em; box-shadow: 0 10px 24px rgba(224,36,27,0.35); cursor: pointer;">Drive again</button>
+<div style="display: flex; gap: 10px;">
+<button onClick="{{toPick}}" style="flex-grow: 1; height: 50px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.16); color: #F4F4F5; font-size: 14px; font-weight: 700; cursor: pointer;">Change car</button>
+<a href="Collection.dc.html" style="flex-grow: 1; height: 50px; box-sizing: border-box; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.16); color: #F4F4F5; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center;">Back to garage</a>
+</div>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const B = '/_blob/';
+    this.CARS = [
+      { id: 'revuelto', name: 'Lamborghini Revuelto', top: 217, zero: 2.5, grip: 1.1, color: '#F2F2F2', trim: '#1B1B1E', wing: 0, img: B + 'd0ed9a1124b4be55c66020506d0952f5', pos: '55% 50%' },
+      { id: 'sf90', name: 'Ferrari SF90 Stradale', top: 211, zero: 2.5, grip: 1.15, color: '#D8161B', trim: '#1B1B1E', wing: 0, img: B + '4c34a39ed7fc32822ce83f9e01f8d264', pos: '45% 60%' },
+      { id: 'mcl', name: 'McLaren 750S', top: 206, zero: 2.8, grip: 1.2, color: '#FF7A00', trim: '#1B1B1E', wing: 1, img: B + '7a1f38e951343777cdb82e6e2ecdffc1', pos: '40% 50%' },
+      { id: 'van', name: 'Aston Martin Vanquish', top: 214, zero: 3.2, grip: 1.0, color: '#6B6F76', trim: '#2A2C30', wing: 0, img: B + '70522fdf14052f038999461a17d193a4', pos: '55% 55%' },
+      { id: 'gt3', name: 'Porsche 911 GT3 RS', top: 184, zero: 3.2, grip: 1.35, color: '#A7ADB5', trim: '#1B1B1E', wing: 2, img: B + '009516d94a7dcf61f3cbf171fac4271c', pos: '50% 55%' },
+      { id: 'chiron', name: 'Bugatti Chiron', locked: true, top: 261, zero: 2.4, grip: 1.1, color: '#1E5BD8', trim: '#0B1B3A', wing: 0, img: B + '5eba6dd7905427a06a5aaf5e5596baa3', pos: '40% 50%' }
+    ];
+    this.state = { mode: 'pick', carId: 'revuelto', hud: this.blankHud(), result: null };
+    this.keys = { left: false, right: false, gas: false, brake: false };
+    this.cv = null; this.wrap = null; this.raf = 0;
+    this.setCanvas = (el) => {
+      if (el === this.cv) return;
+      this.cv = el;
+      if (el) { this.buildWorld(); this.last = 0; this.raf = requestAnimationFrame(this.frame); }
+      else this.stopLoop();
+    };
+    this.setWrap = (el) => { this.wrap = el; if (el) setTimeout(() => { try { el.focus(); } catch (e) {} }, 30); };
+    this.frame = (ts) => {
+      if (!this.cv) return;
+      const dt = this.last ? Math.min(0.05, (ts - this.last) / 1000) : 0.016;
+      this.last = ts;
+      this.update(dt);
+      this.drawFrame();
+      if (ts - (this.hudT || 0) > 100) { this.hudT = ts; this.pushHud(); }
+      this.raf = requestAnimationFrame(this.frame);
+    };
+    const set = (k, v) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.keys[k] = v; };
+    this.ctl = {
+      leftDown: set('left', true), leftUp: set('left', false),
+      rightDown: set('right', true), rightUp: set('right', false),
+      gasDown: set('gas', true), gasUp: set('gas', false),
+      brakeDown: set('brake', true), brakeUp: set('brake', false),
+      noMenu: (e) => { if (e && e.preventDefault) e.preventDefault(); }
+    };
+    const map = { ArrowLeft: 'left', a: 'left', A: 'left', ArrowRight: 'right', d: 'right', D: 'right', ArrowUp: 'gas', w: 'gas', W: 'gas', ArrowDown: 'brake', s: 'brake', S: 'brake', ' ': 'brake' };
+    this.onKeyDown = (e) => { const k = map[e.key]; if (k) { e.preventDefault(); this.keys[k] = true; } };
+    this.onKeyUp = (e) => { const k = map[e.key]; if (k) { e.preventDefault(); this.keys[k] = false; } };
+    this.startDrive = () => { this.keys = { left: false, right: false, gas: false, brake: false }; this.setState({ mode: 'drive', hud: this.blankHud(), result: null }); };
+    this.endDrive = () => { const r = this.results(); this.stopLoop(); this.setState({ mode: 'results', result: r }); };
+    this.toPick = () => this.setState({ mode: 'pick' });
+  }
+  componentWillUnmount() { this.stopLoop(); }
+  stopLoop() { if (this.raf) cancelAnimationFrame(this.raf); this.raf = 0; }
+  blankHud() { return { mph: 0, gear: 'N', xp: 0, dist: '0.0', toast: '', toastBg: '#FFFFFF', toastFg: '#111', toastId: 0, dash: '0 200', gaugeColor: '#FFFFFF' }; }
+  car() { return this.CARS.find((c) => c.id === this.state.carId) || this.CARS[0]; }
+
+  /* ---------- world ---------- */
+  rng(seed) { let a = seed; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  buildWorld() {
+    const c = this.car();
+    const W = 390, H = 844;
+    const ctx = this.cv.getContext('2d');
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    this.cv.width = W * dpr; this.cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.ctx = ctx;
+    const segL = 200, rumble = 3;
+    const segs = [];
+    const lastY = () => segs.length ? segs[segs.length - 1].p2.world.y : 0;
+    const add = (curve, y) => {
+      const n = segs.length;
+      segs.push({ index: n, p1: { world: { y: lastY(), z: n * segL }, camera: {}, screen: {} }, p2: { world: { y: y, z: (n + 1) * segL }, camera: {}, screen: {} }, curve: curve, sprites: [], light: Math.floor(n / rumble) % 2 === 0, clip: 0 });
+    };
+    const easeIn = (a, b, p) => a + (b - a) * p * p;
+    const easeInOut = (a, b, p) => a + (b - a) * ((-Math.cos(p * Math.PI) / 2) + 0.5);
+    const road = (enter, hold, leave, curve, y) => {
+      const sy = lastY(), ey = sy + y * segL, tot = enter + hold + leave;
+      for (let n = 0; n < enter; n++) add(easeIn(0, curve, n / enter), easeInOut(sy, ey, n / tot));
+      for (let n = 0; n < hold; n++) add(curve, easeInOut(sy, ey, (enter + n) / tot));
+      for (let n = 0; n < leave; n++) add(easeInOut(curve, 0, n / leave), easeInOut(sy, ey, (enter + hold + n) / tot));
+    };
+    road(60, 60, 60, 0, 0);
+    road(50, 60, 50, -2.5, 20);
+    road(50, 100, 50, 3, -10);
+    road(80, 100, 80, 0, 40);
+    road(50, 60, 50, -4, -30);
+    road(50, 100, 50, 2, 0);
+    road(100, 220, 100, 0, 0);
+    road(50, 60, 50, -3, 30);
+    road(50, 60, 50, 3.5, -30);
+    road(80, 100, 80, -1.5, 10);
+    road(100, 100, 100, 0, -lastY() / segL);
+    const N = segs.length;
+    const R = this.rng(7);
+    const bCols = ['#F6F1E7', '#FFD166', '#EF8354', '#7FB7BE', '#A5C882', '#F7A1C4', '#9AA5B1', '#5C80BC'];
+    for (let n = 10; n < N; n++) {
+      const city = (n % 700) < 360;
+      if (n % 8 === 0) { segs[n].sprites.push({ t: 'lamp', off: -1.22 }); segs[n].sprites.push({ t: 'lamp', off: 1.22 }); }
+      if (n % 240 === 120) segs[n].sprites.push({ t: 'board', off: R() < 0.5 ? -1.9 : 1.9 });
+      if (city) {
+        if (n % 11 === 0) {
+          [-1, 1].forEach((side) => {
+            const w = 1300 + R() * 1200, h = 2200 + R() * 4600;
+            segs[n].sprites.push({ t: 'bld', off: side * (1.7 + R() * 0.6 + w / 4000), w: w, h: h, col: bCols[Math.floor(R() * bCols.length)] });
+          });
+        }
+      } else if (n % 4 === 0) {
+        const side = R() < 0.5 ? -1 : 1;
+        segs[n].sprites.push({ t: 'tree', off: side * (1.55 + R() * 2.2), w: 700 + R() * 500, h: 1300 + R() * 900 });
+        if (R() < 0.35) segs[n].sprites.push({ t: 'tree', off: -side * (1.6 + R() * 2.4), w: 700 + R() * 500, h: 1300 + R() * 900 });
+      }
+    }
+    const maxU = 12000 * (c.top / 217);
+    const tCols = ['#3BA7FF', '#FFD23F', '#6BCB77', '#FF6B6B', '#B983FF', '#FFFFFF', '#2D2D2D', '#FF9F1C', '#2EC4B6'];
+    const traffic = [];
+    for (let i = 0; i < 16; i++) {
+      const lanes = [-0.66, 0, 0.66];
+      traffic.push({ z: ((i + 1) / 17) * N * segL + R() * segL * 20, off: lanes[Math.floor(R() * 3)], speed: 12000 * (0.22 + R() * 0.2), col: tCols[i % tCols.length], kind: R() < 0.2 ? 'van' : 'car', rel: 0 });
+    }
+    const zero = c.zero;
+    this.g = {
+      W: W, H: H, segs: segs, N: N, segL: segL, trackL: N * segL, roadW: 2000, lanes: 3, camH: 1000, camD: 1 / Math.tan(50 * Math.PI / 180), draw: 170,
+      pos: 0, speed: 0, x: 0, maxU: maxU, accel: maxU / (1.2 + zero * 1.1), grip: c.grip,
+      traffic: traffic, sky: 0, hill: 0, tree: 0, steer: 0, t: 0,
+      xp: 0, xpDist: 0, meters: 0, top: 0, overtakes: 0, close: 0, flats: 0, cleans: 0, bumps: 0,
+      flatT: 0, cleanT: 0, toast: null, toastId: 0
+    };
+    this.g.playerZ = this.g.camH * this.g.camD;
+  }
+  seg(z) { const g = this.g; return g.segs[Math.floor(z / g.segL) % g.N]; }
+  toast(text, bg, fg) { const g = this.g; g.toast = { text: text, bg: bg, fg: fg, t: 1.3 }; g.toastId++; }
+  award(xp, text, bg, fg) { this.g.xp += xp; this.toast(text + ' +' + xp, bg, fg); }
+
+  /* ---------- physics ---------- */
+  update(dt) {
+    const g = this.g, k = this.keys;
+    g.t += dt;
+    const ps = this.seg(g.pos + g.playerZ);
+    const pct = g.speed / g.maxU;
+    const dx = dt * 2.2 * pct * g.grip;
+    const steer = (k.left ? -1 : 0) + (k.right ? 1 : 0);
+    g.x += steer * dx;
+    g.steer += (steer - g.steer) * Math.min(1, dt * 8);
+    g.x -= dx * pct * ps.curve * (0.32 / g.grip);
+    if (k.gas) g.speed += g.accel * dt;
+    else if (k.brake) g.speed -= g.maxU * 1.1 * dt;
+    else g.speed -= (g.maxU / 5) * dt;
+    if (k.brake && k.gas) g.speed -= g.maxU * 0.9 * dt;
+    const off = Math.abs(g.x) > 1.02;
+    if (off && g.speed > g.maxU / 4) g.speed -= g.maxU * 0.7 * dt;
+    g.x = Math.max(-2.3, Math.min(2.3, g.x));
+    g.speed = Math.max(0, Math.min(g.maxU, g.speed));
+    g.sky += 0.001 * ps.curve * pct; g.hill += 0.002 * ps.curve * pct;
+
+    const L = g.trackL;
+    const me = g.pos + g.playerZ;
+    for (const t of g.traffic) {
+      t.z = (t.z + t.speed * dt) % L;
+      let dz = t.z - me; if (dz > L / 2) dz -= L; if (dz < -L / 2) dz += L;
+      const lat = Math.abs(g.x - t.off);
+      if (dz > -120 && dz < 700 && lat < 0.34 && g.speed > t.speed) {
+        g.speed = t.speed * 0.7; g.bumps++; g.cleanT = 0;
+        t.z = (t.z + 900) % L;
+        this.toast('BUMP!', '#2A2A31', '#FFFFFF');
+      } else if (t.rel > 0 && dz <= 0 && dz > -2000) {
+        if (lat < 0.62) { g.close++; this.award(15, 'CLOSE CALL', '#FF4D3D', '#FFFFFF'); }
+        else if (lat < 1.4) { g.overtakes++; this.award(10, 'OVERTAKE', '#FFFFFF', '#111113'); }
+      }
+      t.rel = dz;
+    }
+
+    const move = g.speed * dt;
+    g.pos = (g.pos + move) % L;
+    const m = move / g.segL * 5;
+    g.meters += m; g.xpDist += m;
+    while (g.xpDist >= 50) { g.xpDist -= 50; g.xp += 1; }
+    const mph = Math.round(pct * this.car().top);
+    if (mph > g.top) g.top = mph;
+    if (pct > 0.92 && !off) { g.flatT += dt; if (g.flatT >= 3) { g.flatT = -5; g.flats++; this.award(25, 'FLAT OUT', '#FFC53D', '#1A1206'); } }
+    else if (g.flatT > 0) g.flatT = 0; else if (g.flatT < 0) g.flatT = Math.min(0, g.flatT + dt);
+    if (pct > 0.3 && !off) { g.cleanT += dt; if (g.cleanT >= 30) { g.cleanT = 0; g.cleans++; this.award(20, 'CLEAN DRIVING', '#6BCB77', '#0B2A10'); } }
+    if (g.toast) { g.toast.t -= dt; if (g.toast.t <= 0) g.toast = null; }
+  }
+
+  /* ---------- drawing helpers ---------- */
+  shade(hex, f) {
+    const n = parseInt(hex.slice(1), 16);
+    const r = Math.max(0, Math.min(255, Math.round(((n >> 16) & 255) * f)));
+    const gg = Math.max(0, Math.min(255, Math.round(((n >> 8) & 255) * f)));
+    const b = Math.max(0, Math.min(255, Math.round((n & 255) * f)));
+    return 'rgb(' + r + ',' + gg + ',' + b + ')';
+  }
+  poly(ctx, pts, col) { ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(pts[0], pts[1]); for (let i = 2; i < pts.length; i += 2) ctx.lineTo(pts[i], pts[i + 1]); ctx.closePath(); ctx.fill(); }
+  project(p, cx, cy, cz) {
+    const g = this.g;
+    p.camera.x = (p.world.x || 0) - cx; p.camera.y = p.world.y - cy; p.camera.z = p.world.z - cz;
+    p.screen.scale = g.camD / p.camera.z;
+    p.screen.x = Math.round(g.W / 2 + p.screen.scale * p.camera.x * g.W / 2);
+    p.screen.y = Math.round(g.H / 2 - p.screen.scale * p.camera.y * g.H / 2);
+    p.screen.w = Math.round(p.screen.scale * g.roadW * g.W / 2);
+  }
+  hills(ctx, off, base, amp, f1, colA, colB) {
+    const W = this.g.W;
+    const pts = [];
+    for (let x = -40; x <= W + 40; x += 36) {
+      const v = Math.sin((x + off) * f1) * 0.6 + Math.sin((x + off) * f1 * 2.3 + 1.7) * 0.4;
+      pts.push(x, base - amp * (0.55 + 0.45 * v));
+    }
+    ctx.fillStyle = colA; ctx.beginPath(); ctx.moveTo(-40, base + 60);
+    for (let i = 0; i < pts.length; i += 2) ctx.lineTo(pts[i], pts[i + 1]);
+    ctx.lineTo(W + 40, base + 60); ctx.closePath(); ctx.fill();
+    for (let i = 0; i < pts.length - 2; i += 4) this.poly(ctx, [pts[i], pts[i + 1], pts[i + 2], pts[i + 3], pts[i + 2], base + 60], colB);
+  }
+  building(ctx, x, y, w, h, col) {
+    const W = this.g.W;
+    const dir = x < W / 2 ? 1 : -1;
+    const sw = w * 0.32 * Math.min(1, Math.abs(x - W / 2) / (W / 2) + 0.15);
+    const xe = x + dir * w / 2;
+    this.poly(ctx, [xe, y, xe, y - h, xe + dir * sw, y - h - sw * 0.22, xe + dir * sw, y - sw * 0.22], this.shade(col, 0.72));
+    ctx.fillStyle = col; ctx.fillRect(x - w / 2, y - h, w, h);
+    ctx.fillStyle = this.shade(col, 0.85); ctx.fillRect(x - w / 2, y - h, w, Math.max(2, h * 0.05));
+    if (w > 22) {
+      const cols = 4, cw = w / (cols * 2 + 1), rows = Math.max(2, Math.floor(h / (cw * 2.4)));
+      const rh = h * 0.86 / rows;
+      ctx.fillStyle = 'rgba(40,70,110,0.55)';
+      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) ctx.fillRect(x - w / 2 + cw * (1 + c * 2), y - h + h * 0.1 + r * rh, cw, rh * 0.55);
+      ctx.fillStyle = 'rgba(255,255,255,0.5)';
+      for (let r = 0; r < rows; r += 2) ctx.fillRect(x - w / 2 + cw, y - h + h * 0.1 + r * rh, cw * 0.4, rh * 0.55);
+    }
+    ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.fillRect(x - w / 2, y - Math.max(2, h * 0.04), w, Math.max(2, h * 0.04));
+  }
+  treeS(ctx, x, y, w, h) {
+    ctx.fillStyle = '#8B5A2B'; ctx.fillRect(x - w * 0.09, y - h * 0.34, w * 0.18, h * 0.34);
+    const t1 = y - h * 0.24, t2 = y - h;
+    this.poly(ctx, [x - w / 2, t1, x, t2 + h * 0.3, x, t1], '#4CB944');
+    this.poly(ctx, [x, t1, x, t2 + h * 0.3, x + w / 2, t1], '#3A9A36');
+    this.poly(ctx, [x - w * 0.36, y - h * 0.55, x, t2, x, y - h * 0.55], '#5CCB52');
+    this.poly(ctx, [x, y - h * 0.55, x, t2, x + w * 0.36, y - h * 0.55], '#45A83F');
+  }
+  lamp(ctx, x, y, s) {
+    const w = Math.max(1.5, 90 * s), h = 2000 * s;
+    ctx.fillStyle = '#6B7079'; ctx.fillRect(x - w / 2, y - h, w, h);
+    const dir = x < this.g.W / 2 ? 1 : -1;
+    ctx.fillRect(Math.min(x, x + dir * 360 * s), y - h, 360 * s, w);
+    ctx.fillStyle = '#FFF4C2'; ctx.fillRect(x + dir * 360 * s - 90 * s, y - h, 180 * s, Math.max(1.5, 70 * s));
+  }
+  board(ctx, x, y, s) {
+    const w = 2300 * s, h = 1000 * s, lift = 1300 * s;
+    ctx.fillStyle = '#4A4E57'; ctx.fillRect(x - w * 0.3, y - lift, Math.max(2, 110 * s), lift); ctx.fillRect(x + w * 0.3 - 110 * s, y - lift, Math.max(2, 110 * s), lift);
+    ctx.fillStyle = '#FFFFFF'; ctx.fillRect(x - w / 2 - 60 * s, y - lift - h - 60 * s, w + 120 * s, h + 120 * s);
+    ctx.fillStyle = '#E0241B'; ctx.fillRect(x - w / 2, y - lift - h, w, h);
+    if (w > 40) {
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'italic 900 ' + Math.round(h * 0.42) + 'px Archivo, sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('DEADLINE', x, y - lift - h / 2);
+    }
+  }
+  carS(ctx, cx, by, w, col, o) {
+    o = o || {};
+    const h = w * 0.5;
+    const trim = o.trim || '#1B1B1E';
+    ctx.fillStyle = 'rgba(0,0,0,0.28)'; ctx.fillRect(cx - w * 0.54, by - h * 0.06, w * 1.08, h * 0.12);
+    if (o.kind === 'van') {
+      ctx.fillStyle = '#151515'; ctx.fillRect(cx - w * 0.48, by - h * 0.34, w * 0.18, h * 0.34); ctx.fillRect(cx + w * 0.3, by - h * 0.34, w * 0.18, h * 0.34);
+      ctx.fillStyle = col; ctx.fillRect(cx - w * 0.46, by - h * 1.55, w * 0.92, h * 1.3);
+      ctx.fillStyle = this.shade(col, 0.8); ctx.fillRect(cx - w * 0.46, by - h * 0.4, w * 0.92, h * 0.15);
+      ctx.fillStyle = 'rgba(255,255,255,0.18)'; ctx.fillRect(cx - w * 0.02, by - h * 1.45, w * 0.04, h * 1.0);
+      ctx.fillStyle = '#FF2D2D'; ctx.fillRect(cx - w * 0.44, by - h * 0.7, w * 0.1, h * 0.2); ctx.fillRect(cx + w * 0.34, by - h * 0.7, w * 0.1, h * 0.2);
+      return;
+    }
+    ctx.fillStyle = '#141414';
+    ctx.fillRect(cx - w * 0.5, by - h * 0.4, w * 0.17, h * 0.4); ctx.fillRect(cx + w * 0.33, by - h * 0.4, w * 0.17, h * 0.4);
+    ctx.fillStyle = '#3A3A40'; ctx.fillRect(cx - w * 0.47, by - h * 0.3, w * 0.1, h * 0.2); ctx.fillRect(cx + w * 0.37, by - h * 0.3, w * 0.1, h * 0.2);
+    ctx.fillStyle = col; ctx.fillRect(cx - w * 0.47, by - h * 0.66, w * 0.94, h * 0.44);
+    ctx.fillStyle = this.shade(col, 1.12); ctx.fillRect(cx - w * 0.47, by - h * 0.66, w * 0.94, h * 0.07);
+    ctx.fillStyle = trim; ctx.fillRect(cx - w * 0.38, by - h * 0.3, w * 0.76, h * 0.14);
+    ctx.fillStyle = this.shade(col, 0.82); ctx.fillRect(cx - w * 0.33, by - h * 1.0, w * 0.66, h * 0.36);
+    ctx.fillStyle = '#1C2733'; ctx.fillRect(cx - w * 0.28, by - h * 0.95, w * 0.56, h * 0.25);
+    ctx.fillStyle = 'rgba(255,255,255,0.28)'; ctx.fillRect(cx - w * 0.2, by - h * 0.93, w * 0.1, h * 0.21);
+    const lit = o.brake ? '#FF7070' : '#E01B1B';
+    if (o.brake) { ctx.shadowColor = '#FF3B3B'; ctx.shadowBlur = 14; }
+    ctx.fillStyle = lit; ctx.fillRect(cx - w * 0.45, by - h * 0.6, w * 0.25, h * 0.1); ctx.fillRect(cx + w * 0.2, by - h * 0.6, w * 0.25, h * 0.1);
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#F4F4F5'; ctx.fillRect(cx - w * 0.09, by - h * 0.46, w * 0.18, h * 0.1);
+    ctx.fillStyle = '#5A5A62'; ctx.fillRect(cx - w * 0.14, by - h * 0.2, w * 0.07, h * 0.07); ctx.fillRect(cx + w * 0.07, by - h * 0.2, w * 0.07, h * 0.07);
+    if (o.flame) {
+      const f = 0.6 + Math.random() * 0.6;
+      this.poly(ctx, [cx - w * 0.14, by - h * 0.18, cx - w * 0.07, by - h * 0.18, cx - w * 0.105, by - h * 0.18 + h * 0.22 * f], '#FFB703');
+      this.poly(ctx, [cx + w * 0.07, by - h * 0.18, cx + w * 0.14, by - h * 0.18, cx + w * 0.105, by - h * 0.18 + h * 0.22 * f], '#FFB703');
+    }
+    if (o.wing) {
+      const wy = o.wing === 2 ? by - h * 1.22 : by - h * 1.06;
+      ctx.fillStyle = trim;
+      ctx.fillRect(cx - w * 0.28, wy, w * 0.05, by - h * 0.66 - wy); ctx.fillRect(cx + w * 0.23, wy, w * 0.05, by - h * 0.66 - wy);
+      ctx.fillRect(cx - w * (o.wing === 2 ? 0.5 : 0.42), wy - h * 0.08, w * (o.wing === 2 ? 1.0 : 0.84), h * 0.09);
+    }
+  }
+
+  /* ---------- frame ---------- */
+  drawFrame() {
+    const g = this.g, ctx = this.ctx, W = g.W, H = g.H;
+    const c = this.car();
+    const sky = ctx.createLinearGradient(0, 0, 0, H / 2 + 40);
+    sky.addColorStop(0, '#3E9BF0'); sky.addColorStop(1, '#BFE6FF');
+    ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#FFF6C9'; ctx.fillRect(W * 0.72 - g.sky * 600 % W, 150, 44, 44);
+    ctx.fillStyle = 'rgba(255,255,255,0.95)';
+    for (let i = 0; i < 5; i++) {
+      const cx = ((i * 140 - g.sky * 900 - g.t * 6) % (W + 200) + W + 200) % (W + 200) - 100, cy = 110 + (i % 3) * 46;
+      ctx.fillRect(cx, cy, 70, 18); ctx.fillRect(cx + 16, cy - 12, 38, 14); ctx.fillRect(cx - 14, cy + 6, 30, 12);
+    }
+    this.hills(ctx, g.sky * 1200, H / 2 + 8, 70, 0.012, '#8FB8D8', '#7FA8CA');
+    this.hills(ctx, g.hill * 1400, H / 2 + 18, 44, 0.02, '#63B657', '#57A64C');
+
+    const base = this.seg(g.pos);
+    const bp = (g.pos % g.segL) / g.segL;
+    const ps = this.seg(g.pos + g.playerZ);
+    const pp = ((g.pos + g.playerZ) % g.segL) / g.segL;
+    const py = ps.p1.world.y + (ps.p2.world.y - ps.p1.world.y) * pp;
+    let maxy = H, x = 0, dx = -(base.curve * bp);
+    for (let n = 0; n < g.draw; n++) {
+      const s = g.segs[(base.index + n) % g.N];
+      const looped = s.index < base.index;
+      const cz = g.pos - (looped ? g.trackL : 0);
+      this.project(s.p1, g.x * g.roadW - x, py + g.camH, cz);
+      this.project(s.p2, g.x * g.roadW - x - dx, py + g.camH, cz);
+      x += dx; dx += s.curve;
+      s.clip = maxy; s.vis = false;
+      if (s.p1.camera.z <= g.camD || s.p2.screen.y >= s.p1.screen.y || s.p2.screen.y >= maxy) continue;
+      s.vis = true;
+      const x1 = s.p1.screen.x, y1 = s.p1.screen.y, w1 = s.p1.screen.w, x2 = s.p2.screen.x, y2 = s.p2.screen.y, w2 = s.p2.screen.w;
+      ctx.fillStyle = s.light ? '#66C75A' : '#5BBA4F'; ctx.fillRect(0, y2, W, y1 - y2 + 1);
+      this.poly(ctx, [x1 - w1 * 1.32, y1, x1 + w1 * 1.32, y1, x2 + w2 * 1.32, y2, x2 - w2 * 1.32, y2], s.light ? '#D9DCE1' : '#CFD2D8');
+      const r1 = w1 / 9, r2 = w2 / 9;
+      const rc = s.light ? '#E0241B' : '#F4F4F5';
+      this.poly(ctx, [x1 - w1 - r1, y1, x1 - w1, y1, x2 - w2, y2, x2 - w2 - r2, y2], rc);
+      this.poly(ctx, [x1 + w1 + r1, y1, x1 + w1, y1, x2 + w2, y2, x2 + w2 + r2, y2], rc);
+      this.poly(ctx, [x1 - w1, y1, x1 + w1, y1, x2 + w2, y2, x2 - w2, y2], s.light ? '#5E6169' : '#595C64');
+      if (s.light) {
+        const l1 = w1 / 28, l2 = w2 / 28, lw1 = w1 * 2 / g.lanes, lw2 = w2 * 2 / g.lanes;
+        let lx1 = x1 - w1 + lw1, lx2 = x2 - w2 + lw2;
+        for (let l = 1; l < g.lanes; l++, lx1 += lw1, lx2 += lw2) this.poly(ctx, [lx1 - l1 / 2, y1, lx1 + l1 / 2, y1, lx2 + l2 / 2, y2, lx2 - l2 / 2, y2], '#F4F4F5');
+      }
+      maxy = y1;
+    }
+
+    const buckets = {};
+    for (const t of g.traffic) { const i = Math.floor(t.z / g.segL) % g.N; (buckets[i] = buckets[i] || []).push(t); }
+    for (let n = g.draw - 1; n > 0; n--) {
+      const s = g.segs[(base.index + n) % g.N];
+      if (!s.vis) continue;
+      const sc1 = s.p1.screen.scale * W / 2;
+      ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, s.clip); ctx.clip();
+      for (const sp of s.sprites) {
+        const sx = s.p1.screen.x + sc1 * sp.off * g.roadW, sy = s.p1.screen.y;
+        if (sx < -300 || sx > W + 300) continue;
+        if (sp.t === 'bld') this.building(ctx, sx, sy, sp.w * sc1, sp.h * sc1, sp.col);
+        else if (sp.t === 'tree') this.treeS(ctx, sx, sy, sp.w * sc1, sp.h * sc1);
+        else if (sp.t === 'lamp') this.lamp(ctx, sx, sy, sc1);
+        else if (sp.t === 'board') this.board(ctx, sx, sy, sc1);
+      }
+      const cars = buckets[s.index];
+      if (cars) for (const t of cars) {
+        const p = (t.z % g.segL) / g.segL;
+        const sc = (s.p1.screen.scale + (s.p2.screen.scale - s.p1.screen.scale) * p) * W / 2;
+        const cxp = s.p1.screen.x + (s.p2.screen.x - s.p1.screen.x) * p + sc * t.off * g.roadW;
+        const cyp = s.p1.screen.y + (s.p2.screen.y - s.p1.screen.y) * p;
+        this.carS(ctx, cxp, cyp, 760 * sc, t.col, { kind: t.kind });
+      }
+      ctx.restore();
+    }
+
+    const pct = g.speed / g.maxU;
+    if (pct > 0.75) {
+      ctx.fillStyle = 'rgba(255,255,255,' + ((pct - 0.75) * 1.4).toFixed(2) + ')';
+      for (let i = 0; i < 10; i++) {
+        const yy = (i * 97 + g.t * 900) % H, xx = i % 2 ? 6 + (i * 13) % 40 : W - 46 + (i * 7) % 40;
+        ctx.fillRect(xx, yy, 3, 40 + pct * 40);
+      }
+    }
+    const off = Math.abs(g.x) > 1.02;
+    const bounce = (off ? Math.sin(g.t * 40) * 3 : Math.sin(g.t * 18) * 0.8 * pct);
+    const cx = W / 2 + g.steer * 8, by = H - 150 + bounce;
+    ctx.save(); ctx.translate(cx, by); ctx.rotate(g.steer * 0.045); ctx.translate(-cx, -by);
+    this.carS(ctx, cx, by, 168, c.color, { trim: c.trim, wing: c.wing, brake: this.keys.brake, flame: this.keys.gas && pct > 0.85 });
+    ctx.restore();
+  }
+
+  pushHud() {
+    const g = this.g, c = this.car();
+    const pct = g.speed / g.maxU;
+    const arc = 119.4;
+    this.setState({ hud: {
+      mph: Math.round(pct * c.top), gear: g.speed < 1 ? 'N' : String(Math.max(1, Math.min(7, Math.ceil(pct * 7)))),
+      xp: g.xp, dist: (g.meters / 1000).toFixed(1),
+      toast: g.toast ? g.toast.text : '', toastBg: g.toast ? g.toast.bg : '#FFF', toastFg: g.toast ? g.toast.fg : '#111', toastId: g.toastId,
+      dash: (pct * arc).toFixed(1) + ' 200', gaugeColor: pct > 0.9 ? '#FF4D3D' : pct > 0.6 ? '#FFC53D' : '#FFFFFF'
+    } });
+  }
+  results() {
+    const g = this.g, c = this.car();
+    if (!g) return null;
+    const distXp = g.xp - g.overtakes * 10 - g.close * 15 - g.flats * 25 - g.cleans * 20;
+    const lines = [
+      { label: 'Distance (' + (g.meters / 1000).toFixed(1) + ' km)', xp: distXp, color: '#F4F4F5' },
+      { label: 'Overtakes x' + g.overtakes, xp: g.overtakes * 10, color: '#F4F4F5' },
+      { label: 'Close calls x' + g.close, xp: g.close * 15, color: '#FF6F61' },
+      { label: 'Flat out x' + g.flats, xp: g.flats * 25, color: '#FFC53D' },
+      { label: 'Clean driving x' + g.cleans, xp: g.cleans * 20, color: '#6BCB77' }
+    ];
+    const before = 2340, after = Math.min(3000, before + g.xp);
+    return {
+      car: c.name, total: g.xp, dist: (g.meters / 1000).toFixed(1), top: g.top, overtakes: g.overtakes + g.close, bumps: g.bumps, lines: lines,
+      levelLabel: after >= 3000 ? 'Level 13 unlocked' : (3000 - after) + ' XP to level 13',
+      xpLabel: after.toLocaleString('en-GB') + ' / 3,000', pct: Math.round(after / 3000 * 100) + '%'
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const carList = this.CARS.map((c) => {
+      const on = c.id === s.carId;
+      return {
+        ...c,
+        open: !c.locked, locked: !!c.locked, selected: on && !c.locked,
+        on: on ? 'true' : 'false',
+        bg: on ? 'rgba(40,16,14,0.92)' : 'rgba(16,16,19,0.94)',
+        ring: on ? '1.5px solid #FF4D3D' : '1px solid rgba(255,255,255,0.1)',
+        opacity: c.locked ? '0.55' : '1',
+        imgFilter: c.locked ? 'grayscale(1) brightness(0.4) blur(2px)' : 'none',
+        spd: Math.round(c.top / 261 * 100) + '%',
+        acc: Math.round(2.2 / c.zero * 100) + '%',
+        grip: Math.round(c.grip / 1.35 * 100) + '%',
+        aria: c.locked ? c.name + ', locked, spot one to unlock' : c.name + ', top speed ' + c.top + ' mph',
+        pick: () => { if (!c.locked) this.setState({ carId: c.id }); }
+      };
+    });
+    return {
+      carList,
+      isPick: s.mode === 'pick', isDrive: s.mode === 'drive', isResults: s.mode === 'results',
+      startDrive: this.startDrive, endDrive: this.endDrive, toPick: this.toPick,
+      setCanvas: this.setCanvas, setWrap: this.setWrap, onKeyDown: this.onKeyDown, onKeyUp: this.onKeyUp,
+      ctl: this.ctl,
+      hud: s.hud, hasToast: !!s.hud.toast,
+      carName: this.car().name.toUpperCase(),
+      res: s.result || { car: '', total: 0, dist: '0.0', top: 0, overtakes: 0, bumps: 0, lines: [], levelLabel: '', xpLabel: '', pct: '0%' }
+    };
+  }
+}
+</script>
+</body>
+</html>

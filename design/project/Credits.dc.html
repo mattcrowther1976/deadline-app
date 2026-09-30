@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Photo credits</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap">
+<style>
+body{margin:0;background:#0A0A0B}
+a{color:#FF6F61;text-decoration:none}a:hover{color:#FF8A7D;text-decoration:underline}
+.cf{background-color:#0E0E10;background-image:linear-gradient(27deg,#141416 3px,transparent 3px),linear-gradient(207deg,#141416 3px,transparent 3px),linear-gradient(27deg,#1C1C1F 3px,transparent 3px),linear-gradient(207deg,#1C1C1F 3px,transparent 3px),linear-gradient(90deg,#161618 6px,transparent 6px),linear-gradient(#18181B 25%,#131315 25%,#131315 50%,transparent 50%,transparent 75%,#1E1E21 75%,#1E1E21);background-position:0 3px,6px 0,0 6px,6px 3px,0 0,0 0;background-size:12px 12px}
+</style>
+</helmet>
+<div class="cf" style="width: 1040px; height: 1000px; box-sizing: border-box; padding: 56px 48px; color: #F4F4F5; font-family: 'Archivo', sans-serif; display: flex; flex-direction: column; gap: 22px;">
+<h1 style="margin: 0; font-size: 28px; font-weight: 900; font-stretch: 125%; font-style: italic;">PHOTO CREDITS</h1>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: #A1A1AA;">Prototype photography from Wikimedia Commons, used under Creative Commons licences or in the public domain. Photos appear cropped.</p>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; row-gap: 16px;">
+<sc-for list="{{credits}}" as="c" hint-placeholder-count="20">
+<div style="display: flex; gap: 14px; align-items: center;">
+<img src="{{c.img}}" alt="" style="width: 96px; height: 60px; border-radius: 10px; object-fit: cover; display: block;">
+<div style="display: flex; flex-direction: column; gap: 3px;">
+<span style="font-size: 15px; font-weight: 800;">{{c.car}}</span>
+<span style="font-size: 13px; color: #D4D4D8;">{{c.author}} · {{c.licence}}</span>
+<a href="{{c.url}}" style="font-family: 'JetBrains Mono', monospace; font-size: 11px;">View on Wikimedia Commons</a>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1040,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const base = 'https://commons.wikimedia.org/wiki/File:';
+    return {
+      credits: [
+        { car: 'Lamborghini Revuelto', author: 'Alexander Migl', licence: 'CC BY-SA 4.0', img: '/_blob/d0ed9a1124b4be55c66020506d0952f5', url: base + 'Lamborghini_Revuelto_DSC_6985_(cropped).jpg' },
+        { car: 'Ferrari SF90 Stradale', author: 'Calreyn88', licence: 'CC BY 4.0', img: '/_blob/4c34a39ed7fc32822ce83f9e01f8d264', url: base + 'Ferrari_SF90_Stradale_Mayfair.jpg' },
+        { car: 'McLaren 750S', author: 'Calreyn88', licence: 'CC BY-SA 4.0', img: '/_blob/7a1f38e951343777cdb82e6e2ecdffc1', url: base + '2024_McLaren_750S_2.jpg' },
+        { car: 'Porsche 911 GT3 RS', author: 'Alexander Migl', licence: 'CC BY-SA 4.0', img: '/_blob/009516d94a7dcf61f3cbf171fac4271c', url: base + 'Porsche_992_GT3_RS_MYLE_Festival_2025_DSC_9586_(cropped).jpg' },
+        { car: 'Aston Martin Vanquish', author: 'Alexander Migl', licence: 'CC BY-SA 4.0', img: '/_blob/70522fdf14052f038999461a17d193a4', url: base + 'Aston_Martin_Vanquish_(2024)_DSC_7891.jpg' },
+        { car: 'Bugatti Chiron', author: 'MrWalkr', licence: 'CC BY-SA 4.0', img: '/_blob/5eba6dd7905427a06a5aaf5e5596baa3', url: base + 'Bugatti_Chiron_2017.jpg' },
+        { car: "Enzo Ferrari", author: "Unknown photographer", licence: "Public domain", img: '/_blob/2b515c1c0ccd806f36f7a565eebcd2f1', url: base + "Enzo_Ferrari,_1947.jpg" },
+        { car: "Ferruccio Lamborghini", author: "See file page", licence: "Attribution", img: '/_blob/f0cdd6aa81e90891d57b9f34356998b9', url: base + "Ferruccio_Lamborghini.jpg" },
+        { car: "Bruce McLaren", author: "Lothar Spurzem", licence: "CC BY-SA 2.0 de", img: '/_blob/b0851d7e4a5f981ab7197b46f3fbbf07', url: base + "McLarenBruce.jpg" },
+        { car: "Ferdinand Porsche", author: "Unknown photographer", licence: "Public domain", img: '/_blob/3ed3859dfe21811492b52af8932e94ae', url: base + "Ferdinand_Porsche.jpg" },
+        { car: "Ettore Bugatti", author: "Agence de presse Meurisse", licence: "Public domain", img: '/_blob/1b49ab55cc399a57e410ea09add677a1', url: base + "Ettore_Bugatti_in_1932.jpg" },
+        { car: "Lionel Martin", author: "Unknown author", licence: "Public domain", img: '/_blob/92908434f675466f9e68de61fbb6548a', url: base + "1923_Lionel_Martin_and_an_Aston_Martin_racer.jpg" },
+        { car: "Horacio Pagani", author: "RizwanRzaKhan", licence: "CC BY-SA 4.0", img: '/_blob/b7da6155bc525d2a1dc6454f200288cf', url: base + "Horacio-Pagani_(cropped).jpg" },
+        { car: "Christian von Koenigsegg", author: "Marcel Giger", licence: "CC BY-SA 4.0", img: '/_blob/856517ec16a0e2eecb8b7410a5ed391a', url: base + "40._St.Gallen_Symposium-Christian_von_Koenigsegg-HSGN_028-01971.JPG" },
+        { car: "Lamborghini factory", author: "Fabrizio Pivari (Pivari.com)", licence: "CC BY-SA 4.0", img: '/_blob/c06ba32373c6de36ce83b03a0b5cc11d', url: base + "Lamborghini,_Sant'Agata_Bolognese,_Bologna.jpg" },
+        { car: "Lamborghini 350 GT", author: "MrWalkr", licence: "CC BY-SA 4.0", img: '/_blob/f9107fc93b9c02d328fb8f209d7a4ce5', url: base + "1965_Lamborghini_350_GT_HCC24.jpg" },
+        { car: "Lamborghini Temerario", author: "Alexander Migl", licence: "CC BY-SA 4.0", img: '/_blob/947a2eb1bb66469c204907dc0bb98cb4', url: base + "Lamborghini_Temerario_IMG_5361.jpg" },
+        { car: "Lamborghini LM002", author: "MrWalkr", licence: "CC BY-SA 4.0", img: '/_blob/9dbbeba5d81149470d9676e83aa30a71', url: base + "1991_Lamborghini_LM002_LC_23.jpg" },
+        { car: "Lamborghini Urraco", author: "Calreyn88", licence: "CC BY-SA 4.0", img: '/_blob/0d3e7734322ba4baf3dcac565aa12567', url: base + "1974_Lamborghini_Urraco_P250_S.jpg" },
+        { car: "Lamborghini Urus", author: "Alexander Migl", licence: "CC BY-SA 4.0", img: '/_blob/dd8cb464fcf0c515982517d0659302ad', url: base + "Lamborghini_Urus_SE_DSC_8521.jpg" }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

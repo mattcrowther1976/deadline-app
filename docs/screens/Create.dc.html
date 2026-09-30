@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Create post</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap">
+<style>
+body{margin:0;background:#0A0A0B}
+a{color:#FF4D3D;text-decoration:none}a:hover{color:#FF6F61}
+button,textarea{font-family:inherit}
+textarea::placeholder{color:#8B8B94}
+textarea:focus{outline:none;border-color:rgba(255,77,61,0.7)}
+.cf{background-color:#0E0E10;background-image:linear-gradient(27deg,#141416 3px,transparent 3px),linear-gradient(207deg,#141416 3px,transparent 3px),linear-gradient(27deg,#1C1C1F 3px,transparent 3px),linear-gradient(207deg,#1C1C1F 3px,transparent 3px),linear-gradient(90deg,#161618 6px,transparent 6px),linear-gradient(#18181B 25%,#131315 25%,#131315 50%,transparent 50%,transparent 75%,#1E1E21 75%,#1E1E21);background-position:0 3px,6px 0,0 6px,6px 3px,0 0,0 0;background-size:12px 12px}
+</style>
+</helmet>
+<div class="cf" style="width: 390px; height: 844px; position: relative; overflow: hidden; box-sizing: border-box; color: #F4F4F5; font-family: 'Archivo', sans-serif; display: flex; flex-direction: column;">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(165deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 30%, rgba(0,0,0,0.35) 100%);"></div>
+
+<header style="position: relative; display: flex; align-items: center; justify-content: space-between; padding: 12px 20px 4px;">
+<a href="Spot.dc.html" style="height: 44px; display: flex; align-items: center; font-size: 15px; font-weight: 600; color: #A1A1AA;">Back</a>
+<h1 style="margin: 0; font-size: 16px; font-weight: 900; font-stretch: 118%; letter-spacing: 0.04em;">NEW POST</h1>
+<a href="Main.dc.html" style="height: 38px; padding: 0 18px; border-radius: 999px; background: #E0241B; color: #FFFFFF; display: flex; align-items: center; font-size: 14px; font-weight: 800;">Post</a>
+</header>
+
+<section aria-label="Your photo" style="position: relative; margin: 10px 20px 0; height: 280px; border-radius: 22px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12);">
+<img src="/_blob/d0ed9a1124b4be55c66020506d0952f5" alt="Your photo of a Lamborghini Revuelto" style="width: 100%; height: 100%; object-fit: cover; object-position: 55% 50%; display: block;">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(8,8,9,0.92) 100%);"></div>
+<span style="position: absolute; top: 12px; right: 12px; padding: 5px 10px; border-radius: 999px; background: rgba(10,10,11,0.55); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.18); font-size: 11px; font-weight: 700;">Plate blurred</span>
+<div style="position: absolute; left: 16px; right: 16px; bottom: 14px; display: flex; align-items: flex-end; justify-content: space-between; gap: 10px;">
+<div>
+<div style="display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 800; letter-spacing: 0.14em; color: #86EFAC;">
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>
+IDENTIFIED BY AI
+</div>
+<div style="font-size: 26px; font-weight: 900; font-stretch: 125%; line-height: 1.05; margin-top: 4px;">Lamborghini Revuelto</div>
+</div>
+<button style="height: 32px; padding: 0 12px; border-radius: 999px; background: rgba(10,10,11,0.55); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); color: #F4F4F5; font-size: 12px; font-weight: 700; flex-shrink: 0;">Change</button>
+</div>
+</section>
+
+<div style="position: relative; margin: 10px 20px 0; display: flex; gap: 8px;">
+<div style="width: 64px; height: 64px; border-radius: 14px; overflow: hidden; border: 2px solid #FF4D3D; box-sizing: border-box;">
+<img src="/_blob/d0ed9a1124b4be55c66020506d0952f5" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+</div>
+<a href="Collection.dc.html" style="flex-grow: 1; height: 64px; box-sizing: border-box; border-radius: 14px; border: 1.5px dashed rgba(255,255,255,0.22); display: flex; align-items: center; justify-content: center; gap: 8px; color: #D4D4D8; font-size: 13px; font-weight: 700;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+Add photos or videos from garage
+</a>
+</div>
+
+<div style="position: relative; margin: 16px 20px 0; display: flex; flex-direction: column; gap: 8px;">
+<label for="caption" style="font-size: 10px; font-weight: 800; letter-spacing: 0.14em; color: #A1A1AA;">SAY ANYTHING</label>
+<textarea id="caption" rows="5" placeholder="Where you saw it, what it sounded like, anything you like" style="box-sizing: border-box; width: 100%; padding: 14px 16px; border-radius: 16px; background: rgba(16,16,19,0.94); border: 1px solid rgba(255,255,255,0.14); color: #F4F4F5; font-size: 16px; line-height: 1.45; resize: none;">Heard it before I saw it. Absolute unit on Deansgate, V12 screaming at every set of lights.</textarea>
+<div style="display: flex; justify-content: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #8B8B94;">89 / 500</div>
+</div>
+
+<div style="position: relative; margin: 8px 20px 0; border-radius: 18px; background: rgba(16,16,19,0.94); border: 1px solid rgba(255,255,255,0.08);">
+<sc-for list="{{toggles}}" as="tg" hint-placeholder-count="2">
+<button aria-pressed="{{tg.on}}" onClick="{{tg.flip}}" style="width: 100%; min-height: 50px; padding: 0 14px; display: flex; align-items: center; justify-content: space-between; background: none; border: none; border-bottom: {{tg.divider}}; color: #F4F4F5; font-size: 14px; font-weight: 600; text-align: left;">
+<span>{{tg.label}}</span>
+<span style="width: 44px; height: 26px; border-radius: 999px; background: {{tg.track}}; display: flex; align-items: center; padding: 3px; box-sizing: border-box; justify-content: {{tg.side}};"><span style="width: 20px; height: 20px; border-radius: 999px; background: #FFFFFF;"></span></span>
+</button>
+</sc-for>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { stats: true, location: true };
+  }
+  renderVals() {
+    const s = this.state;
+    const rows = [['stats', 'Show the car’s key stats'], ['location', 'Show location (city only)']];
+    const toggles = rows.map(([key, label], i) => ({
+      label, on: s[key] ? 'true' : 'false',
+      track: s[key] ? '#E0241B' : 'rgba(255,255,255,0.16)',
+      side: s[key] ? 'flex-end' : 'flex-start',
+      divider: i < rows.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+      flip: () => this.setState({ [key]: !s[key] })
+    }));
+    return { toggles };
+  }
+}
+</script>
+</body>
+</html>

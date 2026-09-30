@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Spot a car</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap">
+<style>
+body{margin:0;background:#050506}
+a{color:#FF4D3D;text-decoration:none}a:hover{color:#FF6F61}
+button{font-family:inherit}
+.cf{background-color:#0E0E10;background-image:linear-gradient(27deg,#141416 3px,transparent 3px),linear-gradient(207deg,#141416 3px,transparent 3px),linear-gradient(27deg,#1C1C1F 3px,transparent 3px),linear-gradient(207deg,#1C1C1F 3px,transparent 3px),linear-gradient(90deg,#161618 6px,transparent 6px),linear-gradient(#18181B 25%,#131315 25%,#131315 50%,transparent 50%,transparent 75%,#1E1E21 75%,#1E1E21);background-position:0 3px,6px 0,0 6px,6px 3px,0 0,0 0;background-size:12px 12px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; box-sizing: border-box; background: #050506; color: #F4F4F5; font-family: 'Archivo', sans-serif;">
+
+<img src="/_blob/d0ed9a1124b4be55c66020506d0952f5" alt="Camera view of a white Lamborghini Revuelto" style="position: absolute; left: 0; top: 0; width: 390px; height: {{photoH}}; object-fit: cover; object-position: 55% 50%;">
+<div aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 390px; height: {{photoH}}; background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 18%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.6) 100%);"></div>
+
+<sc-if value="{{aiming}}" hint-placeholder-val="{{true}}">
+<header style="position: absolute; top: 14px; left: 16px; right: 16px; display: flex; align-items: center; justify-content: space-between;">
+<a href="Main.dc.html" aria-label="Close camera" style="width: 44px; height: 44px; border-radius: 999px; background: rgba(10,10,11,0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.18); box-sizing: border-box; display: flex; align-items: center; justify-content: center; color: #F4F4F5;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+</a>
+<span style="display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; background: rgba(10,10,11,0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.18); font-size: 12px; font-weight: 800; letter-spacing: 0.12em;">
+<span style="width: 8px; height: 8px; border-radius: 999px; background: #FF4D3D; box-shadow: 0 0 0 4px rgba(255,77,61,0.25);"></span>
+AI READY
+</span>
+<button aria-label="Flash off" style="width: 44px; height: 44px; border-radius: 999px; background: rgba(10,10,11,0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.18); box-sizing: border-box; display: flex; align-items: center; justify-content: center; color: #F4F4F5; padding: 0;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"></path></svg>
+</button>
+</header>
+
+<div aria-hidden="true" style="position: absolute; left: 22px; top: 150px; width: 346px; height: 320px;">
+<div style="position: absolute; left: 0; top: 0; width: 36px; height: 36px; border-left: 3px solid #FFFFFF; border-top: 3px solid #FFFFFF; border-top-left-radius: 14px;"></div>
+<div style="position: absolute; right: 0; top: 0; width: 36px; height: 36px; border-right: 3px solid #FFFFFF; border-top: 3px solid #FFFFFF; border-top-right-radius: 14px;"></div>
+<div style="position: absolute; left: 0; bottom: 0; width: 36px; height: 36px; border-left: 3px solid #FFFFFF; border-bottom: 3px solid #FFFFFF; border-bottom-left-radius: 14px;"></div>
+<div style="position: absolute; right: 0; bottom: 0; width: 36px; height: 36px; border-right: 3px solid #FFFFFF; border-bottom: 3px solid #FFFFFF; border-bottom-right-radius: 14px;"></div>
+</div>
+
+<div style="position: absolute; left: 0; right: 0; top: 520px; display: flex; justify-content: center;">
+<span style="padding: 8px 14px; border-radius: 999px; background: rgba(10,10,11,0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.16); font-size: 12px; font-weight: 700;">Fit the whole car in the frame</span>
+</div>
+
+<div class="cf" style="position: absolute; left: 0; bottom: 0; width: 390px; height: 250px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;">
+<div style="display: flex; gap: 22px; font-size: 12px; font-weight: 800; letter-spacing: 0.14em;">
+<span style="color: #8B8B94;">VIDEO</span>
+<span style="color: #FF4D3D;">PHOTO</span>
+</div>
+<div style="display: flex; align-items: center; justify-content: center; gap: 60px;">
+<a href="Collection.dc.html" aria-label="Open garage library" style="width: 48px; height: 48px; box-sizing: border-box; border-radius: 14px; overflow: hidden; border: 2px solid rgba(255,255,255,0.7); display: block;">
+<img src="/_blob/009516d94a7dcf61f3cbf171fac4271c" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+</a>
+<button aria-label="Take photo" onClick="{{shoot}}" style="width: 82px; height: 82px; border-radius: 999px; background: none; border: 4px solid #FFFFFF; display: flex; align-items: center; justify-content: center; padding: 0; cursor: pointer;">
+<span style="width: 64px; height: 64px; border-radius: 999px; background: #E0241B; box-shadow: inset 0 2px 0 rgba(255,255,255,0.25), 0 0 30px rgba(224,36,27,0.5);"></span>
+</button>
+<button aria-label="Switch camera" style="width: 48px; height: 48px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; color: #F4F4F5; padding: 0;">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"></path></svg>
+</button>
+</div>
+<span style="font-size: 12px; color: #8B8B94;">Tap to take the photo</span>
+</div>
+</sc-if>
+
+<sc-if value="{{shot}}" hint-placeholder-val="{{false}}">
+<header style="position: absolute; top: 14px; left: 16px; right: 16px; display: flex; align-items: center; justify-content: space-between;">
+<button onClick="{{retake}}" style="height: 44px; padding: 0 16px; border-radius: 999px; background: rgba(10,10,11,0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.18); color: #F4F4F5; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"></path></svg>
+Retake
+</button>
+<span style="display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; background: rgba(10,10,11,0.5); backdrop-filter: blur(12px); border: 1px solid rgba(74,222,128,0.5); font-size: 12px; font-weight: 800; letter-spacing: 0.1em; color: #86EFAC;">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>
+IDENTIFIED · <span style="font-family: 'JetBrains Mono', monospace;">94%</span>
+</span>
+</header>
+
+<span style="position: absolute; left: 16px; top: 440px; padding: 6px 10px; border-radius: 999px; background: rgba(10,10,11,0.55); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.18); font-size: 11px; font-weight: 700;">Number plate blurred</span>
+
+<section aria-label="What do you want to do with this spot?" class="cf" style="position: absolute; left: 0; bottom: 0; width: 390px; box-sizing: border-box; padding: 12px 20px 26px; border-top: 1px solid rgba(255,255,255,0.12); border-top-left-radius: 28px; border-top-right-radius: 28px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 -20px 40px rgba(0,0,0,0.5);">
+<div style="align-self: center; width: 40px; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.2);"></div>
+<div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 12px;">
+<div>
+<div style="font-size: 11px; font-weight: 800; letter-spacing: 0.18em; color: #A1A1AA;">LAMBORGHINI</div>
+<div style="font-size: 30px; font-weight: 900; font-stretch: 125%; line-height: 1.05; margin-top: 2px;">Revuelto</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
+<span style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; background: rgba(255,197,61,0.14); border: 1px solid rgba(255,197,61,0.55); color: #FFC53D; font-size: 10px; font-weight: 800; letter-spacing: 0.12em;"><span style="width: 6px; height: 6px; border-radius: 999px; background: #FFC53D;"></span>LEGENDARY</span>
+<span style="font-size: 13px; font-weight: 900; color: #FF6F61;">+450 XP</span>
+</div>
+</div>
+<div style="font-size: 14px; color: #D4D4D8;">What do you want to do with it?</div>
+<a href="Create.dc.html" style="height: 56px; border-radius: 999px; background: #E0241B; color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; font-weight: 800; box-shadow: 0 10px 24px rgba(224,36,27,0.35), inset 0 1px 0 rgba(255,255,255,0.2);">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8h16v-8M12 3v13M7 8l5-5 5 5"></path></svg>
+Post it
+</a>
+<a href="SpotResult.dc.html" style="height: 56px; box-sizing: border-box; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #F4F4F5; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; font-weight: 700;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"></path></svg>
+Just keep in garage
+</a>
+<a href="#" style="align-self: center; font-size: 13px; font-weight: 600; color: #A1A1AA;">Not a Revuelto? Pick the model</a>
+</section>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"step":{"editor":"enum","options":["aim","shot"],"default":"aim"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { step: props.step ?? 'aim' };
+  }
+  componentDidUpdate(prev) {
+    if (prev.step !== this.props.step && this.props.step) this.setState({ step: this.props.step });
+  }
+  renderVals() {
+    const shot = this.state.step === 'shot';
+    return {
+      aiming: !shot,
+      shot,
+      photoH: shot ? '560px' : '600px',
+      shoot: () => this.setState({ step: 'shot' }),
+      retake: () => this.setState({ step: 'aim' })
+    };
+  }
+}
+</script>
+</body>
+</html>

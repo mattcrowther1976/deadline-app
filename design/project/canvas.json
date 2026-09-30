@@ -1,0 +1,222 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-09-27T12:00:00Z"
+  },
+  "title": "DEADLINE app screens",
+  "launch": {
+    "view": "focused",
+    "file": "Splash.dc.html"
+  },
+  "pages": [],
+  "boards": {
+    "Brand.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1200,
+      "h": 760,
+      "title": "DEADLINE brand"
+    },
+    "Credits.dc.html": {
+      "x": 1280,
+      "y": 0,
+      "w": 1040,
+      "h": 1000,
+      "title": "Photo credits"
+    },
+    "TabBar.dc.html": {
+      "x": 2400,
+      "y": 0,
+      "w": 390,
+      "h": 88,
+      "title": "Component: tab bar",
+      "is_interactive": true
+    },
+    "Main.dc.html": {
+      "x": 0,
+      "y": 1160,
+      "w": 390,
+      "h": 844,
+      "title": "Home feed",
+      "is_interactive": true
+    },
+    "Spot.dc.html": {
+      "x": 470,
+      "y": 1160,
+      "w": 390,
+      "h": 844,
+      "title": "1. Camera: take the photo",
+      "is_interactive": true
+    },
+    "SpotShot.dc.html": {
+      "x": 940,
+      "y": 1160,
+      "w": 390,
+      "h": 844,
+      "title": "2. Post it or keep in garage",
+      "is_interactive": true
+    },
+    "Create.dc.html": {
+      "x": 1410,
+      "y": 1160,
+      "w": 390,
+      "h": 844,
+      "title": "3a. Post: car name + say anything",
+      "is_interactive": true
+    },
+    "SpotResult.dc.html": {
+      "x": 1880,
+      "y": 1160,
+      "w": 390,
+      "h": 844,
+      "title": "3b. Kept in garage: key stats",
+      "is_interactive": true
+    },
+    "Collection.dc.html": {
+      "x": 0,
+      "y": 2404,
+      "w": 390,
+      "h": 844,
+      "title": "Garage: cars, test drive, post",
+      "is_interactive": true
+    },
+    "Library.dc.html": {
+      "x": 470,
+      "y": 2404,
+      "w": 390,
+      "h": 844,
+      "title": "Garage: library, pick clips",
+      "is_interactive": true
+    },
+    "Editor.dc.html": {
+      "x": 940,
+      "y": 2404,
+      "w": 390,
+      "h": 844,
+      "title": "Video editor",
+      "is_interactive": true
+    },
+    "Search.dc.html": {
+      "x": 1410,
+      "y": 2404,
+      "w": 390,
+      "h": 844,
+      "title": "Search",
+      "is_interactive": true
+    },
+    "Leaderboard.dc.html": {
+      "x": 0,
+      "y": 3648,
+      "w": 390,
+      "h": 844,
+      "title": "Leaderboard",
+      "is_interactive": true
+    },
+    "Profile.dc.html": {
+      "x": 470,
+      "y": 3648,
+      "w": 390,
+      "h": 844,
+      "title": "Profile: your posts, followers and likes",
+      "is_interactive": true
+    },
+    "ProfileTop.dc.html": {
+      "x": 940,
+      "y": 3648,
+      "w": 390,
+      "h": 844,
+      "title": "Profile: top posts ranking",
+      "is_interactive": true
+    },
+    "Splash.dc.html": {
+      "x": -470,
+      "y": 1160,
+      "w": 390,
+      "h": 844,
+      "title": "0. App launch: intro animation",
+      "is_interactive": true
+    },
+    "FunFacts.dc.html": {
+      "x": 1880,
+      "y": 2404,
+      "w": 390,
+      "h": 844,
+      "title": "Fun facts: pick a brand",
+      "is_interactive": true
+    },
+    "FunFactsBrand.dc.html": {
+      "x": 2350,
+      "y": 2404,
+      "w": 390,
+      "h": 844,
+      "title": "Fun facts: founder, gallery, AI fact",
+      "is_interactive": true
+    },
+    "Game.dc.html": {
+      "x": 1410,
+      "y": 3648,
+      "w": 390,
+      "h": 844,
+      "title": "Test drive game (earn XP)",
+      "is_interactive": true
+    }
+  },
+  "order": [
+    "Brand.dc.html",
+    "Credits.dc.html",
+    "TabBar.dc.html",
+    "Splash.dc.html",
+    "Main.dc.html",
+    "Spot.dc.html",
+    "SpotShot.dc.html",
+    "Create.dc.html",
+    "SpotResult.dc.html",
+    "Collection.dc.html",
+    "Library.dc.html",
+    "Editor.dc.html",
+    "Search.dc.html",
+    "Leaderboard.dc.html",
+    "Profile.dc.html",
+    "ProfileTop.dc.html",
+    "FunFacts.dc.html",
+    "FunFactsBrand.dc.html",
+    "Game.dc.html"
+  ],
+  "notes": {
+    "row0": {
+      "x": 0,
+      "y": -260,
+      "text": "Brand",
+      "kind": "title1",
+      "maxW": 2790,
+      "w": 240
+    },
+    "row1": {
+      "x": -470,
+      "y": 900,
+      "text": "Launch, then spot: snap, post or keep",
+      "kind": "title1",
+      "maxW": 2740,
+      "w": 240
+    },
+    "row2": {
+      "x": 0,
+      "y": 2144,
+      "text": "Garage, edits, search and fun facts",
+      "kind": "title1",
+      "maxW": 2740,
+      "w": 240
+    },
+    "row3": {
+      "x": 0,
+      "y": 3388,
+      "text": "Compete, profile, stats and test drive",
+      "kind": "title1",
+      "maxW": 2270,
+      "w": 240
+    }
+  },
+  "designSystems": [],
+  "attachments": {}
+}
