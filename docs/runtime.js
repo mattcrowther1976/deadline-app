@@ -202,14 +202,13 @@
 
   /* ---------- app shell ---------- */
   function App() {
-    var initial = (location.hash.match(/^#\/([A-Za-z0-9_-]+)$/) || [])[1];
-    var st = React.useState(SCREENS.indexOf(initial) >= 0 ? initial : START);
+    var st = React.useState(START);
     var screen = st[0], setScreen = st[1];
     var nonce = React.useState(0);
     React.useEffect(function () {
       function onHash() {
-        var m = (location.hash.match(/^#\/([A-Za-z0-9_-]+)$/) || [])[1];
-        if (m && m !== screen && SCREENS.indexOf(m) >= 0) setScreen(m);
+        var m = (location.hash.match(/^#\/([A-Za-z0-9_-]+)$/) || [])[1] || START;
+        if (m !== screen && SCREENS.indexOf(m) >= 0) setScreen(m);
       }
       window.addEventListener('hashchange', onHash);
       return function () { window.removeEventListener('hashchange', onHash); };
@@ -248,6 +247,8 @@
     return fetch('screens/' + n + '.dc.html').then(function (r) { return r.text(); }).then(function (t) { return [n, t]; });
   })).then(function (list) {
     list.forEach(function (pair) { app.comps[pair[0]] = buildScreen(pair[0], pair[1], app); });
+    // Always open on the intro, even if the browser restored an old screen address.
+    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
     fit();
     window.addEventListener('resize', fit);
     ReactDOM.createRoot(document.getElementById('frame')).render(h(App));
