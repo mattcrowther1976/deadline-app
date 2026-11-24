@@ -23,6 +23,9 @@ button{font-family:inherit}
 .pop{animation:pop .4s cubic-bezier(.2,.8,.2,1) both}
 @keyframes pop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
 .drive:focus{outline:none}
+.siren{animation:siren .5s steps(1) infinite}
+@keyframes siren{0%{box-shadow:inset 0 0 70px rgba(42,91,255,0.75)}50%{box-shadow:inset 0 0 70px rgba(255,40,40,0.6)}}
+@media (prefers-reduced-motion: reduce){.siren{animation:none;box-shadow:inset 0 0 60px rgba(42,91,255,0.6)}}
 </style>
 </helmet>
 <div style="width: 390px; height: 844px; position: relative; overflow: hidden; box-sizing: border-box; background: #0A0A0B; color: #F4F4F5; font-family: 'Archivo', sans-serif;">
@@ -36,13 +39,13 @@ button{font-family:inherit}
 </a>
 <div>
 <h1 style="margin: 0; font-size: 26px; font-weight: 900; font-stretch: 125%; font-style: italic; line-height: 1;">TEST DRIVE</h1>
-<div style="font-size: 12px; color: #A1A1AA; margin-top: 4px;">Pick a car and take it round the 3D city</div>
+<div style="font-size: 12px; color: #A1A1AA; margin-top: 4px;">Pick a car and take it round the 3D city · Y to look around</div>
 </div>
 </header>
 
 <div style="position: relative; margin: 14px 16px 0; padding: 10px 12px; border-radius: 16px; background: rgba(255,77,61,0.1); border: 1px solid rgba(255,77,61,0.35); display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: 11px; font-weight: 700; color: #FFB3AB;">
 <span style="width: 100%; font-size: 10px; font-weight: 900; letter-spacing: 0.16em; color: #FF6F61;">HOW TO EARN XP</span>
-<span>+1 every 50 m</span><span>+ drifts</span><span>+15 close call</span><span>+25 flat out</span><span>+20 clean 30 s</span>
+<span>+1 every 50 m</span><span>+ drifts</span><span>+100 escape police</span><span>+15 close call</span><span>+25 flat out</span><span>+20 clean 30 s</span>
 </div>
 
 <div role="radiogroup" aria-label="Choose a car" style="position: relative; display: flex; flex-direction: column; gap: 8px; padding: 12px 16px 0;">
@@ -84,7 +87,7 @@ START ENGINE
 
 <sc-if value="{{isDrive}}" hint-placeholder-val="{{false}}">
 <div class="drive" ref="{{setWrap}}" tabIndex="0" onKeyDown="{{onKeyDown}}" onKeyUp="{{onKeyUp}}" aria-label="Driving. Use the arrow keys or the on-screen pedals. Space is the handbrake." style="position: absolute; inset: 0; background: #9FD3F7;">
-<canvas ref="{{setCanvas}}" width="390" height="844" style="position: absolute; inset: 0; width: 390px; height: 844px; display: block;"></canvas>
+<canvas ref="{{setCanvas}}" onPointerDown="{{lookDown}}" onPointerMove="{{lookMove}}" onPointerUp="{{lookUp}}" onPointerCancel="{{lookUp}}" width="390" height="844" style="position: absolute; inset: 0; width: 390px; height: 844px; display: block; touch-action: none;"></canvas>
 
 <sc-if value="{{noGL}}" hint-placeholder-val="{{false}}">
 <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 40px; text-align: center; background: #0E0E10; font-size: 14px; color: #D4D4D8;">The 3D engine didn't load. Check your connection and try again.</div>
@@ -114,9 +117,35 @@ END DRIVE
 <sc-for list="{{hud.dots}}" as="d" hint-placeholder-count="10">
 <rect x="{{d.x}}" y="{{d.y}}" width="3" height="3" fill="#FFC53D"></rect>
 </sc-for>
+<sc-for list="{{hud.cops}}" as="p" hint-placeholder-count="3">
+<rect x="{{p.x}}" y="{{p.y}}" width="5" height="5" rx="1" fill="{{p.fill}}" stroke="#FFFFFF" stroke-width="1"></rect>
+</sc-for>
 <g transform="{{hud.me}}"><path d="M0 -6 L4.5 5 L0 2.5 L-4.5 5 Z" fill="#FF3B2F" stroke="#FFFFFF" stroke-width="1.4"></path></g>
 </svg>
 </div>
+
+<button onClick="{{toggleLook}}" aria-pressed="{{hud.look}}" aria-label="Look around (Y key)" style="position: absolute; top: 168px; right: 14px; height: 40px; padding: 0 12px; border-radius: 999px; background: {{hud.lookBg}}; border: 2px solid rgba(255,255,255,0.85); color: #FFFFFF; display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 900; letter-spacing: 0.06em; box-shadow: 0 4px 0 rgba(0,0,0,0.35); cursor: pointer;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+LOOK · Y
+</button>
+
+<sc-if value="{{hud.look}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; left: 0; right: 0; bottom: 150px; display: flex; justify-content: center; pointer-events: none;">
+<span style="padding: 6px 12px; border-radius: 999px; background: rgba(10,10,11,0.7); color: #FFFFFF; font-size: 12px; font-weight: 700;">Drag to look around · press Y to go back</span>
+</div>
+</sc-if>
+
+<sc-if value="{{hud.chase}}" hint-placeholder-val="{{false}}">
+<div class="siren" aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none;"></div>
+<div role="status" style="position: absolute; left: 14px; right: 124px; top: 104px; padding: 8px 12px; border-radius: 14px; background: #1F4FA8; border: 2px solid #FFFFFF; color: #FFFFFF; box-shadow: 0 4px 0 rgba(0,0,0,0.35);">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 6px;">
+<span style="font-size: 13px; font-weight: 900; font-style: italic; letter-spacing: 0.04em;">POLICE CHASE</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px;">{{hud.chaseDist}}</span>
+</div>
+<div style="font-size: 10px; font-weight: 700; margin-top: 2px; opacity: 0.9;">Get 90 m away for 5 s to escape · don't stop</div>
+<div style="height: 5px; margin-top: 6px; border-radius: 99px; background: rgba(255,255,255,0.25); overflow: hidden;"><div style="height: 100%; background: #E6F000; width: {{hud.escapePct}};"></div></div>
+</div>
+</sc-if>
 
 <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
 <div style="position: absolute; left: 0; right: 0; top: 176px; display: flex; justify-content: center; pointer-events: none;">
@@ -208,13 +237,30 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     const B = '/_blob/';
+    const P = {
+      revuelto: { len: 4.95, wid: 2.03, wb: 2.78, fo: 1.0, roughness: 0.25, metal: 0.35, style: 'y', exhaust: 'hex', wing: 0, hips: 0.06, fh: 0.02, nose: 0.2, spokes: 10, rim: 0x23252a, caliper: 0xff6a00, intake: true,
+        body: [[-1, 0.62], [-0.97, 0.86], [-0.7, 0.93], [-0.3, 0.95], [0.05, 0.9], [0.4, 0.82], [0.72, 0.66], [0.93, 0.5], [1, 0.38]],
+        cab: [[-0.48, 0.93], [-0.24, 1.12], [0.0, 1.16], [0.18, 1.1], [0.5, 0.83]] },
+      sf90: { len: 4.71, wid: 1.97, wb: 2.65, fo: 0.98, roughness: 0.2, metal: 0.4, style: 'ferrari', exhaust: 'twinHigh', wing: 0, hips: 0.05, fh: 0.03, nose: 0.15, spokes: 5, rim: 0xc9ced6, caliper: 0xffd200, intake: true, gurney: true,
+        body: [[-1, 0.66], [-0.96, 0.88], [-0.65, 0.95], [-0.25, 0.93], [0.15, 0.86], [0.5, 0.78], [0.8, 0.62], [0.96, 0.46], [1, 0.36]],
+        cab: [[-0.62, 0.92], [-0.32, 1.14], [-0.02, 1.19], [0.16, 1.13], [0.48, 0.8]] },
+      mcl: { len: 4.57, wid: 1.93, wb: 2.67, fo: 0.95, roughness: 0.22, metal: 0.35, style: 'mclaren', exhaust: 'twinHigh', wing: 1, hips: 0.05, fh: 0.02, nose: 0.18, spokes: 10, rim: 0x1c1d21, caliper: 0x1c1d21, intake: true,
+        body: [[-1, 0.7], [-0.95, 0.9], [-0.62, 0.92], [-0.25, 0.9], [0.2, 0.84], [0.55, 0.72], [0.85, 0.56], [0.98, 0.43], [1, 0.36]],
+        cab: [[-0.66, 0.89], [-0.38, 1.12], [-0.08, 1.2], [0.14, 1.14], [0.47, 0.8]] },
+      van: { len: 4.85, wid: 1.98, wb: 2.88, fo: 0.85, roughness: 0.62, metal: 0.2, style: 'aston', exhaust: 'quad', wing: 0, hips: 0.03, fh: 0.03, nose: 0.12, spokes: 10, rim: 0x9aa0a8, caliper: 0xd8161b, intake: false, grille: true,
+        body: [[-1, 0.68], [-0.95, 0.9], [-0.78, 0.96], [-0.4, 0.97], [0.0, 0.93], [0.45, 0.9], [0.8, 0.82], [0.95, 0.68], [1, 0.5]],
+        cab: [[-0.82, 0.94], [-0.5, 1.22], [-0.2, 1.29], [0.02, 1.23], [0.28, 0.92]] },
+      gt3: { len: 4.57, wid: 1.9, wb: 2.46, fo: 0.9, roughness: 0.3, metal: 0.45, style: 'porsche', exhaust: 'centre', wing: 2, hips: 0.07, fh: 0.06, nose: 0.12, spokes: 10, rim: 0x1c1d21, caliper: 0xd8161b, intake: false,
+        body: [[-1, 0.7], [-0.95, 0.9], [-0.78, 0.97], [-0.45, 0.96], [0.05, 0.9], [0.5, 0.85], [0.82, 0.74], [0.97, 0.56], [1, 0.42]],
+        cab: [[-0.78, 0.95], [-0.48, 1.17], [-0.12, 1.32], [0.1, 1.3], [0.36, 0.9]] }
+    };
     this.CARS = [
-      { id: 'revuelto', name: 'Lamborghini Revuelto', top: 217, zero: 2.5, grip: 1.1, color: '#F2F2F2', trim: '#141416', wing: 0, len: 4.95, img: B + 'd0ed9a1124b4be55c66020506d0952f5', pos: '55% 50%' },
-      { id: 'sf90', name: 'Ferrari SF90 Stradale', top: 211, zero: 2.5, grip: 1.15, color: '#D8161B', trim: '#141416', wing: 0, len: 4.7, img: B + '4c34a39ed7fc32822ce83f9e01f8d264', pos: '45% 60%' },
-      { id: 'mcl', name: 'McLaren 750S', top: 206, zero: 2.8, grip: 1.2, color: '#FF7A00', trim: '#141416', wing: 1, len: 4.6, img: B + '7a1f38e951343777cdb82e6e2ecdffc1', pos: '40% 50%' },
-      { id: 'van', name: 'Aston Martin Vanquish', top: 214, zero: 3.2, grip: 1.0, color: '#6B6F76', trim: '#1E2024', wing: 0, len: 4.85, img: B + '70522fdf14052f038999461a17d193a4', pos: '55% 55%' },
-      { id: 'gt3', name: 'Porsche 911 GT3 RS', top: 184, zero: 3.2, grip: 1.35, color: '#A7ADB5', trim: '#141416', wing: 2, len: 4.57, img: B + '009516d94a7dcf61f3cbf171fac4271c', pos: '50% 55%' },
-      { id: 'chiron', name: 'Bugatti Chiron', locked: true, top: 261, zero: 2.4, grip: 1.1, color: '#1E5BD8', trim: '#0B1B3A', wing: 0, len: 4.54, img: B + '5eba6dd7905427a06a5aaf5e5596baa3', pos: '40% 50%' }
+      { id: 'revuelto', name: 'Lamborghini Revuelto', top: 217, zero: 2.5, grip: 1.1, color: '#F2F2F2', trim: '#141416', spec: P.revuelto, img: B + 'd0ed9a1124b4be55c66020506d0952f5', pos: '55% 50%' },
+      { id: 'sf90', name: 'Ferrari SF90 Stradale', top: 211, zero: 2.5, grip: 1.15, color: '#D8161B', trim: '#141416', spec: P.sf90, img: B + '4c34a39ed7fc32822ce83f9e01f8d264', pos: '45% 60%' },
+      { id: 'mcl', name: 'McLaren 750S', top: 206, zero: 2.8, grip: 1.2, color: '#FF7A00', trim: '#141416', spec: P.mcl, img: B + '7a1f38e951343777cdb82e6e2ecdffc1', pos: '40% 50%' },
+      { id: 'van', name: 'Aston Martin Vanquish', top: 214, zero: 3.2, grip: 1.0, color: '#6B6F76', trim: '#1E2024', spec: P.van, img: B + '70522fdf14052f038999461a17d193a4', pos: '55% 55%' },
+      { id: 'gt3', name: 'Porsche 911 GT3 RS', top: 184, zero: 3.2, grip: 1.35, color: '#A7ADB5', trim: '#141416', spec: P.gt3, img: B + '009516d94a7dcf61f3cbf171fac4271c', pos: '50% 55%' },
+      { id: 'chiron', name: 'Bugatti Chiron', locked: true, top: 261, zero: 2.4, grip: 1.1, color: '#1E5BD8', trim: '#0B1B3A', spec: P.revuelto, img: B + '5eba6dd7905427a06a5aaf5e5596baa3', pos: '40% 50%' }
     ];
     this.N = 6; this.BL = 72; this.RW = 16; this.S = this.N * this.BL;
     this.state = { mode: 'pick', carId: 'revuelto', hud: this.blankHud(), result: null, noGL: false };
@@ -226,7 +272,7 @@ class Component extends DCLogic {
       this.cv = el;
       if (el) {
         if (!window.THREE) { this.setState({ noGL: true }); return; }
-        try { this.build(); } catch (e) { this.setState({ noGL: true }); return; }
+        try { this.build(); } catch (e) { if (window.console) console.error(e); this.setState({ noGL: true }); return; }
         this.last = 0;
         this.raf = requestAnimationFrame(this.frame);
       }
@@ -249,15 +295,38 @@ class Component extends DCLogic {
       brakeDown: set('brake', true), brakeUp: set('brake', false),
       noMenu: (e) => { if (e && e.preventDefault) e.preventDefault(); }
     };
+    this.toggleLook = () => {
+      const g = this.g; if (!g) return;
+      g.look.on = !g.look.on;
+      if (g.look.on) { g.look.yaw = g.h + Math.PI * 0.75; g.look.pitch = 0.32; g.look.idle = 0; }
+      this.pushHud();
+    };
+    this.lookDown = (e) => {
+      const g = this.g; if (!g || !g.look.on) return;
+      g.look.drag = { x: e.clientX, y: e.clientY };
+      try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {}
+    };
+    this.lookMove = (e) => {
+      const g = this.g; if (!g || !g.look.on || !g.look.drag) return;
+      const dx = e.clientX - g.look.drag.x, dy = e.clientY - g.look.drag.y;
+      g.look.drag = { x: e.clientX, y: e.clientY };
+      g.look.yaw -= dx * 0.012;
+      g.look.pitch = Math.max(0.05, Math.min(1.2, g.look.pitch + dy * 0.008));
+      g.look.idle = 0;
+    };
+    this.lookUp = () => { if (this.g) this.g.look.drag = null; };
     const map = { ArrowLeft: 'left', a: 'left', A: 'left', ArrowRight: 'right', d: 'right', D: 'right', ArrowUp: 'gas', w: 'gas', W: 'gas', ArrowDown: 'brake', s: 'brake', S: 'brake', ' ': 'hand' };
-    this.onKeyDown = (e) => { const k = map[e.key]; if (k) { e.preventDefault(); this.keys[k] = true; } };
+    this.onKeyDown = (e) => {
+      if (e.key === 'y' || e.key === 'Y') { e.preventDefault(); if (!e.repeat) this.toggleLook(); return; }
+      const k = map[e.key]; if (k) { e.preventDefault(); this.keys[k] = true; }
+    };
     this.onKeyUp = (e) => { const k = map[e.key]; if (k) { e.preventDefault(); this.keys[k] = false; } };
     this.startDrive = () => { this.keys = { left: false, right: false, gas: false, brake: false, hand: false }; this.setState({ mode: 'drive', hud: this.blankHud(), result: null, noGL: false }); };
     this.endDrive = () => { const r = this.results(); this.setState({ mode: 'results', result: r }); };
     this.toPick = () => this.setState({ mode: 'pick' });
   }
   componentWillUnmount() { this.teardown(); }
-  blankHud() { return { mph: 0, gear: 'N', xp: 0, dist: '0.0', toast: '', toastBg: '#FFFFFF', toastFg: '#111', dash: '0 200', gaugeColor: '#FFFFFF', me: 'translate(48 48)', dots: [], drifting: false, driftPts: '', vignette: '0px' }; }
+  blankHud() { return { mph: 0, gear: 'N', xp: 0, dist: '0.0', toast: '', toastBg: '#FFFFFF', toastFg: '#111', dash: '0 200', gaugeColor: '#FFFFFF', me: 'translate(48 48)', dots: [], cops: [], drifting: false, driftPts: '', vignette: '0px', chase: false, chaseDist: '', escapePct: '0%', look: false, lookBg: 'rgba(10,10,11,0.62)' }; }
   car() { return this.CARS.find((c) => c.id === this.state.carId) || this.CARS[0]; }
   rng(seed) { let a = seed; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
@@ -274,7 +343,6 @@ class Component extends DCLogic {
     this.g = null;
   }
 
-  /* ---------- textures ---------- */
   canvasTex(w, h, draw, repeat) {
     const T = window.THREE;
     const c = document.createElement('canvas'); c.width = w; c.height = h;
@@ -286,97 +354,205 @@ class Component extends DCLogic {
     return t;
   }
 
-  /* ---------- car models ---------- */
-  extrude(points, depth, bevel) {
+  /* ---------- realistic car bodies ---------- */
+  profY(pts, xn) {
+    for (let i = 0; i < pts.length - 1; i++) {
+      const a = pts[i], b = pts[i + 1];
+      if (xn >= a[0] && xn <= b[0]) return a[1] + (b[1] - a[1]) * ((xn - a[0]) / (b[0] - a[0] || 1));
+    }
+    return xn < pts[0][0] ? pts[0][1] : pts[pts.length - 1][1];
+  }
+  planScale(sp, L, zn) {
+    const sm = (t) => { t = Math.max(0, Math.min(1, t)); return t * t; };
+    const fwz = (L - sp.fo) / L, rwz = (L - sp.fo - sp.wb) / L;
+    return 1 - sp.nose * sm((zn - 0.55) / 0.45) - 0.09 * sm((-zn - 0.72) / 0.28)
+      + sp.hips * Math.exp(-Math.pow((zn - rwz) / 0.2, 2)) + sp.fh * Math.exp(-Math.pow((zn - fwz) / 0.17, 2));
+  }
+  sculpt(pts, L, width, bottom, tumble, sp, bevel) {
     const T = window.THREE;
     const sh = new T.Shape();
-    sh.moveTo(points[0][0], points[0][1]);
-    for (let i = 1; i < points.length; i++) sh.lineTo(points[i][0], points[i][1]);
+    sh.moveTo(pts[0][0] * L, bottom);
+    sh.splineThru(pts.map((p) => new T.Vector2(p[0] * L, p[1])));
+    sh.lineTo(pts[pts.length - 1][0] * L, bottom);
     sh.closePath();
-    const geo = new T.ExtrudeGeometry(sh, { depth: depth, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 2, steps: 1 });
-    geo.translate(0, 0, -depth / 2);
+    const geo = new T.ExtrudeGeometry(sh, { depth: width, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 3, steps: 1, curveSegments: 28 });
+    geo.translate(0, 0, -width / 2);
     geo.rotateY(-Math.PI / 2);
+    const pos = geo.attributes.position;
+    const top = Math.max.apply(null, pts.map((p) => p[1]));
+    for (let i = 0; i < pos.count; i++) {
+      const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+      const zn = Math.max(-1.05, Math.min(1.05, z / L));
+      const t = Math.max(0, Math.min(1, (y - bottom - 0.2) / Math.max(0.2, top - bottom - 0.2)));
+      pos.setX(i, x * this.planScale(sp, L, zn) * (1 - tumble * t * t));
+    }
+    geo.computeVertexNormals();
     return geo;
   }
   makeSupercar(c) {
     const T = window.THREE;
+    const sp = c.spec, L = sp.len / 2, W = sp.wid;
     const root = new T.Group();
     const body = new T.Group();
     root.add(body);
-    const L = c.len / 2;
-    const paint = new T.MeshStandardMaterial({ color: new T.Color(c.color), metalness: 0.35, roughness: 0.28 });
+    const paint = new T.MeshStandardMaterial({ color: new T.Color(c.color), metalness: sp.metal, roughness: sp.roughness });
     const trim = new T.MeshStandardMaterial({ color: new T.Color(c.trim), metalness: 0.2, roughness: 0.55 });
-    const glass = new T.MeshStandardMaterial({ color: 0x141c26, metalness: 0.7, roughness: 0.06 });
+    const carbon = new T.MeshStandardMaterial({ color: 0x18191c, metalness: 0.3, roughness: 0.35 });
+    const glass = new T.MeshStandardMaterial({ color: 0x1c2a38, metalness: 0.9, roughness: 0.04 });
     const tyreM = new T.MeshStandardMaterial({ color: 0x0e0e0f, roughness: 0.92 });
-    const rimM = new T.MeshStandardMaterial({ color: 0x2a2c31, metalness: 0.85, roughness: 0.3 });
-    const head = new T.MeshStandardMaterial({ color: 0xffffff, emissive: 0xfff6e0, emissiveIntensity: 1.4 });
+    const rimM = new T.MeshStandardMaterial({ color: sp.rim, metalness: 0.85, roughness: 0.28 });
+    const calM = new T.MeshStandardMaterial({ color: sp.caliper, roughness: 0.4 });
+    const head = new T.MeshStandardMaterial({ color: 0xffffff, emissive: 0xf4f8ff, emissiveIntensity: 1.6 });
     const tail = new T.MeshStandardMaterial({ color: 0x550000, emissive: 0xff1a1a, emissiveIntensity: 1.6 });
-    const lower = this.extrude([[-L, 0.3], [-L - 0.05, 0.8], [-L + 0.85, 0.88], [L - 1.25, 0.84], [L - 0.2, 0.6], [L + 0.02, 0.44], [L - 0.05, 0.3]], 1.96, 0.07);
+    const chrome = new T.MeshStandardMaterial({ color: 0xd9dde3, metalness: 1, roughness: 0.2 });
+    const add = (geo, mat, x, y, z, rx, ry, rz, shadow) => { const m = new T.Mesh(geo, mat); m.position.set(x, y, z); if (rx) m.rotation.x = rx; if (ry) m.rotation.y = ry; if (rz) m.rotation.z = rz; if (shadow) m.castShadow = true; body.add(m); return m; };
+
+    const lower = this.sculpt(sp.body, L, W - 0.1, 0.3, 0.14, sp, 0.06);
     const m1 = new T.Mesh(lower, paint); m1.castShadow = true; m1.receiveShadow = true; body.add(m1);
-    const cab = this.extrude([[-L + 0.75, 0.86], [-0.85, 1.18], [0.15, 1.22], [L - 1.25, 0.86]], 1.5, 0.08);
+    const cabBase = Math.min.apply(null, sp.cab.map((p) => p[1]));
+    const cab = this.sculpt(sp.cab, L, W * 0.7, cabBase - 0.06, 0.34, sp, 0.05);
     const m2 = new T.Mesh(cab, glass); m2.castShadow = true; body.add(m2);
-    const roof = new T.Mesh(new T.BoxGeometry(1.25, 0.05, 0.85), paint); roof.position.set(0, 1.25, -0.35); roof.castShadow = true; body.add(roof);
-    const skirt = new T.Mesh(new T.BoxGeometry(2.02, 0.16, c.len - 0.4), trim); skirt.position.set(0, 0.32, 0); body.add(skirt);
-    const diff = new T.Mesh(new T.BoxGeometry(1.7, 0.22, 0.2), trim); diff.position.set(0, 0.42, -L + 0.02); body.add(diff);
+    const c1 = sp.cab[1], c2 = sp.cab[2], c3 = sp.cab[3];
+    const lift = 0.058;
+    const capBase = Math.min(c1[1], c3[1]) - 0.02 + lift;
+    const capPts = [[c1[0] - 0.02, capBase + 0.005], [c1[0] + 0.04, c1[1] + lift], [(c1[0] + c2[0]) / 2, (c1[1] + c2[1]) / 2 + lift + 0.02], [c2[0], c2[1] + lift], [c3[0], c3[1] + lift - 0.01], [c3[0] + 0.03, capBase + 0.005]];
+    const cap = this.sculpt(capPts, L, W * 0.7 + 0.02, capBase - 0.06, 0.34, sp, 0.03);
+    const mc = new T.Mesh(cap, paint); mc.castShadow = true; body.add(mc);
+    add(new T.BoxGeometry(W * 0.99, 0.09, sp.len * 0.5), carbon, 0, 0.42, -0.1);
+    add(new T.BoxGeometry(W * 0.98, 0.14, sp.len * 0.66), carbon, 0, 0.33, -0.05);
+
+    const fz = L - sp.fo, rz = fz - sp.wb;
+    const yAt = (xn) => this.profY(sp.body, xn);
+    const halfW = (zn) => (W - 0.1) / 2 * this.planScale(sp, L, zn);
+    const hy = yAt(0.9) - 0.07, hz = L * 0.9, hx = halfW(0.9) * 0.62;
+    const ty = yAt(-0.97) - 0.1, tz = -L - 0.03;
+
     [-1, 1].forEach((s) => {
-      const intake = new T.Mesh(new T.BoxGeometry(0.06, 0.26, 0.9), trim); intake.position.set(s * 1.0, 0.64, -0.75); body.add(intake);
-      const hl = new T.Mesh(new T.BoxGeometry(0.5, 0.08, 0.06), head); hl.position.set(s * 0.62, 0.6, L - 0.18); hl.rotation.x = -0.35; body.add(hl);
-      const tl = new T.Mesh(new T.BoxGeometry(0.66, 0.13, 0.06), tail); tl.position.set(s * 0.56, 0.7, -L - 0.03); body.add(tl);
-      const ex = new T.Mesh(new T.CylinderGeometry(0.07, 0.07, 0.15, 10), rimM); ex.rotation.x = Math.PI / 2; ex.position.set(s * 0.22, 0.4, -L - 0.05); body.add(ex);
+      add(new T.BoxGeometry(0.1, 0.07, 0.2), paint, s * (halfW(0.25) + 0.12), yAt(0.25) + 0.12, L * 0.28, 0, 0, 0, true);
+      add(new T.BoxGeometry(0.16, 0.05, 0.04), carbon, s * (halfW(0.25) + 0.05), yAt(0.25) + 0.1, L * 0.28);
+      if (sp.intake) add(new T.BoxGeometry(0.06, 0.28, 0.75), carbon, s * (halfW(-0.3) + 0.01), yAt(-0.3) - 0.3, -L * 0.3);
+      if (sp.style === 'y') {
+        add(new T.BoxGeometry(0.42, 0.045, 0.05), head, s * hx, hy, hz, -0.3, s * 0.12);
+        add(new T.BoxGeometry(0.05, 0.16, 0.05), head, s * (hx - 0.14), hy - 0.08, hz + 0.02, -0.3, 0, s * 0.5);
+        add(new T.BoxGeometry(0.34, 0.05, 0.05), tail, s * 0.6, ty + 0.05, tz, 0, 0, s * 0.25);
+        add(new T.BoxGeometry(0.34, 0.05, 0.05), tail, s * 0.6, ty - 0.07, tz, 0, 0, -s * 0.25);
+        add(new T.BoxGeometry(0.05, 0.22, 0.05), tail, s * 0.43, ty - 0.01, tz);
+      } else if (sp.style === 'ferrari') {
+        add(new T.BoxGeometry(0.5, 0.05, 0.05), head, s * hx, hy, hz, -0.35, s * 0.18);
+        add(new T.BoxGeometry(0.5, 0.06, 0.05), tail, s * 0.55, ty, tz);
+        add(new T.BoxGeometry(0.22, 0.05, 0.05), tail, s * 0.62, ty - 0.1, tz);
+      } else if (sp.style === 'mclaren') {
+        add(new T.BoxGeometry(0.42, 0.14, 0.05), carbon, s * hx, hy - 0.02, hz - 0.02, -0.35, s * 0.15);
+        add(new T.BoxGeometry(0.3, 0.04, 0.05), head, s * (hx + 0.04), hy + 0.03, hz, -0.35, s * 0.15);
+        add(new T.BoxGeometry(0.04, 0.12, 0.05), head, s * (hx - 0.13), hy - 0.03, hz, -0.35);
+        add(new T.BoxGeometry(0.04, 0.18, 0.05), tail, s * 0.78, ty, tz);
+      } else if (sp.style === 'aston') {
+        add(new T.BoxGeometry(0.55, 0.06, 0.05), head, s * hx, hy, hz, -0.25, s * 0.2);
+        add(new T.BoxGeometry(0.06, 0.12, 0.05), tail, s * 0.85, ty, tz);
+      } else if (sp.style === 'porsche') {
+        const lamp = new T.CylinderGeometry(0.17, 0.17, 0.08, 20); lamp.rotateX(Math.PI / 2 - 0.35);
+        add(lamp, head, s * (halfW(0.82) * 0.68), yAt(0.82) + 0.0, L * 0.82);
+        add(new T.CylinderGeometry(0.2, 0.2, 0.06, 20).rotateX(Math.PI / 2 - 0.35), chrome, s * (halfW(0.82) * 0.68), yAt(0.82) - 0.01, L * 0.81);
+      }
+      const ex = sp.exhaust;
+      if (ex === 'quad') [0.55, 0.72].forEach((x) => add(new T.CylinderGeometry(0.06, 0.06, 0.18, 12).rotateX(Math.PI / 2), chrome, s * x, 0.38, tz));
+      if (ex === 'twinHigh') add(new T.CylinderGeometry(0.075, 0.075, 0.16, 12).rotateX(Math.PI / 2), chrome, s * 0.13, ty + 0.05, tz);
+      if (ex === 'centre') add(new T.CylinderGeometry(0.08, 0.08, 0.16, 12).rotateX(Math.PI / 2), chrome, s * 0.1, 0.42, tz);
     });
-    const deck = new T.Mesh(new T.BoxGeometry(1.3, 0.04, 0.9), trim); deck.position.set(0, 0.9, -L + 0.75); body.add(deck);
-    for (let k = 0; k < 4; k++) { const sl = new T.Mesh(new T.BoxGeometry(1.2, 0.03, 0.06), paint); sl.position.set(0, 0.925, -L + 0.42 + k * 0.2); body.add(sl); }
-    const tailBar = new T.Mesh(new T.BoxGeometry(1.2, 0.03, 0.04), tail); tailBar.position.set(0, 0.74, -L - 0.03); body.add(tailBar);
-    if (c.wing) {
-      const top = c.wing === 2 ? 1.32 : 1.0;
-      const w = new T.Mesh(new T.BoxGeometry(c.wing === 2 ? 1.95 : 1.6, 0.06, 0.38), trim); w.position.set(0, top, -L + 0.3); w.castShadow = true; body.add(w);
-      [-1, 1].forEach((s) => { const p = new T.Mesh(new T.BoxGeometry(0.06, top - 0.82, 0.18), trim); p.position.set(s * 0.45, (top + 0.82) / 2, -L + 0.3); body.add(p); });
+    if (sp.style === 'mclaren' || sp.style === 'aston') add(new T.BoxGeometry(sp.style === 'aston' ? 1.6 : 1.45, sp.style === 'aston' ? 0.035 : 0.04, 0.05), tail, 0, ty + (sp.style === 'aston' ? 0.02 : 0.06), tz);
+    if (sp.style === 'porsche') { add(new T.BoxGeometry(1.7, 0.06, 0.05), tail, 0, ty + 0.06, tz); add(new T.BoxGeometry(1.2, 0.08, 0.04), carbon, 0, ty - 0.1, tz); }
+    if (sp.style === 'ferrari' && sp.gurney) add(new T.BoxGeometry(1.3, 0.05, 0.12), carbon, 0, yAt(-0.96) + 0.03, -L + 0.08);
+    if (sp.exhaust === 'hex') add(new T.CylinderGeometry(0.13, 0.13, 0.18, 6).rotateX(Math.PI / 2), chrome, 0, ty + 0.08, tz);
+    add(new T.BoxGeometry(1.5, 0.22, 0.24), carbon, 0, 0.42, -L + 0.06);
+    for (let k = -2; k <= 2; k++) add(new T.BoxGeometry(0.03, 0.18, 0.28), carbon, k * 0.28, 0.4, -L + 0.08);
+    add(new T.BoxGeometry(1.5, 0.08, 0.3), carbon, 0, 0.3, L - 0.08);
+    if (sp.grille) { add(new T.BoxGeometry(1.0, 0.3, 0.06), carbon, 0, yAt(0.98) - 0.12, L - 0.02); for (let k = 0; k < 5; k++) add(new T.BoxGeometry(0.96, 0.015, 0.07), chrome, 0, yAt(0.98) - 0.24 + k * 0.06, L - 0.01); }
+    else add(new T.BoxGeometry(1.1, 0.12, 0.06), carbon, 0, 0.42, L - 0.03);
+    if (sp.wing === 1) add(new T.BoxGeometry(1.5, 0.04, 0.32), carbon, 0, yAt(-0.9) + 0.06, -L + 0.28, 0.08, 0, 0, true);
+    if (sp.wing === 2) {
+      const wy = 1.5;
+      add(new T.BoxGeometry(1.92, 0.07, 0.5), carbon, 0, wy, -L + 0.32, 0.12, 0, 0, true);
+      add(new T.BoxGeometry(1.92, 0.04, 0.26), carbon, 0, wy + 0.1, -L + 0.22, 0.25, 0, 0, true);
+      [-1, 1].forEach((s) => {
+        add(new T.BoxGeometry(0.03, 0.34, 0.6), carbon, s * 0.97, wy + 0.04, -L + 0.3, 0, 0, 0, true);
+        add(new T.BoxGeometry(0.05, wy - yAt(-0.8) + 0.06, 0.12), carbon, s * 0.42, (wy + yAt(-0.8)) / 2 + 0.04, -L + 0.42, -0.25);
+      });
     }
     const flame = new T.Mesh(new T.ConeGeometry(0.09, 0.45, 8), new T.MeshBasicMaterial({ color: 0xffb703, transparent: true, opacity: 0.9 }));
-    flame.rotation.x = -Math.PI / 2; flame.position.set(0, 0.4, -L - 0.3); flame.visible = false; body.add(flame);
+    flame.rotation.x = -Math.PI / 2; flame.position.set(0, sp.exhaust === 'hex' || sp.exhaust === 'twinHigh' ? ty + 0.06 : 0.4, -L - 0.3); flame.visible = false; body.add(flame);
+
     const wheels = [];
-    const wheelGeo = new T.CylinderGeometry(0.37, 0.37, 0.3, 20); wheelGeo.rotateZ(Math.PI / 2);
-    const rimGeo = new T.CylinderGeometry(0.25, 0.25, 0.31, 10); rimGeo.rotateZ(Math.PI / 2);
-    const spokeGeo = new T.BoxGeometry(0.32, 0.05, 0.42);
-    [[1, 1], [-1, 1], [1, -1], [-1, -1]].forEach(([sx, sz]) => {
-      const pivot = new T.Group(); pivot.position.set(sx * 0.97, 0.37, sz * (L - 0.92));
+    const wr = 0.36;
+    [[1, fz, 0.3], [-1, fz, 0.3], [1, rz, 0.34], [-1, rz, 0.34]].forEach(([sx, z, tw]) => {
+      const pivot = new T.Group(); pivot.position.set(sx * (halfW(z / L) - tw / 2 + 0.06), wr, z);
       const spin = new T.Group(); pivot.add(spin);
-      const t = new T.Mesh(wheelGeo, tyreM); t.castShadow = true; spin.add(t);
-      const r = new T.Mesh(rimGeo, rimM); spin.add(r);
-      for (let k = 0; k < 3; k++) { const sp = new T.Mesh(spokeGeo, rimM); sp.rotation.x = k * Math.PI / 3; sp.position.x = sx * 0.02; spin.add(sp); }
+      const tg = new T.CylinderGeometry(wr, wr, tw, 24); tg.rotateZ(Math.PI / 2);
+      const t = new T.Mesh(tg, tyreM); t.castShadow = true; spin.add(t);
+      const rg = new T.CylinderGeometry(wr * 0.72, wr * 0.72, tw + 0.01, 20); rg.rotateZ(Math.PI / 2);
+      spin.add(new T.Mesh(rg, new T.MeshStandardMaterial({ color: 0x0c0c0e, roughness: 0.6 })));
+      const n = sp.spokes;
+      for (let k = 0; k < n; k++) {
+        const sg = new T.BoxGeometry(0.03, wr * 0.66, n > 6 ? 0.05 : 0.09); sg.translate(0, wr * 0.33, 0);
+        const spk = new T.Mesh(sg, rimM); spk.position.x = sx * (tw / 2 + 0.001); spk.rotation.x = k / n * Math.PI * 2; spin.add(spk);
+      }
+      const hub = new T.CylinderGeometry(0.06, 0.06, 0.04, 10); hub.rotateZ(Math.PI / 2);
+      const hb = new T.Mesh(hub, rimM); hb.position.x = sx * (tw / 2 + 0.01); spin.add(hb);
+      const cal = new T.Mesh(new T.BoxGeometry(0.06, 0.16, 0.22), calM); cal.position.set(sx * (tw / 2 - 0.04), 0.1, z > 0 ? -0.12 : 0.12); pivot.add(cal);
       root.add(pivot);
-      wheels.push({ pivot: pivot, spin: spin, front: sz > 0 });
+      wheels.push({ pivot: pivot, spin: spin, front: z > 0 });
     });
     return { root: root, body: body, wheels: wheels, tail: tail, flame: flame };
   }
   makeTraffic(color, kind) {
     const T = window.THREE;
     const g = new T.Group();
-    const paint = new T.MeshStandardMaterial({ color: new T.Color(color), roughness: 0.45, metalness: 0.1 });
     const dark = new T.MeshStandardMaterial({ color: 0x1b222b, roughness: 0.15, metalness: 0.5 });
     const tyre = new T.MeshStandardMaterial({ color: 0x111111, roughness: 0.9 });
     const tl = new T.MeshStandardMaterial({ color: 0x550000, emissive: 0xff2020, emissiveIntensity: 0.8 });
-    if (kind === 'van') {
-      const b = new T.Mesh(new T.BoxGeometry(2.1, 2.1, 4.8), paint); b.position.y = 1.4; b.castShadow = true; g.add(b);
-      const w = new T.Mesh(new T.BoxGeometry(1.9, 0.7, 0.05), dark); w.position.set(0, 1.85, 2.41); g.add(w);
+    let lights = null;
+    if (kind === 'police') {
+      if (!this.liveryTex) this.liveryTex = this.canvasTex(256, 64, (x, w, h) => {
+        x.fillStyle = '#ffffff'; x.fillRect(0, 0, w, h);
+        const sq = 16;
+        for (let i = 0; i < w / sq; i++) for (let j = 0; j < 2; j++) { x.fillStyle = (i + j) % 2 ? '#1F4FA8' : '#E6F000'; x.fillRect(i * sq, 32 + j * sq, sq, sq); }
+        x.fillStyle = '#1F4FA8'; x.font = '900 22px Arial Black, Arial, sans-serif'; x.textAlign = 'center'; x.fillText('POLICE', w / 2, 24);
+      });
+      const white = new T.MeshStandardMaterial({ color: 0xf5f6f8, roughness: 0.35, metalness: 0.2 });
+      const side = new T.MeshStandardMaterial({ map: this.liveryTex, roughness: 0.4 });
+      const b = new T.Mesh(new T.BoxGeometry(1.95, 0.9, 4.5), [side, side, white, white, white, white]); b.position.y = 0.8; b.castShadow = true; g.add(b);
+      const c = new T.Mesh(new T.BoxGeometry(1.75, 0.7, 2.6), white); c.position.set(0, 1.58, -0.35); c.castShadow = true; g.add(c);
+      const w = new T.Mesh(new T.BoxGeometry(1.77, 0.5, 2.4), dark); w.position.set(0, 1.6, -0.35); g.add(w);
+      const bar = new T.Mesh(new T.BoxGeometry(1.3, 0.14, 0.32), new T.MeshStandardMaterial({ color: 0x222222 })); bar.position.set(0, 2.0, -0.2); g.add(bar);
+      const l1 = new T.MeshStandardMaterial({ color: 0x0a1a55, emissive: 0x2a5bff, emissiveIntensity: 0.15 });
+      const l2 = new T.MeshStandardMaterial({ color: 0x0a1a55, emissive: 0x2a5bff, emissiveIntensity: 0.15 });
+      const a1 = new T.Mesh(new T.BoxGeometry(0.55, 0.16, 0.3), l1); a1.position.set(-0.36, 2.1, -0.2); g.add(a1);
+      const a2 = new T.Mesh(new T.BoxGeometry(0.55, 0.16, 0.3), l2); a2.position.set(0.36, 2.1, -0.2); g.add(a2);
+      lights = [l1, l2];
     } else {
-      const b = new T.Mesh(new T.BoxGeometry(1.9, 0.75, 4.1), paint); b.position.y = 0.75; b.castShadow = true; g.add(b);
-      const c = new T.Mesh(new T.BoxGeometry(1.7, 0.65, 2.2), paint); c.position.set(0, 1.45, -0.25); c.castShadow = true; g.add(c);
-      const w = new T.Mesh(new T.BoxGeometry(1.72, 0.48, 2.0), dark); w.position.set(0, 1.47, -0.25); g.add(w);
+      const paint = new T.MeshStandardMaterial({ color: new T.Color(color), roughness: 0.45, metalness: 0.1 });
+      if (kind === 'van') {
+        const b = new T.Mesh(new T.BoxGeometry(2.1, 2.1, 4.8), paint); b.position.y = 1.4; b.castShadow = true; g.add(b);
+        const w = new T.Mesh(new T.BoxGeometry(1.9, 0.7, 0.05), dark); w.position.set(0, 1.85, 2.41); g.add(w);
+      } else {
+        const b = new T.Mesh(new T.BoxGeometry(1.9, 0.75, 4.1), paint); b.position.y = 0.75; b.castShadow = true; g.add(b);
+        const c = new T.Mesh(new T.BoxGeometry(1.7, 0.65, 2.2), paint); c.position.set(0, 1.45, -0.25); c.castShadow = true; g.add(c);
+        const w = new T.Mesh(new T.BoxGeometry(1.72, 0.48, 2.0), dark); w.position.set(0, 1.47, -0.25); g.add(w);
+      }
     }
     const wg = new T.CylinderGeometry(0.38, 0.38, 0.3, 12); wg.rotateZ(Math.PI / 2);
     [[1, 1.35], [-1, 1.35], [1, -1.35], [-1, -1.35]].forEach(([x, z]) => { const m = new T.Mesh(wg, tyre); m.position.set(x * 0.92, 0.38, z * (kind === 'van' ? 1.2 : 1)); g.add(m); });
-    [-1, 1].forEach((s) => { const m = new T.Mesh(new T.BoxGeometry(0.4, 0.15, 0.05), tl); m.position.set(s * 0.65, kind === 'van' ? 0.9 : 0.85, kind === 'van' ? -2.42 : -2.07); g.add(m); });
-    return g;
+    [-1, 1].forEach((s) => { const m = new T.Mesh(new T.BoxGeometry(0.4, 0.15, 0.05), tl); m.position.set(s * 0.65, kind === 'van' ? 0.9 : 0.85, kind === 'van' ? -2.42 : (kind === 'police' ? -2.27 : -2.07)); g.add(m); });
+    return { group: g, lights: lights };
   }
 
   /* ---------- world ---------- */
   build() {
     const T = window.THREE;
+    if (T.ColorManagement) T.ColorManagement.legacyMode = false;
     const W = 390, H = 844, N = this.N, BL = this.BL, RW = this.RW, S = this.S, half = S / 2;
     const c = this.car();
     const R = this.rng(11);
-    if (T.ColorManagement) T.ColorManagement.legacyMode = false;
+    this.liveryTex = null;
     const renderer = new T.WebGLRenderer({ canvas: this.cv, antialias: true, powerPreference: 'high-performance' });
     renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
     renderer.setSize(W, H, false);
@@ -388,7 +564,7 @@ class Component extends DCLogic {
     const scene = new T.Scene();
     scene.background = this.canvasTex(4, 512, (x, w, h) => { const gr = x.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#2F86E8'); gr.addColorStop(0.55, '#8CC8F7'); gr.addColorStop(1, '#D7EEFF'); x.fillStyle = gr; x.fillRect(0, 0, w, h); });
     scene.fog = new T.Fog(0xcfe8ff, 140, 520);
-    const camera = new T.PerspectiveCamera(74, W / H, 0.4, 1200);
+    const camera = new T.PerspectiveCamera(74, W / H, 0.3, 1200);
 
     scene.add(new T.HemisphereLight(0xdaf0ff, 0x5f8a4e, 0.75));
     const sun = new T.DirectionalLight(0xfff0d8, 1.75);
@@ -421,7 +597,7 @@ class Component extends DCLogic {
     const zebra = [];
     for (let i = 0; i <= N; i++) for (let j = 0; j <= N; j++) for (let k = -3; k <= 3; k++) {
       const x = i * BL - half, z = j * BL - half;
-      zebra.push([x + k * 1.6, z + RW / 2 + 1.2, 0]); zebra.push([x + k * 1.6, z - RW / 2 - 1.2, 0]);
+      zebra.push([x + k * 1.6, z + RW / 2 + 1.2]); zebra.push([x + k * 1.6, z - RW / 2 - 1.2]);
     }
     const zebI = new T.InstancedMesh(new T.BoxGeometry(0.8, 0.02, 2.2), dashMat, zebra.length);
     zebra.forEach((d, i) => { mtx.compose(v3.set(d[0], 0.035, d[1]), q.identity(), one); zebI.setMatrixAt(i, mtx); });
@@ -478,8 +654,7 @@ class Component extends DCLogic {
       trees.push([Math.cos(ang) * rad, Math.sin(ang) * rad, 1 + R() * 0.8]);
     }
     const trunkI = new T.InstancedMesh(new T.CylinderGeometry(0.25, 0.35, 2.4, 6), new T.MeshStandardMaterial({ color: 0x8b5a2b, roughness: 1 }), trees.length);
-    const leafGeo = new T.IcosahedronGeometry(1.9, 0);
-    const leafI = new T.InstancedMesh(leafGeo, new T.MeshStandardMaterial({ color: 0x3fae3a, roughness: 0.9, flatShading: true }), trees.length);
+    const leafI = new T.InstancedMesh(new T.IcosahedronGeometry(1.9, 0), new T.MeshStandardMaterial({ color: 0x3fae3a, roughness: 0.9, flatShading: true }), trees.length);
     const leaf2 = new T.InstancedMesh(new T.IcosahedronGeometry(1.3, 0), new T.MeshStandardMaterial({ color: 0x5ccb52, roughness: 0.9, flatShading: true }), trees.length);
     trees.forEach((t, i) => {
       const s = t[2];
@@ -511,7 +686,6 @@ class Component extends DCLogic {
       face.position.y = 9; face.castShadow = true; g.add(face);
       [-4.5, 4.5].forEach((x) => { const p = new T.Mesh(new T.BoxGeometry(0.5, 6, 0.5), roofMat); p.position.set(x, 3, 0); g.add(p); });
       scene.add(g);
-      boxes.push([cx - 5, cx - 4, cz - 0.5, cz + 0.5]);
     });
 
     const hillMat = new T.MeshStandardMaterial({ color: 0x7fa8ca, roughness: 1, flatShading: true });
@@ -532,14 +706,14 @@ class Component extends DCLogic {
     scene.add(player.root);
     const tCols = ['#3BA7FF', '#FFD23F', '#6BCB77', '#FF6B6B', '#B983FF', '#FFFFFF', '#2D2D2D', '#FF9F1C', '#2EC4B6', '#F15BB5'];
     const traffic = [];
-    for (let k = 0; k < 16; k++) {
-      const kind = R() < 0.25 ? 'van' : 'car';
-      const mesh = this.makeTraffic(tCols[k % tCols.length], kind);
-      scene.add(mesh);
+    for (let k = 0; k < 19; k++) {
+      const police = k >= 16;
+      const kind = police ? 'police' : (R() < 0.25 ? 'van' : 'car');
+      const made = this.makeTraffic(tCols[k % tCols.length], kind);
+      scene.add(made.group);
       const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-      let ni = 1 + Math.floor(R() * (N - 1)), nj = 1 + Math.floor(R() * (N - 1));
       const d = dirs[Math.floor(R() * 4)];
-      traffic.push({ mesh: mesh, i: ni, j: nj, dx: d[0], dz: d[1], t: R() * BL * 0.8, speed: 11 + R() * 7, x: 0, z: 0, cool: 0 });
+      traffic.push({ mesh: made.group, lights: made.lights, police: police, chasing: false, i: 1 + Math.floor(R() * (N - 1)), j: 1 + Math.floor(R() * (N - 1)), dx: d[0], dz: d[1], t: R() * BL * 0.8, speed: police ? 13 : 11 + R() * 7, x: 0, z: 0, hd: 0, v: 0, cool: 0, wp: null });
     }
     const smokeTex = this.canvasTex(64, 64, (x, w, h) => { const gr = x.createRadialGradient(32, 32, 2, 32, 32, 30); gr.addColorStop(0, 'rgba(255,255,255,0.9)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = gr; x.fillRect(0, 0, w, h); });
     const smoke = [];
@@ -552,14 +726,60 @@ class Component extends DCLogic {
       renderer: renderer, scene: scene, camera: camera, sun: sun, player: player, traffic: traffic, boxes: boxes, trees: treeCols, smoke: smoke, smokeI: 0, clouds: clouds,
       x: -half, z: -half + 30, h: 0, vx: 0, vz: 0, steer: 0, maxV: maxV, accel: maxV / (0.8 + c.zero * 0.9), grip: c.grip,
       camPos: new T.Vector3(-half, 6, -half + 20), t: 0,
+      look: { on: false, yaw: 0, pitch: 0.32, drag: null, idle: 0 },
+      chase: null, escapes: 0, busts: 0,
       xp: 0, xpDist: 0, meters: 0, top: 0, close: 0, drifts: 0, driftXp: 0, flats: 0, cleans: 0, bumps: 0,
-      flatT: 0, cleanT: 0, bumpCool: 0, driftT: 0, driftCalm: 0, toast: null, hint: 3
+      flatT: 0, cleanT: 0, bumpCool: 0, driftT: 0, driftCalm: 0, toast: null
     };
     this.toast('BRAKE + TURN TO DRIFT', '#C39BFF', '#1B0B33');
   }
 
-  toast(text, bg, fg) { this.g.toast = { text: text, bg: bg, fg: fg, t: 1.4 }; }
+  toast(text, bg, fg) { this.g.toast = { text: text, bg: bg, fg: fg, t: 1.6 }; }
   award(xp, text, bg, fg) { this.g.xp += xp; this.toast(text + ' +' + xp, bg, fg); }
+
+  pushOut(o, rad) {
+    let hit = false;
+    for (const b of this.g.boxes) {
+      if (o.x > b[0] - rad && o.x < b[1] + rad && o.z > b[2] - rad && o.z < b[3] + rad) {
+        const pl = o.x - (b[0] - rad), pr = (b[1] + rad) - o.x, pb = o.z - (b[2] - rad), pf = (b[3] + rad) - o.z;
+        const m = Math.min(pl, pr, pb, pf);
+        if (m === pl) o.x = b[0] - rad; else if (m === pr) o.x = b[1] + rad; else if (m === pb) o.z = b[2] - rad; else o.z = b[3] + rad;
+        hit = m === pl || m === pr ? 'x' : 'z';
+      }
+    }
+    return hit;
+  }
+  nearNode(x, z) {
+    const BL = this.BL, half = this.S / 2, N = this.N;
+    return [Math.max(0, Math.min(N, Math.round((x + half) / BL))), Math.max(0, Math.min(N, Math.round((z + half) / BL)))];
+  }
+  startChase(cop) {
+    const g = this.g;
+    if (g.chase) return;
+    g.chase = { t: 0, escapeT: 0, bustT: 0 };
+    const join = (t) => { t.chasing = true; t.hd = t.mesh.rotation.y; t.v = t.speed; t.wp = null; };
+    join(cop);
+    let best = null, bd = 1e9;
+    for (const t of g.traffic) { if (!t.police || t === cop) continue; const d = Math.hypot(t.x - g.x, t.z - g.z); if (d < bd) { bd = d; best = t; } }
+    if (best) join(best);
+    this.toast('POLICE! LOSE THEM', '#1F4FA8', '#FFFFFF');
+  }
+  endChase(escaped) {
+    const g = this.g;
+    const BL = this.BL, half = this.S / 2, N = this.N;
+    for (const t of g.traffic) {
+      if (!t.chasing) continue;
+      t.chasing = false;
+      const n = this.nearNode(t.x, t.z);
+      t.i = n[0]; t.j = n[1]; t.t = 0;
+      const opts = [[1, 0], [-1, 0], [0, 1], [0, -1]].filter((d) => t.i + d[0] >= 0 && t.i + d[0] <= N && t.j + d[1] >= 0 && t.j + d[1] <= N);
+      const d = opts[Math.floor(Math.random() * opts.length)]; t.dx = d[0]; t.dz = d[1];
+      t.lights.forEach((m) => { m.emissiveIntensity = 0.15; });
+    }
+    g.chase = null;
+    if (escaped) { g.escapes++; this.award(100, 'ESCAPED', '#6BCB77', '#0B2A10'); }
+    else { g.busts++; g.xp = Math.max(0, g.xp - 25); this.toast('BUSTED! -25', '#1F4FA8', '#FFFFFF'); }
+  }
 
   /* ---------- simulation ---------- */
   step(dt) {
@@ -589,15 +809,8 @@ class Component extends DCLogic {
 
     g.bumpCool = Math.max(0, g.bumpCool - dt);
     const rad = 1.4;
-    for (const b of g.boxes) {
-      if (g.x > b[0] - rad && g.x < b[1] + rad && g.z > b[2] - rad && g.z < b[3] + rad) {
-        const pl = g.x - (b[0] - rad), pr = (b[1] + rad) - g.x, pb = g.z - (b[2] - rad), pf = (b[3] + rad) - g.z;
-        const m = Math.min(pl, pr, pb, pf);
-        if (m === pl) { g.x = b[0] - rad; g.vx = -Math.abs(g.vx) * 0.25; } else if (m === pr) { g.x = b[1] + rad; g.vx = Math.abs(g.vx) * 0.25; }
-        else if (m === pb) { g.z = b[2] - rad; g.vz = -Math.abs(g.vz) * 0.25; } else { g.z = b[3] + rad; g.vz = Math.abs(g.vz) * 0.25; }
-        this.bump();
-      }
-    }
+    const hitAxis = this.pushOut(g, rad);
+    if (hitAxis === 'x') { g.vx *= -0.25; this.bump(); } else if (hitAxis === 'z') { g.vz *= -0.25; this.bump(); }
     for (const t of g.trees) {
       const dx = g.x - t[0], dz = g.z - t[1], d = Math.hypot(dx, dz), r = rad + t[2];
       if (d < r && d > 0.001) { g.x = t[0] + dx / d * r; g.z = t[1] + dz / d * r; g.vx *= 0.3; g.vz *= 0.3; this.bump(); }
@@ -606,28 +819,69 @@ class Component extends DCLogic {
     if (Math.abs(g.x) > lim) { g.x = Math.sign(g.x) * lim; g.vx *= -0.3; }
     if (Math.abs(g.z) > lim) { g.z = Math.sign(g.z) * lim; g.vz *= -0.3; }
 
+    const flash = Math.floor(g.t * 7) % 2;
+    let nearestCop = 1e9;
     for (const t of g.traffic) {
-      t.t += t.speed * dt;
-      if (t.t >= BL) {
-        t.t -= BL; t.i += t.dx; t.j += t.dz;
-        const opts = [[1, 0], [-1, 0], [0, 1], [0, -1]].filter((d) => !(d[0] === -t.dx && d[1] === -t.dz) && t.i + d[0] >= 0 && t.i + d[0] <= N && t.j + d[1] >= 0 && t.j + d[1] <= N);
-        const pick = opts[Math.floor(Math.random() * opts.length)] || [-t.dx, -t.dz];
-        t.dx = pick[0]; t.dz = pick[1];
+      if (t.chasing) {
+        const dP = Math.hypot(g.x - t.x, g.z - t.z);
+        let tx, tz;
+        if (dP < 45) { tx = g.x + g.vx * 0.4; tz = g.z + g.vz * 0.4; }
+        else {
+          if (!t.wp || Math.hypot(t.wp[0] - t.x, t.wp[1] - t.z) < 7) {
+            const me = this.nearNode(t.x, t.z), you = this.nearNode(g.x, g.z);
+            const nx = me[0] * BL - half, nz = me[1] * BL - half;
+            if (Math.hypot(nx - t.x, nz - t.z) > 9) t.wp = [nx, nz];
+            else {
+              const ddx = you[0] - me[0], ddz = you[1] - me[1];
+              const step = Math.abs(ddx) >= Math.abs(ddz) && ddx !== 0 ? [Math.sign(ddx), 0] : (ddz !== 0 ? [0, Math.sign(ddz)] : [Math.sign(ddx) || 1, 0]);
+              const ni = Math.max(0, Math.min(N, me[0] + step[0])), nj = Math.max(0, Math.min(N, me[1] + step[1]));
+              t.wp = [ni * BL - half, nj * BL - half];
+            }
+          }
+          tx = t.wp[0]; tz = t.wp[1];
+        }
+        const want = Math.atan2(tx - t.x, tz - t.z);
+        let dh = want - t.hd; while (dh > Math.PI) dh -= Math.PI * 2; while (dh < -Math.PI) dh += Math.PI * 2;
+        t.hd += Math.max(-2.8 * dt, Math.min(2.8 * dt, dh));
+        const vmax = Math.min(46, g.maxV * 0.85) * (Math.abs(dh) > 0.7 ? 0.45 : 1);
+        t.v += (vmax - t.v) * Math.min(1, dt * 1.2);
+        t.x += Math.sin(t.hd) * t.v * dt; t.z += Math.cos(t.hd) * t.v * dt;
+        if (this.pushOut(t, 1.4)) t.v *= 0.7;
+        t.mesh.position.set(t.x, 0, t.z); t.mesh.rotation.y = t.hd;
+        t.lights[0].emissiveIntensity = flash ? 4 : 0.1; t.lights[1].emissiveIntensity = flash ? 0.1 : 4;
+        nearestCop = Math.min(nearestCop, dP);
+      } else {
+        t.t += t.speed * dt;
+        if (t.t >= BL) {
+          t.t -= BL; t.i += t.dx; t.j += t.dz;
+          const opts = [[1, 0], [-1, 0], [0, 1], [0, -1]].filter((d) => !(d[0] === -t.dx && d[1] === -t.dz) && t.i + d[0] >= 0 && t.i + d[0] <= N && t.j + d[1] >= 0 && t.j + d[1] <= N);
+          const pick = opts[Math.floor(Math.random() * opts.length)] || [-t.dx, -t.dz];
+          t.dx = pick[0]; t.dz = pick[1];
+        }
+        const nx = t.i * BL - half, nz = t.j * BL - half;
+        t.x = nx + t.dx * t.t + t.dz * 3.6; t.z = nz + t.dz * t.t - t.dx * 3.6;
+        t.mesh.position.set(t.x, 0, t.z);
+        const targ = Math.atan2(t.dx, t.dz);
+        let dh = targ - t.mesh.rotation.y; while (dh > Math.PI) dh -= Math.PI * 2; while (dh < -Math.PI) dh += Math.PI * 2;
+        t.mesh.rotation.y += dh * Math.min(1, dt * 6);
       }
-      const nx = t.i * BL - half, nz = t.j * BL - half;
-      t.x = nx + t.dx * t.t + t.dz * 3.6; t.z = nz + t.dz * t.t - t.dx * 3.6;
-      t.mesh.position.set(t.x, 0, t.z);
-      const targ = Math.atan2(t.dx, t.dz);
-      let dh = targ - t.mesh.rotation.y; while (dh > Math.PI) dh -= Math.PI * 2; while (dh < -Math.PI) dh += Math.PI * 2;
-      t.mesh.rotation.y += dh * Math.min(1, dt * 6);
       t.cool = Math.max(0, t.cool - dt);
       const dx = g.x - t.x, dz = g.z - t.z, d = Math.hypot(dx, dz);
       if (d < 2.7 && d > 0.001) {
         g.x = t.x + dx / d * 2.7; g.z = t.z + dz / d * 2.7; g.vx *= 0.35; g.vz *= 0.35; this.bump();
+        if (t.police && !t.chasing && !g.chase) this.startChase(t);
         t.cool = 3;
-      } else if (d < 4.6 && spd > 20 && t.cool <= 0) {
+      } else if (d < 4.6 && spd > 20 && t.cool <= 0 && !t.chasing) {
         t.cool = 4; g.close++; this.award(15, 'CLOSE CALL', '#FF4D3D', '#FFFFFF');
       }
+    }
+    if (g.chase) {
+      const ch = g.chase;
+      ch.t += dt; ch.nearest = nearestCop;
+      if (nearestCop > 90) ch.escapeT += dt; else ch.escapeT = Math.max(0, ch.escapeT - dt * 0.5);
+      if (nearestCop < 7 && spd < 5) ch.bustT += dt; else ch.bustT = Math.max(0, ch.bustT - dt);
+      if (ch.escapeT >= 5) this.endChase(true);
+      else if (ch.bustT >= 1.6) this.endChase(false);
     }
 
     const slip = Math.abs(vr);
@@ -657,7 +911,7 @@ class Component extends DCLogic {
     const pitch = k.gas ? -0.012 : (k.brake ? 0.03 : 0);
     p.body.rotation.x += (pitch - p.body.rotation.x) * Math.min(1, dt * 5);
     p.body.position.y = onRoad ? 0 : Math.sin(g.t * 30) * 0.03 * Math.min(1, spd / 10);
-    for (const w of p.wheels) { w.spin.rotation.x += vf / 0.37 * dt; if (w.front) w.pivot.rotation.y = g.steer * 0.45; }
+    for (const w of p.wheels) { w.spin.rotation.x += vf / 0.36 * dt; if (w.front) w.pivot.rotation.y = g.steer * 0.45; }
     p.tail.emissiveIntensity = k.brake ? 3.4 : 1.6;
     p.flame.visible = k.gas && pct > 0.85 && Math.random() > 0.3;
     if (p.flame.visible) p.flame.scale.setScalar(0.7 + Math.random() * 0.6);
@@ -671,15 +925,26 @@ class Component extends DCLogic {
     }
     for (const cl of g.clouds) { cl.position.x += dt * 3; if (cl.position.x > 480) cl.position.x = -480; }
 
-    const back = 9.6 + pct * 3.4, up = 3.9 + pct * 0.6;
     const T = window.THREE;
-    const want = new T.Vector3(g.x - fx * back, up, g.z - fz * back);
-    g.camPos.lerp(want, 1 - Math.exp(-dt * 5.5));
-    g.camera.position.copy(g.camPos);
-    if (pct > 0.88) { g.camera.position.x += (Math.random() - 0.5) * 0.06; g.camera.position.y += (Math.random() - 0.5) * 0.06; }
-    g.camera.lookAt(g.x + fx * 8, 1.1, g.z + fz * 8);
-    const fov = 70 + pct * 12;
-    if (Math.abs(g.camera.fov - fov) > 0.1) { g.camera.fov += (fov - g.camera.fov) * Math.min(1, dt * 3); g.camera.updateProjectionMatrix(); }
+    if (g.look.on) {
+      g.look.idle += dt;
+      if (!g.look.drag && g.look.idle > 1.2) g.look.yaw += dt * 0.45;
+      const r = 9.5, ry = Math.cos(g.look.pitch) * r;
+      const want = new T.Vector3(g.x + Math.sin(g.look.yaw) * ry, 0.6 + Math.sin(g.look.pitch) * r, g.z + Math.cos(g.look.yaw) * ry);
+      g.camPos.lerp(want, 1 - Math.exp(-dt * 8));
+      g.camera.position.copy(g.camPos);
+      g.camera.lookAt(g.x, 0.6, g.z);
+      if (Math.abs(g.camera.fov - 55) > 0.1) { g.camera.fov += (55 - g.camera.fov) * Math.min(1, dt * 4); g.camera.updateProjectionMatrix(); }
+    } else {
+      const back = 9.6 + pct * 3.4, up = 3.9 + pct * 0.6;
+      const want = new T.Vector3(g.x - fx * back, up, g.z - fz * back);
+      g.camPos.lerp(want, 1 - Math.exp(-dt * 5.5));
+      g.camera.position.copy(g.camPos);
+      if (pct > 0.88) { g.camera.position.x += (Math.random() - 0.5) * 0.06; g.camera.position.y += (Math.random() - 0.5) * 0.06; }
+      g.camera.lookAt(g.x + fx * 8, 1.1, g.z + fz * 8);
+      const fov = 70 + pct * 12;
+      if (Math.abs(g.camera.fov - fov) > 0.1) { g.camera.fov += (fov - g.camera.fov) * Math.min(1, dt * 3); g.camera.updateProjectionMatrix(); }
+    }
     g.sun.position.set(g.x + 45, 90, g.z + 35);
     g.sun.target.position.set(g.x, 0, g.z);
   }
@@ -693,7 +958,7 @@ class Component extends DCLogic {
     g.cleanT = 0;
     if (g.bumpCool > 0) return;
     g.bumpCool = 0.8; g.bumps++;
-    this.toast('BUMP!', '#2A2A31', '#FFFFFF');
+    if (!g.toast || g.toast.text.indexOf('POLICE') < 0) this.toast('BUMP!', '#2A2A31', '#FFFFFF');
   }
   emitSmoke() {
     const g = this.g;
@@ -714,27 +979,31 @@ class Component extends DCLogic {
     const S = this.S, lim = S / 2 + this.RW;
     const mapX = (x) => 6 + ((x + lim) / (2 * lim)) * 84;
     const deg = Math.atan2(fx, -fz) * 180 / Math.PI;
+    const ch = g.chase;
     this.setState({ hud: {
       mph: Math.round(pct * c.top), gear: spd < 0.5 ? 'N' : String(Math.max(1, Math.min(7, Math.ceil(pct * 7)))),
       xp: g.xp, dist: (g.meters / 1000).toFixed(1),
       toast: g.toast ? g.toast.text : '', toastBg: g.toast ? g.toast.bg : '#FFF', toastFg: g.toast ? g.toast.fg : '#111',
       dash: (pct * 119.4).toFixed(1) + ' 200', gaugeColor: pct > 0.9 ? '#FF4D3D' : pct > 0.6 ? '#FFC53D' : '#FFFFFF',
       me: 'translate(' + mapX(g.x).toFixed(1) + ' ' + mapX(g.z).toFixed(1) + ') rotate(' + deg.toFixed(0) + ')',
-      dots: g.traffic.map((t) => ({ x: (mapX(t.x) - 1.5).toFixed(1), y: (mapX(t.z) - 1.5).toFixed(1) })),
+      dots: g.traffic.filter((t) => !t.police).map((t) => ({ x: (mapX(t.x) - 1.5).toFixed(1), y: (mapX(t.z) - 1.5).toFixed(1) })),
+      cops: g.traffic.filter((t) => t.police).map((t) => ({ x: (mapX(t.x) - 2.5).toFixed(1), y: (mapX(t.z) - 2.5).toFixed(1), fill: t.chasing && Math.floor(g.t * 7) % 2 ? '#FF3B2F' : '#4D8DFF' })),
       drifting: g.driftT > 0.4, driftPts: '+' + Math.min(80, Math.round(g.driftT * 22)),
-      vignette: Math.round(Math.max(0, pct - 0.6) * 220) + 'px'
+      vignette: Math.round(Math.max(0, pct - 0.6) * 220) + 'px',
+      chase: !!ch, chaseDist: ch ? Math.round(ch.nearest || 0) + ' m away' : '', escapePct: ch ? Math.round(Math.min(1, ch.escapeT / 5) * 100) + '%' : '0%',
+      look: g.look.on, lookBg: g.look.on ? '#E0241B' : 'rgba(10,10,11,0.62)'
     } });
   }
   results() {
     const g = this.g, c = this.car();
     if (!g) return null;
-    const distXp = g.xp - g.close * 15 - g.driftXp - g.flats * 25 - g.cleans * 20;
+    const distXp = Math.max(0, g.xp - g.close * 15 - g.driftXp - g.flats * 25 - g.cleans * 20 - g.escapes * 100 + g.busts * 25);
     const lines = [
       { label: 'Distance (' + (g.meters / 1000).toFixed(1) + ' km)', xp: distXp, color: '#F4F4F5' },
       { label: 'Drifts x' + g.drifts, xp: g.driftXp, color: '#C39BFF' },
+      { label: 'Police escapes x' + g.escapes + (g.busts ? ' · busted x' + g.busts : ''), xp: g.escapes * 100 - g.busts * 25, color: '#7DB8FF' },
       { label: 'Close calls x' + g.close, xp: g.close * 15, color: '#FF6F61' },
-      { label: 'Flat out x' + g.flats, xp: g.flats * 25, color: '#FFC53D' },
-      { label: 'Clean driving x' + g.cleans, xp: g.cleans * 20, color: '#6BCB77' }
+      { label: 'Flat out x' + g.flats + ' · clean x' + g.cleans, xp: g.flats * 25 + g.cleans * 20, color: '#FFC53D' }
     ];
     const before = 2340, after = Math.min(3000, before + g.xp);
     return {
@@ -777,6 +1046,7 @@ class Component extends DCLogic {
       noGL: s.noGL,
       startDrive: this.startDrive, endDrive: this.endDrive, toPick: this.toPick,
       setCanvas: this.setCanvas, setWrap: this.setWrap, onKeyDown: this.onKeyDown, onKeyUp: this.onKeyUp,
+      toggleLook: this.toggleLook, lookDown: this.lookDown, lookMove: this.lookMove, lookUp: this.lookUp,
       ctl: this.ctl,
       hud: s.hud, hasToast: !!s.hud.toast,
       carName: this.car().name.toUpperCase(),
